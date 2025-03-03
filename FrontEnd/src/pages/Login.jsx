@@ -56,7 +56,15 @@ export default function Login() {
           <input
             type="password"
             name="password"
-            placeholder="6 digits"
+            placeholder="password"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full p-2 mb-3 rounded bg-gray-700 text-white focus:outline-none"
+          />
+          <input
+            type="group"
+            name="group"
+            placeholder="group"
             value={formData.password}
             onChange={handleChange}
             className="w-full p-2 mb-3 rounded bg-gray-700 text-white focus:outline-none"
