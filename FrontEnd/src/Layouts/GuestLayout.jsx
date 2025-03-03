@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import HomePage from "../pages/Home";
 
 export default function GuestLayout() {
   return (
     <div>
       <Navbar />
-      <h1>Welcome to the site!</h1>
+      <HomePage/>
       <Outlet />
     </div>
   );
