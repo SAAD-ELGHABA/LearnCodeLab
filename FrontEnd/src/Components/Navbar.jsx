@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+
+
 export default function Navbar() {
     return (
       <nav className="bg-gray-900 text-white px-6 py-4 flex items-center justify-between">
@@ -20,8 +23,8 @@ export default function Navbar() {
           </li>
         </ul>
         <div className="space-x-4">
-          <button className="px-4 py-2 bg-transparent border border-blue-400 rounded-md hover:bg-blue-400 hover:text-white transition">Log In</button>
-          <button className="px-4 py-2 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition">Sign Up</button>
+          <button className="px-4 py-2 bg-transparent text-blue-400 border border-blue-400 rounded-md hover:bg-blue-400 hover:text-white transition">Log In</button>
+          <Link className="px-4 py-2 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition" to={'/login'}>Sign Up</Link>
         </div>
       </nav>
     );

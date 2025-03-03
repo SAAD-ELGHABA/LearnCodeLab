@@ -1,11 +1,14 @@
-import { useState } from 'react'
-import Navbar from './Components/Navbar'
-
-
+import { RouterProvider } from "react-router-dom";
+import Navbar from "./Components/Navbar";
+import Router from "././route/Router";
 function App() {
   return (
-    <Navbar/>
-  )
+    <>
+      <RouterProvider router={Router}>
+        <Navbar />
+      </RouterProvider>
+    </>
+  );
 }
 
-export default App
+export default App;
