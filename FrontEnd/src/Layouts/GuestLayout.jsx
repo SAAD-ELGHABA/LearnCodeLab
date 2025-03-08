@@ -1,13 +1,22 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../Components/Navbar";
-import HomePage from "../pages/Home";
+import { useSelector } from "react-redux";
 
 export default function GuestLayout() {
+  const location = useLocation();
+  const hideNavBarInPages = ["/login", "/register","/forget_password"];
+  const user = useSelector((state) => state.userReducer.user);
+
   return (
-    <div>
-      <Navbar />
-      <HomePage/>
-      <Outlet />
-    </div>
+    <>
+      {user ? (
+        <Navigate to={'/user'}/>
+      ) : (
+        <div>
+          {!hideNavBarInPages.includes(location.pathname) && <Navbar />}
+          <Outlet />
+        </div>
+      )}
+    </>
   );
 }

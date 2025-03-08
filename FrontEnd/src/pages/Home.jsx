@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-
+import peapleCoding from "../assets/acc 1.png";
 export default function HomePage() {
   return (
     <div className="bg-[#0E1C2D] text-white min-h-screen">
@@ -15,14 +15,14 @@ export default function HomePage() {
           Learn, Practice, and Share Your Code with Ease.
         </p>
         <button className="mt-6 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition">
-          Let's start!
+          Let&apos;s start!
         </button>
       </header>
 
       {/* Illustration */}
       <div className="flex justify-center mt-10">
         <img
-          src="/coding-illustration.png"
+          src={peapleCoding}
           alt="People coding"
           className="w-[60%] md:w-[40%] drop-shadow-xl"
         />
@@ -30,12 +30,26 @@ export default function HomePage() {
 
       {/* Why Learn Code Lab? */}
       <section className="mt-16 px-6">
-        <h2 className="text-3xl text-center font-bold mb-10">Why Learn Code Lab?</h2>
+        <h2 className="text-3xl text-center font-bold mb-10">
+          Why Learn Code Lab?
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-          <FeatureCard title="Fast ⚡" description="Achieve results in record time thanks to our optimized technology, ensuring quick and efficient processing." />
-          <FeatureCard title="Secure 🔒" description="Safeguard your data with our advanced security systems, providing peace of mind and confidentiality." />
-          <FeatureCard title="Easy to Use ✌️" description="Enjoy an intuitive interface designed to simplify your experience, making it accessible for everyone." />
-          <FeatureCard title="Collaboration 👥" description="Collaborate seamlessly and efficiently with tools designed for teamwork and community engagement." />
+          <FeatureCard
+            title="Fast ⚡"
+            description="Achieve results in record time thanks to our optimized technology, ensuring quick and efficient processing."
+          />
+          <FeatureCard
+            title="Secure 🔒"
+            description="Safeguard your data with our advanced security systems, providing peace of mind and confidentiality."
+          />
+          <FeatureCard
+            title="Easy to Use ✌️"
+            description="Enjoy an intuitive interface designed to simplify your experience, making it accessible for everyone."
+          />
+          <FeatureCard
+            title="Collaboration 👥"
+            description="Collaborate seamlessly and efficiently with tools designed for teamwork and community engagement."
+          />
         </div>
       </section>
 
@@ -77,12 +91,16 @@ const LanguageCarousel = () => {
 
   return (
     <section className="mt-20 text-center pb-16">
-      <h3 className="text-xl text-gray-300 mb-6 uppercase">The languages that we support</h3>
+      <h3 className="text-xl text-gray-300 mb-6 uppercase">
+        The languages that we support
+      </h3>
       <div className="relative flex items-center justify-center">
         {/* Bouton gauche */}
         <button
           className="absolute left-4 bg-gray-700 p-2 rounded-full hover:bg-gray-600 transition"
-          onClick={() => setIndex((prev) => (prev - 1 + languages.length) % languages.length)}
+          onClick={() =>
+            setIndex((prev) => (prev - 1 + languages.length) % languages.length)
+          }
         >
           <FaChevronLeft className="text-white" />
         </button>
@@ -96,7 +114,11 @@ const LanguageCarousel = () => {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center p-4 bg-gray-900 rounded-lg shadow-md w-40"
         >
-          <img src={languages[index].icon} alt={languages[index].name} className="w-16 h-16 mb-2" />
+          <img
+            src={languages[index].icon}
+            alt={languages[index].name}
+            className="w-16 h-16 mb-2"
+          />
           <span className="text-gray-300 text-sm">{languages[index].name}</span>
         </motion.div>
 
