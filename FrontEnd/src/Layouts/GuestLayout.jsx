@@ -4,13 +4,13 @@ import { useSelector } from "react-redux";
 
 export default function GuestLayout() {
   const location = useLocation();
-  const hideNavBarInPages = ["/login", "/register","/forget_password"];
+  const hideNavBarInPages = ["/login", "/register", "/forget_password","/reset-password"];
   const user = useSelector((state) => state.userReducer.user);
 
   return (
     <>
-      {user ? (
-        <Navigate to={'/user'}/>
+      {user && user.role === 'stagiaire' ? (
+        <Navigate to={"/user"} />
       ) : (
         <div>
           {!hideNavBarInPages.includes(location.pathname) && <Navbar />}

@@ -30,7 +30,9 @@ const LoginModal = () => {
     setLoading(true);
     try {
       const toastLoading = toast.loading("wait for it ...");
-      const response = await axios.post("/api/login", info);
+      const response = await axios.post("/api/login", info, {
+        withCredentials: true,
+      });
       if (response.status >= 200) {
         toast.dismiss(toastLoading);
         if (response.data.token) {
@@ -44,7 +46,16 @@ const LoginModal = () => {
           });
           localStorage.setItem("token", response.data.token);
           dispatch(login(response.data.token, response.data.user));
-          nav("/user");
+          if (response.data.user.role === "admin") {
+            nav("/admin");
+            console.log(response.data.user.role);
+          } else if (response.data.user.role === "formateur") {
+            nav("/formateur");
+          } else if (response.data.user.role === "stagiaire") {
+            nav("/user");
+          } else {
+            nav("/");
+          }
         } else {
           toast.warning(response.data.data, {
             duration: 3000,
@@ -136,7 +147,7 @@ const LoginModal = () => {
             <Link
               id="forget-password"
               className="bg-gradient-to-r from-blue-700 via-bule-400 to-slate-50 text-transparent bg-clip-text"
-              to={'/forget_password'}
+              to={"/forget_password"}
             >
               forget password
             </Link>

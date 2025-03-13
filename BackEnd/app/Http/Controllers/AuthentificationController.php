@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Illuminate\Support\Str;
 use function Laravel\Prompts\error;
@@ -53,7 +54,7 @@ class AuthentificationController extends Controller
         if ($validation && Auth::attempt($credentials)) {
             $user = Auth::user();
             $token = $user->createToken('authToken')->plainTextToken;
-            session(['user' => $user]);
+            Session::put('auth_token', $token);
             if ($request->input('remember')) {
                 return response()->json([
                     'user' => $user,
@@ -74,11 +75,10 @@ class AuthentificationController extends Controller
     public function logout(Request $request)
     {
         if ($request->user()) {
-            // Auth::logout();
             $request->user()->tokens()->delete();
             return response()->json([
                 'message' => 'logged out successfully'
-            ]);
+            ])->withCookie(cookie('XSRF-TOKEN', null, -1))->withCookie(cookie('remember_token', null, -1));
         } else {
             return response()->json([
                 'message' => 'you are not authenticated'

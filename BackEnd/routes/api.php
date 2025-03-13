@@ -10,9 +10,14 @@ Route::get('/user', function (Request $request) {
 
 
 Route::post('/register', [AuthentificationController::class, 'register']);
-Route::post('/login', [AuthentificationController::class, 'login']);
+Route::post('/login', [AuthentificationController::class, 'login'])->name('login');
 Route::post('/logout', [AuthentificationController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::post('/forgot-password', [AuthentificationController::class, 'ForgetPassword']);
 
 Route::post('/reset-password', [AuthentificationController::class, 'ResetPassword'])->name('password.reset');
+
+
+
+
+

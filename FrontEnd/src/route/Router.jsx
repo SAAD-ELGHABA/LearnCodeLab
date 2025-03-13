@@ -7,6 +7,8 @@ import StagiaireLayout from "../Layouts/StagiaireLayout";
 import VerifyAcceessRoutes from "./VerifyRoutes/VerifyAcceessRoutes";
 import ForgetPassword from "../pages/ForgetPassword";
 import ResetPassword from "../pages/ResetPassword";
+import FormateurLayout from "../Layouts/FormateurLayout";
+import AdminGreeting from "../pages/AdminGreeting";
 
 const REGISTER = "/register";
 const LOGIN = "/login";
@@ -35,7 +37,7 @@ const Router = createBrowserRouter([
       },
       {
         path: RESET_PASSWORD,
-        element: <ResetPassword/>,
+        element: <ResetPassword />,
       },
     ],
   },
@@ -50,6 +52,34 @@ const Router = createBrowserRouter([
         path: "/user",
         index: true,
         element: <StagiaireLayout />,
+      },
+    ],
+  },
+  {
+    element: (
+      <VerifyAcceessRoutes role={"formateur"} path={"/"}>
+        <FormateurLayout />
+      </VerifyAcceessRoutes>
+    ),
+    children: [
+      {
+        path: "/formateur",
+        index: true,
+        element: <FormateurLayout />,
+      },
+    ],
+  },
+  {
+    element: (
+      <VerifyAcceessRoutes role={"admin"} path={"/"}>
+        <AdminGreeting />
+      </VerifyAcceessRoutes>
+    ),
+    children: [
+      {
+        path: "/admin",
+        index: true,
+        element: <AdminGreeting />,
       },
     ],
   },
