@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav className="bg-gray-900 text-white px-6 py-4 flex items-center justify-between ">
+    <nav className="bg-gray-900 sticky top-0 shadow text-white px-6 py-5 flex items-center justify-between z-50" >
       <div className="text-xl font-bold">
         <span className="text-blue-400">Learn</span>CodeLab
       </div>

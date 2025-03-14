@@ -54,7 +54,7 @@ class AuthentificationController extends Controller
         if ($validation && Auth::attempt($credentials)) {
             $user = Auth::user();
             $token = $user->createToken('authToken')->plainTextToken;
-            Session::put('auth_token', $token);
+            // Session::put('auth_token', $token);
             if ($request->input('remember')) {
                 return response()->json([
                     'user' => $user,
