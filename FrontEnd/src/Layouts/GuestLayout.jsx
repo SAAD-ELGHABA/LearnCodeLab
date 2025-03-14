@@ -1,7 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import { useSelector } from "react-redux";
-import ParticlesAnimation from "../pages/animation/Particles";
 
 export default function GuestLayout() {
   const location = useLocation();
@@ -14,16 +13,16 @@ export default function GuestLayout() {
   const user = useSelector((state) => state.userReducer.user);
 
   return (
-    <>
+    <div className="bg-gradient-to-r from-[#0E1C2D] to-[#0f2036]" >
       {user && user.role === "stagiaire" ? (
         <Navigate to={"/user"} />
       ) : (
         <div>
           {!hideNavBarInPages.includes(location.pathname) && <Navbar />}
-            <ParticlesAnimation />
+            {/* <ParticlesBackground /> */}
           <Outlet />
         </div>
       )}
-    </>
+    </div>
   );
 }
