@@ -30,8 +30,7 @@ class ResetPasswordNotification extends Notification
             ->subject('Password Reset Request')
             ->greeting('Hello ' . $this->user->name . ',')
             ->line('We received a password reset request for your account.')
-            ->action('Reset Password', $frontendUrl)
-            ->line('If you did not request a password reset, no further action is required.')
+            ->view('emails.reset_password',["url"=>$frontendUrl])
             ->salutation('Best regards, ' . config('app.name'));
     }
 }

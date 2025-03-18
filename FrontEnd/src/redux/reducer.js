@@ -2,7 +2,7 @@ const userState = {
     user:null,
     token: localStorage.getItem('token') ? localStorage.getItem('token') :null
 }
-
+const mode = localStorage.getItem('theme') ? localStorage.getItem('theme') : 'dark' 
 export const userReducer = (state=userState,action)=>{
     switch (action.type){
         case "LOGIN":
@@ -25,5 +25,16 @@ export const userReducer = (state=userState,action)=>{
             }
         default:
             return state;
+    }
+}
+
+export const modeReducer = (state=mode,action)=>{
+    switch (action.type){
+        case "LIGHT":
+            return state = 'light';
+        case "DARK":
+            return state = 'dark';
+        default:
+            return state ;
     }
 }

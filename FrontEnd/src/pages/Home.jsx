@@ -21,17 +21,22 @@ export default function HomePage() {
   return (
     <div className=" text-white min-h-screen z-50">
       <div className="flex items-end container mx-auto">
-        <header className="text-center pt-20 w-1/2">
+        <header className="text-start pt-20 w-1/2">
           <h1 className="text-4xl md:text-5xl font-bold text-blue-400 drop-shadow-lg uppercase">
             Your Way to Get <br /> Your Diploma!
           </h1>
-          <p className="mt-4 text-gray-300 max-w-sm mx-auto">
+          <p className="mt-4 text-gray-300 w-2/3">
             This is LearnCodeLab, your assistant in the world of programming.
             Learn, Practice, and Share Your Code with Ease.
           </p>
-          <button className="mt-6 px-6 py-3 text-blue-400 border hover:text-white cursor-pointer border-blue-400 hover:bg-blue-600 rounded-md transition w-1/2 text-sm">
-            Let&apos;s start!
-          </button>
+          <div className="flex space-x-2">
+            <button className="mt-6 px-6 py-3 text-blue-400 border cursor-pointer border-blue-400 rounded-md transition w-1/4 text-sm">
+              Let&apos;s start!
+            </button>
+            <button className="bg-blue-400 mt-6 px-6 py-3 border hover:text-white cursor-pointer border-blue-400 hover:bg-blue-600 rounded-md transition w-1/4 text-sm">
+              sign in
+            </button>
+          </div>
         </header>
         <div className="flex justify-center mt-10 w-1/2">
           <img
@@ -76,7 +81,6 @@ export default function HomePage() {
         <h2 className="text-3xl text-center font-bold mt-10">OFPPT ROADMAP</h2>
         <Carousel />
       </div>
-
     </div>
   );
 }

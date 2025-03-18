@@ -9,11 +9,30 @@ import ForgetPassword from "../pages/ForgetPassword";
 import ResetPassword from "../pages/ResetPassword";
 import FormateurLayout from "../Layouts/FormateurLayout";
 import AdminGreeting from "../pages/AdminGreeting";
+import Home from "../Layouts/userpages/Home";
+import Settings from "../Layouts/userpages/Settings";
+import Saves from "../Layouts/userpages/Saves";
+import Groups from "../Layouts/userpages/Groups";
+import Languages from "../Layouts/userpages/Languages";
+import Resources from "../Layouts/userpages/Resources";
+import Help from "../Layouts/userpages/Help";
+import VerifyEmail from "../pages/VerifyEmail";
+import ResendVerification from "../pages/ResendVerification";
 
 const REGISTER = "/register";
 const LOGIN = "/login";
 const FORGET_PASSWORD = "/forget_password";
 const RESET_PASSWORD = "/reset-password";
+
+const SETTINGS = "/settings";
+const SAVES = "/saves";
+const GROUPS = "/groups";
+const LANGUAGES = "/languages";
+const RESOURCES = "/resources";
+const HELP = "/help";
+
+const VERIFY_EMAIL = "/verify-email/:id/:hash";
+const RESEND_VERIFICATION_EMAIL = "/resend_verification_email";
 const Router = createBrowserRouter([
   {
     element: <GuestLayout />,
@@ -42,6 +61,14 @@ const Router = createBrowserRouter([
     ],
   },
   {
+    path: VERIFY_EMAIL,
+    element: <VerifyEmail />,
+  },
+  {
+    path: RESEND_VERIFICATION_EMAIL,
+    element: <ResendVerification />,
+  },
+  {
     element: (
       <VerifyAcceessRoutes role={"stagiaire"} path={"/"}>
         <StagiaireLayout />
@@ -51,7 +78,31 @@ const Router = createBrowserRouter([
       {
         path: "/user",
         index: true,
-        element: <StagiaireLayout />,
+        element: <Home />,
+      },
+      {
+        path: SETTINGS,
+        element: <Settings />,
+      },
+      {
+        path: SAVES,
+        element: <Saves />,
+      },
+      {
+        path: GROUPS,
+        element: <Groups />,
+      },
+      {
+        path: LANGUAGES,
+        element: <Languages />,
+      },
+      {
+        path: RESOURCES,
+        element: <Resources />,
+      },
+      {
+        path: HELP,
+        element: <Help />,
       },
     ],
   },

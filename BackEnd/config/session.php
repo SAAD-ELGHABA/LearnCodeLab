@@ -19,7 +19,10 @@ return [
     */
 
     // 'driver' => env('SESSION_DRIVER', 'database'),
-    'driver' => env('SESSION_DRIVER', 'file'),
+    // 'driver' => env('SESSION_DRIVER', 'file'),
+    'driver' => env('SESSION_DRIVER', 'cookie'),
+    'same_site' => 'lax',  // Ensure this is set to 'lax' or 'strict'
+
     // 'driver' => 'file'
 
     /*
@@ -203,7 +206,7 @@ return [
     |
     */
 
-    'same_site' => env('SESSION_SAME_SITE', 'lax'),
+    // 'same_site' => env('SESSION_SAME_SITE', 'lax'),
 
     /*
     |--------------------------------------------------------------------------

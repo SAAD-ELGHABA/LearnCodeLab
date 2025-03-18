@@ -33,7 +33,7 @@ function NavBar() {
     }
   };
   return (
-    <header className="bg-[#21252B] py-4 border-t-1 border-blue-400 text-white">
+    <header className="bg-[#21252B] py-4 border-t-1 border-blue-400 text-white sticky top-0 shadow shadow-gray-800 z-50">
       <nav className="container mx-auto flex items-center ">
         <div className="font-bold text-blue-400 text-xl w-1/4 text-center">
           LearnCodeLab

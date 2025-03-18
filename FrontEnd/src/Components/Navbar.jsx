@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 export default function Navbar() {
   return (
     <header className="bg-gray-900 sticky top-0 shadow-sm shadow-gray-800 text-white py-5  z-50">
@@ -47,6 +46,7 @@ export default function Navbar() {
           >
             Sign Up
           </Link>
+
         </div>
       </nav>
     </header>

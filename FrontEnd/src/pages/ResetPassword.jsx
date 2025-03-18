@@ -28,8 +28,6 @@ const ResetPassword = () => {
     };
     setLoading(true);
     try {
-      console.log(info);
-
       const toastLoading = toast.loading("wait for it ...");
       const response = await axios.post("/api/reset-password", info);
       if (response.status >= 200) {

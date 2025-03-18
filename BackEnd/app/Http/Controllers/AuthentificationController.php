@@ -8,6 +8,7 @@ use App\Notifications\ResetPasswordNotification;
 use Error;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -30,16 +31,26 @@ class AuthentificationController extends Controller
                 'group' => 'required',
             ]);
             if ($validation) {
-                $user = User::create($validation);
+                // $user = User::create($validation);
+                $user = User::create([
+                    'firstName' => $request->firstName,
+                    'lastName' => $request->lastName,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password), 
+                    'group' => $request->group,
+                ]);
                 if ($user) {
+                    event(new Registered($user));
+                    $token = $user->createToken('authToken')->plainTextToken;
                     return response()->json([
-                        'message' => 'success',
+                        'message' => 'Please check your email for verification.',
+                        'token' => $token
                     ]);
                 }
             }
         } catch (Error $error) {
             return response()->json([
-                'message' => '$error',
+                'message' => "email hasn't sent to the main user",
             ]);
         }
     }
