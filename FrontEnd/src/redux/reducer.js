@@ -38,3 +38,38 @@ export const modeReducer = (state=mode,action)=>{
             return state ;
     }
 }
+
+const initialState = {
+    title: "",
+    language: "",
+    question: "",
+    description: "",
+    code: "",
+};
+
+export const collectionReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case "SET_TITLE_AND_LANGUAGE"  :
+            return {
+                ...state,
+                title: action.payload.title,
+                language: action.payload.language,
+            };
+        case 'SET_QUESTION_AND_DESCRIPTION':
+            return {
+                ...state,
+                question: action.payload.question,
+                description: action.payload.description,
+            };
+        case 'SET_CODE':
+            return {
+                ...state,
+                code: action.payload,
+            };
+        case 'RESET_FORM':
+            return initialState;
+        default:
+            return state;
+    }
+};
+

@@ -13,5 +13,8 @@ export default defineConfig({
         secure: false,
       }
     }
-  }
+  },
+  optimizeDeps: {
+    include: ['@chakra-ui/react'],
+  },
 })

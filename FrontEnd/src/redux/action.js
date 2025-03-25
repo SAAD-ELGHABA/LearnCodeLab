@@ -16,3 +16,25 @@ export const logout = ()=>{
         type:"LOGOUT"
     }
 }
+
+
+
+export const setTitleAndLanguage = (title, language) => ({
+    type: "SET_TITLE_AND_LANGUAGE",
+    payload: { title, language },
+});
+
+export const setQuestionAndDescription = (question, description) => ({
+    type: "SET_QUESTION_AND_DESCRIPTION",
+    payload: { question, description },
+});
+
+export const setCode = (code) => ({
+    type: "SET_CODE",
+    payload: code,
+});
+
+export const resetForm = () => ({
+    type: "RESET_FORM",
+});
+
