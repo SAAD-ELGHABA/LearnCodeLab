@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CollectionController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -41,6 +43,11 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     $request->fulfill();
     return response()->json(['message' => 'Email verified successfully!']);
 })->middleware(['auth:sanctum'])->name('verification.verify');
+
+
+
+Route::post('collections', [CollectionController::class, 'store']);
+Route::get('collections/{id}', [CollectionController::class, 'show']);
 
 
 

@@ -18,6 +18,7 @@ import Resources from "../Layouts/userpages/Resources";
 import Help from "../Layouts/userpages/Help";
 import VerifyEmail from "../pages/VerifyEmail";
 import ResendVerification from "../pages/ResendVerification";
+import Add1 from "../Layouts/userpages/Addcollection/Add1";
 
 const REGISTER = "/register";
 const LOGIN = "/login";
@@ -30,6 +31,7 @@ const GROUPS = "/groups";
 const LANGUAGES = "/languages";
 const RESOURCES = "/resources";
 const HELP = "/help";
+const ADD = "/add1";
 
 const VERIFY_EMAIL = "/verify-email/:id/:hash";
 const RESEND_VERIFICATION_EMAIL = "/resend_verification_email";
@@ -103,6 +105,10 @@ const Router = createBrowserRouter([
       {
         path: HELP,
         element: <Help />,
+      },
+      {
+        path: ADD,
+        element: <Add1 />,
       },
     ],
   },
