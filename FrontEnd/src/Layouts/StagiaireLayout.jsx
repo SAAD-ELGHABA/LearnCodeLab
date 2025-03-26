@@ -3,9 +3,13 @@ import SideBar from "../Components/SideBar";
 import NavBar from "../Components/user_components/NavBar";
 import { useState } from "react";
 import { motion } from "framer-motion";
-
+import Chat_bot from "../Components/Chat_bot";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRobot } from "@fortawesome/free-solid-svg-icons";
 function StagiaireLayout() {
   const [isOpen, setIsOpen] = useState(true);
+
+  const [ChatToggle, setChatToggle] = useState(true);
 
   return (
     <div className="bg-[#273042]">
@@ -23,14 +27,34 @@ function StagiaireLayout() {
 
         <section
           className={`p-2 text-white transition-all duration-300 ${
-            isOpen ? "w-4/6" : "w-5/6"
-          } bg-[#21252B] m-1 rounded`}
+            isOpen ? "w-5/6" : "w-6/6"
+          }
+          bg-[#21252B] m-1 rounded`}
         >
           <Outlet />
         </section>
 
-        <aside className="w-1/6 bg-[#21252B] h-screen">test</aside>
+        {ChatToggle && (
+          <aside
+            className={`w-2/6 border-r-gray-500 shadow fixed top-0 right-0 bg-[#21252B] h-screen transition-transform duration-1000 ${
+              ChatToggle ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            <Chat_bot />
+          </aside>
+        )}
       </div>
+
+      <button
+        onClick={() => setChatToggle(!ChatToggle)}
+        className="fixed bottom-4 right-4  px-4 py-2 rounded"
+        title="Open The Chat AI"
+      >
+        <FontAwesomeIcon
+          icon={faRobot}
+          className="text-blue-500 hover:text-blue-600 text-lg cursor-pointer drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]"
+        />
+      </button>
     </div>
   );
 }

@@ -38,3 +38,9 @@ export const resetForm = () => ({
     type: "RESET_FORM",
 });
 
+
+
+export const msgChatAi = (message)=>({
+    type:"PUSH_MESSAGE",
+    payload:message,
+})
