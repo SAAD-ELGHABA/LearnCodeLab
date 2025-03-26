@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'password'=>'admin',
             'role'=>'admin',
             'group'=>'admin',
+            'email_verified_at' => now(),
         ]);
     }
 }

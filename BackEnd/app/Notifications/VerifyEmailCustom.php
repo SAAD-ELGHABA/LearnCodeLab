@@ -7,6 +7,7 @@ use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailBase;
 use Illuminate\Support\Facades\URL;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\Mime\Email;
 
 class VerifyEmailCustom extends VerifyEmailBase
 {
@@ -70,5 +71,6 @@ class VerifyEmailCustom extends VerifyEmailBase
             ->view('emails.verification_email', ['url' => $fullUrl])
             ->line('If you did not create an account, no further action is required.')
             ->salutation('Best regards, ' . config('app.name'));
+            // ->attach(storage_path('app/public/logo-v-2.png'));
     }
 }

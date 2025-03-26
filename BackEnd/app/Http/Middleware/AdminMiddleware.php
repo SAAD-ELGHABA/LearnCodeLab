@@ -15,7 +15,11 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         try {
-            $token = $request->query('token');
+            $token = $request->cookie('admin_token');
+            
+            if (!$token) {
+                return redirect('/login');
+            }
             $tokenRecord = PersonalAccessToken::findToken($token);
             if ($tokenRecord) {
                 $user = $tokenRecord->tokenable;

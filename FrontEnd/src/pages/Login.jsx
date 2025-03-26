@@ -36,11 +36,11 @@ const LoginModal = () => {
       if (response.status >= 200) {
         toast.dismiss(toastLoading);
         if (response.data.token) {
-          toast.success("you logged in successfully👌", {
+          toast.success("you logged in successfully", {
             duration: 3000,
             style: {
-              backgroundColor: "#1F2937",
-              color: "rgb(0, 182, 0)",
+              backgroundColor: "#101828",
+              color: " #60A5FA",
               border: "none",
             },
           });
@@ -48,7 +48,6 @@ const LoginModal = () => {
           dispatch(login(response.data.token, response.data.user));
           if (response.data.user.role === "admin") {
             nav("/admin");
-            console.log(response.data.user.role);
           } else if (response.data.user.role === "formateur") {
             nav("/formateur");
           } else if (response.data.user.role === "stagiaire") {
@@ -66,7 +65,6 @@ const LoginModal = () => {
             },
           });
         }
-        console.log(response.data);
       }
     } catch (error) {
       toast.dismiss();

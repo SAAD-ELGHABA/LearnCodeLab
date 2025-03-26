@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+})->middleware(['auth:sanctum','verified']);
 
 
 Route::post('/register', [AuthentificationController::class, 'register']);
@@ -22,9 +22,6 @@ Route::post('/logout', [AuthentificationController::class, 'logout'])->middlewar
 Route::post('/forgot-password', [AuthentificationController::class, 'ForgetPassword']);
 
 Route::post('/reset-password', [AuthentificationController::class, 'ResetPassword'])->name('password.reset');
-
-
-
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();

@@ -31,7 +31,6 @@ class AuthentificationController extends Controller
                 'group' => 'required',
             ]);
             if ($validation) {
-                // $user = User::create($validation);
                 $user = User::create([
                     'firstName' => $request->firstName,
                     'lastName' => $request->lastName,
@@ -65,7 +64,6 @@ class AuthentificationController extends Controller
         if ($validation && Auth::attempt($credentials)) {
             $user = Auth::user();
             $token = $user->createToken('authToken')->plainTextToken;
-            // Session::put('auth_token', $token);
             if ($request->input('remember')) {
                 return response()->json([
                     'user' => $user,
@@ -102,9 +100,12 @@ class AuthentificationController extends Controller
         $request->validate(['email' => 'required|email']);
         $user = User::where('email', $request->email)->first();
         $email = $request->input('email');
-        if ($user) {
-            $user->notify(new ResetPasswordNotification($user));
+        if (!$user) {
+            return response()->json([
+                'message' => "we can't find a user with that email address."
+            ], 404);
         }
+        $user->notify(new ResetPasswordNotification($user));
         return response()->json([
             'message' => "we sent an email to $email"
         ]);

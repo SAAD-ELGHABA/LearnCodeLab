@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('group');
             $table->string('role')->default('stagiaire');
+            $table->string('image')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

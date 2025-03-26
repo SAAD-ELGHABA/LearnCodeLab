@@ -8,7 +8,12 @@ import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 function AdminGreeting() {
   const token = useSelector((state) => state.userReducer.token);
   const redirectAdmin = () => {
-    window.open(`http://127.0.0.1:8000/index?token=${token}`, "_blank");
+    if (!token) return;
+    window.open(
+      `http://127.0.0.1:8000/set-token?token=${encodeURIComponent(token)}`,
+      "_blank"
+    );
+    // window.open(`http://127.0.0.1:8000/set-token?token=${token}`, "_blank");
   };
   const nav = useNavigate();
   const dispatch = useDispatch();
@@ -32,7 +37,7 @@ function AdminGreeting() {
   return (
     <div className="flex text-white justify-center items-center h-screen bg-gray-900">
       <button
-        className="absolute top-5 end-5 text-xl cursor-pointer"
+        className="absolute top-5 end-10 text-xl cursor-pointer"
         onClick={handleLogOut}
       >
         <FontAwesomeIcon icon={faArrowRightFromBracket} />
