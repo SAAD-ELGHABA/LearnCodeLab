@@ -1,39 +1,16 @@
 import {
-  faArrowRightFromBracket,
   faBell,
   faPlus,
   faQuestion,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../../redux/action";
+
 
 function NavBar() {
-  const nav = useNavigate();
-  const token = useSelector((state) => state.userReducer.token);
-  const dispatch = useDispatch();
-  const handleLogOut = async () => {
-    if (confirm("log out !")) {
-      const response = await axios.post(
-        "/api/logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.status >= 200) {
-        dispatch(logout());
-        nav("/");
-      }
-    }
-  };
+
   return (
-    <header className="bg-[#21252B] py-4 border-t-1 border-blue-400 text-white sticky top-0 shadow shadow-gray-800 z-50">
+    <header className=" bg-[#21252B] py-4 border-t-1 border-blue-400 text-white sticky top-0 shadow shadow-gray-800 " style={{zIndex:'999'}}>
       <nav className="container mx-auto flex items-center ">
         <div className="font-bold text-blue-400 text-xl w-1/4 text-center">
           LearnCodeLab
@@ -86,13 +63,9 @@ function NavBar() {
             icon={faUser}
             className="hover:bg-gray-700 p-3 rounded-full cursor-pointer"
           />
-          <FontAwesomeIcon
-            icon={faArrowRightFromBracket}
-            className="hover:bg-gray-700 p-3 rounded-full cursor-pointer"
-            onClick={handleLogOut}
-          />
         </div>
       </nav>
+
     </header>
   );
 }

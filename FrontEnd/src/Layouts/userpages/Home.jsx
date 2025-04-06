@@ -28,8 +28,6 @@ function Home() {
           </Link>
         </div>
       </div>
-
-      {/* Collection Card */}
       <div className="bg-gray-700 rounded-lg p-6 mb-6 border border-gray-600">
         <h2 className="text-xl font-semibold mb-3">Here is the title of a collection</h2>
         <p className="text-gray-300 mb-4">

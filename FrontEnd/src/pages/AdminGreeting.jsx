@@ -14,7 +14,6 @@ function AdminGreeting() {
       `http://127.0.0.1:8000/set-token?token=${encodeURIComponent(token)}`,
       "_blank"
     );
-    // window.open(`http://127.0.0.1:8000/set-token?token=${token}`, "_blank");
   };
   const nav = useNavigate();
   const dispatch = useDispatch();

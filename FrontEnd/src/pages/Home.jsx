@@ -21,8 +21,8 @@ export default function HomePage() {
   return (
     <>
       <div className=" text-white min-h-screen z-50">
-        <div className="flex items-end container mx-auto">
-          <header className="text-start pt-20 w-1/2">
+        <div className="flex items-end container mx-auto justify-evenly">
+          <header className="text-start pt-20 w-2/5">
             <h1 className="text-4xl md:text-5xl font-bold text-blue-400 drop-shadow-lg uppercase">
               Your Way to Get <br /> Your Diploma!
             </h1>
@@ -55,27 +55,30 @@ export default function HomePage() {
           className=" text-white rounded-lg text-center mt-20"
         >
           <section className="mt-16 px-6">
-            <h2 className="text-3xl text-center font-bold mb-10">
-              Why Learn Code Lab?
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              <FeatureCard
-                title="Fast ⚡"
-                description="Achieve results in record time thanks to our optimized technology, ensuring quick and efficient processing."
-              />
-              <FeatureCard
-                title="Secure 🔒"
-                description="Safeguard your data with our advanced security systems, providing peace of mind and confidentiality."
-              />
-              <FeatureCard
-                title="Easy to Use ✌️"
-                description="Enjoy an intuitive interface designed to simplify your experience, making it accessible for everyone."
-              />
-              <FeatureCard
-                title="Collaboration 👥"
-                description="Collaborate seamlessly and efficiently with tools designed for teamwork and community engagement."
-              />
-            </div>
+            <fieldset className="border-1 border-blue-400 p-6 rounded">
+              <legend className="text-3xl font-bold text-center px-4">
+                Why Learn Code Lab?
+              </legend>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto mt-6">
+                <FeatureCard
+                  title="Fast ⚡"
+                  description="Achieve results in record time thanks to our optimized technology, ensuring quick and efficient processing."
+                />
+                <FeatureCard
+                  title="Secure 🔒"
+                  description="Safeguard your data with our advanced security systems, providing peace of mind and confidentiality."
+                />
+                <FeatureCard
+                  title="Easy to Use ✌️"
+                  description="Enjoy an intuitive interface designed to simplify your experience, making it accessible for everyone."
+                />
+                <FeatureCard
+                  title="Collaboration 👥"
+                  description="Collaborate seamlessly and efficiently with tools designed for teamwork and community engagement."
+                />
+              </div>
+            </fieldset>
           </section>
         </motion.div>
         <div className="flex flex-col justify-center">

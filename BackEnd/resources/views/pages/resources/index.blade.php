@@ -61,7 +61,7 @@
                 </p>
             </div>
             <div>
-                <ul class="text-xs flex justify-end">
+                <ul class="text-xs flex justify-end items-center">
                     <li>
                         <form action="{{ route('resources.destroy', $file->id) }}" method="POST" onsubmit="event.preventDefault(); confirmDeletion(this);">
                             @csrf
@@ -79,7 +79,7 @@
                                     icon: 'warning',
                                     showCancelButton: true,
                                     confirmButtonColor: '#163050',
-                                    cancelButtonColor: '',
+                                    cancelButtonColor: 'blue',
                                     confirmButtonText: 'Yes, delete it!'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -94,7 +94,7 @@
                             <i class="cursor-pointer fa-eye fa-regular"></i>
                         </button>
 
-                        <div id="file-preview-modal-{{ $file->id }}" class="hidden fixed inset-0 flex justify-center items-center z-50 filter ">
+                        <div id="file-preview-modal-{{ $file->id }}" class="hidden fixed inset-0 flex justify-center items-center z-50 filter bg-[#163050a6]">
                             <div class="relative shadow bg-white w-11/12 h-5/6 rounded shadow-lg overflow-auto brightness-100" style="filter: none; box-shadow: none;">
                                 <div class="flex justify-between absolute top-2 items-center right-2 w-full py-2">
                                     <p class="text-gray-900 ps-5 text-lg font-bold">
@@ -116,9 +116,6 @@
                                         <p><strong>Uploaded By:</strong> {{ request()->ip() }}</p>
                                     </div>
                                 </div>
-                                <div>
-                                    test
-                                </div>
                             </div>
                         </div>
 
@@ -133,6 +130,11 @@
                                 modal.classList.add('hidden');
                             }
                         </script>
+                    </li>
+                    <li>
+                        <a href="{{ asset('storage/' . $file->file) }}" download="{{$file->title}}" class="w-full text-left px-1 py-1 cursor-pointer hover:bg-[#163050]">
+                            <i class="fa-solid fa-download"></i>
+                        </a>
                     </li>
                 </ul>
             </div>

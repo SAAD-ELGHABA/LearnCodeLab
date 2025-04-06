@@ -75,7 +75,7 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center shadow shadow-blue-400">
+    <div className="h-screen flex flex-col justify-center items-center shadow shadow-blue-500">
       <div className="w-full max-w-md mx-auto overflow-hidden">
         <div className="flex flex-col h-[500px]">
           <div
@@ -92,7 +92,7 @@ const ChatBot = () => {
                 msg.role === "ai" ? (
                   <div key={index} className="w-full flex justify-start">
                     <div className="flex items-start space-x-2 bg-[#25538b2f] p-3 rounded w-2/3">
-                      <Cpu className="text-gray-400 text-sm" />
+                      <Cpu className="text-gray-400 text-lg" />
                       <p className="text-gray-100 text-sm">{msg.data}</p>
                     </div>
                   </div>
@@ -113,7 +113,7 @@ const ChatBot = () => {
               </p>
             )}
           </div>
-          <div className="border w-5/6 mx-auto border-blue-400 rounded flex">
+          <div className="border w-5/6 mx-auto border-blue-500 rounded flex">
             <input
               className="flex-1 rounded-lg px-4 py-2 text-gray-200 focus:ring-none focus:outline-none"
               type="text"
@@ -123,10 +123,10 @@ const ChatBot = () => {
             />
             <button
               onClick={sendMessage}
-              className={`cursor-pointer text-gray-900 ml-4 px-4 py-2 ${
+              className={`${input.length == 0 ? 'cursor-not-allowed':"cursor-pointer" } text-gray-900 ml-4 px-4 py-2 ${
                 thinking
                   ? "bg-gray-900 cursor-not-allowed"
-                  : "bg-blue-400 hover:bg-blue-600"
+                  : "bg-blue-500 hover:bg-blue-600"
               }`}
               disabled={thinking}
             >

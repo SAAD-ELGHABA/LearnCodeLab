@@ -8,8 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
 function StagiaireLayout() {
   const [isOpen, setIsOpen] = useState(true);
-
-  const [ChatToggle, setChatToggle] = useState(true);
+  const [ishovering, setIshovering] = useState(false);
+  const [ChatToggle, setChatToggle] = useState(false);
 
   return (
     <div className="bg-[#273042]">
@@ -47,13 +47,22 @@ function StagiaireLayout() {
 
       <button
         onClick={() => setChatToggle(!ChatToggle)}
-        className="fixed bottom-4 right-4  px-4 py-2 rounded"
+        className="fixed bottom-4  right-4  px-4 py-4 rounded cursor-pointer "
         title="Open The Chat AI"
       >
+        <div className="flex justify-between items-center space-x-2">
+        {ishovering && <p className="pt-1 text-blue-500 text-sm">
+        {
+          ChatToggle ?"Close The Chat Assistant":"Open The Chat Assistant"
+        }  
+        </p>}
         <FontAwesomeIcon
+          onMouseEnter={() => setIshovering(true)}
+          onMouseLeave={()=>setIshovering(false)}
           icon={faRobot}
-          className="text-blue-500 hover:text-blue-600 text-lg cursor-pointer drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]"
+          className="text-blue-500 hover:text-blue-600 text-lg drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]"
         />
+        </div>
       </button>
     </div>
   );
