@@ -11,16 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Schema::create('collections', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('title');
+        //     $table->text('question');
+        //     $table->text('description');
+        //     $table->text('code');
+        //     $table->string('language'); 
+        //     $table->string('id_user'); 
+        //     $table->timestamps(); 
+        // });
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('question');
             $table->text('description');
-            $table->text('code'); // To store code, can be a text field
-            // $table->string('group');
-            $table->string('language'); // Language for code (e.g., 'javascript', 'php')
+            $table->text('code');
+            $table->string('language'); 
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->timestamps(); 
         });
+        
     }
 
     /**
