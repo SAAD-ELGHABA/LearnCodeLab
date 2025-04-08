@@ -14,7 +14,7 @@ use App\Http\Controllers\CollectionController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware(['auth:sanctum','verified']);
+})->middleware(['auth:sanctum', 'verified']);
 
 
 Route::post('/register', [AuthentificationController::class, 'register']);
@@ -22,13 +22,12 @@ Route::post('/login', [AuthentificationController::class, 'login'])->name('login
 Route::post('/logout', [AuthentificationController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::post('/forgot-password', [AuthentificationController::class, 'ForgetPassword']);
-
 Route::post('/reset-password', [AuthentificationController::class, 'ResetPassword'])->name('password.reset');
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return response()->json([
-        'message'=>'please check your email'
+        'message' => 'please check your email'
     ]);
 })->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.send');
 
@@ -45,10 +44,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth:sanctum'])->name('verification.verify');
 
 
-
-Route::post('collections', [CollectionController::class, 'store']);
-Route::get('collections/{id}', [CollectionController::class, 'show']);
-
-
-
-
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('collections', [CollectionController::class, 'store']);
+    Route::get('collections/{id}', [CollectionController::class, 'show']);
+    Route::get('collections', [CollectionController::class, 'index']);
+});
+// Route::post('collections', [CollectionController::class, 'store']);
+// Route::get('collections/{id}', [CollectionController::class, 'show']);

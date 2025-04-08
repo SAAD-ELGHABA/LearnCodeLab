@@ -22,7 +22,6 @@ function EditorMaximize({ setIsMaximized }) {
   async function showValue() {
     setIsLoading(true);
     setCodeMonaco(editorRef.current.getValue());
-    dispatch(setCode(code));
     try {
       const res = await monacoApi(
         formData.language,
@@ -79,6 +78,8 @@ function EditorMaximize({ setIsMaximized }) {
                   bottom: 5,
                 },
               }}
+              value={formData.code || code} 
+              onChange={(value) => dispatch(setCode(value))}
               onMount={handleEditorDidMount}
             />
           </div>

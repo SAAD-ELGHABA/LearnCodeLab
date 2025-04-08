@@ -41,6 +41,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
+    public function collections()
+    {
+        return $this->belongsToMany(Collection::class);
+    }
 
     /**
      * Get the attributes that should be cast.

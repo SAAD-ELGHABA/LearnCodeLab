@@ -36,7 +36,7 @@ function StagiaireLayout() {
 
         {ChatToggle && (
           <aside
-            className={`w-2/6 border-r-gray-500 shadow fixed top-0 right-0 bg-[#21252B] h-screen transition-transform duration-1000 ${
+            className={`w-2/6 border-r-gray-500 fixed top-0 right-0 bg-[#21252B] h-screen transition-transform duration-1000 shadow-lg ${
               ChatToggle ? "translate-x-0" : "translate-x-full"
             }`}
           >

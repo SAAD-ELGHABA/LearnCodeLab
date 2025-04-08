@@ -6,7 +6,7 @@ import {
   faShuffle,
   faUpRightAndDownLeftFromCenter,
 } from "@fortawesome/free-solid-svg-icons";
-import { useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import { setCode } from "../../redux/action";
 import spinner from "../../Assets/spinner.gif";
 import { toast } from "sonner";
@@ -14,7 +14,6 @@ import { monacoApi } from "./api.monaco";
 import EditorMaximize from "./EditorMaximize";
 function EditorComponent() {
   const [isMaximized, setIsMaximized] = useState(false);
-
   const formData = useSelector((state) => state.collectionReducer);
   const [code, setCodeMonaco] = useState("");
   const [output, setOutput] = useState("");
@@ -28,7 +27,6 @@ function EditorComponent() {
   async function showValue() {
     setIsLoading(true);
     setCodeMonaco(editorRef.current.getValue());
-    dispatch(setCode(code));
     try {
       const res = await monacoApi(
         formData.language,
@@ -52,27 +50,23 @@ function EditorComponent() {
   return (
     <div
       style={{ height: "500px" }}
-      className=" p-4 min-w-6xl max-w-full mx-auto space-y-2 flex flex-col justify-center"
+      className="p-4 min-w-6xl max-w-full mx-auto space-y-2 flex flex-col justify-center"
     >
-      {isMaximized && (
-        <EditorMaximize
-          setIsMaximized={setIsMaximized}
-        />
-      )}
+      {isMaximized && <EditorMaximize setIsMaximized={setIsMaximized} />}
 
-      <div className="flex ">
+      <div className="flex">
         <div className="w-1/2 flex justify-start items-center">
           <h3 className="text-sm text-slate-400">
-            The Selected Language :{" "}
+            The Selected Language:{" "}
             <span className="text-blue-500">{formData.language}</span>
           </h3>
         </div>
-        <div className="w-1/2 flex justify-end items-center space-x-2 text-sm text-blue-500 ">
+        <div className="w-1/2 flex justify-end items-center space-x-2 text-sm text-blue-500">
           <button
             className="hover:bg-gray-800 rounded px-2 py-2 flex justify-center items-center space-x-2 cursor-pointer"
             onClick={() => setIsMaximized(true)}
           >
-            <p>maximize the editor</p>
+            <p>Maximize the editor</p>
             <FontAwesomeIcon
               icon={faUpRightAndDownLeftFromCenter}
               className="text-xs"
@@ -87,12 +81,12 @@ function EditorComponent() {
             language={formData.language}
             defaultValue={
               formData.language === "javascript"
-                ? `// ${formData.language} code here`
+                ? `// ${formData.language} code here \n${formData.code}`
                 : formData.language === "python"
-                ? `# ${formData.language} code here`
+                ? `# ${formData.language} code here\n${formData.code}`
                 : formData.language === "php"
-                ? `<?php\n// ${formData.language} code here`
-                : `// ${formData.language} code here`
+                ? `<?php\n// ${formData.language} code here\n${formData.code}`
+                : `// ${formData.language} code here\n${formData.code}`
             }
             theme="vs-dark"
             options={{
@@ -102,6 +96,8 @@ function EditorComponent() {
                 bottom: 5,
               },
             }}
+            value={formData.code}
+            onChange={(value) => dispatch(setCode(value))}
             onMount={handleEditorDidMount}
           />
         </div>

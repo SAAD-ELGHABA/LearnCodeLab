@@ -11,16 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('collections', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->string('title');
-        //     $table->text('question');
-        //     $table->text('description');
-        //     $table->text('code');
-        //     $table->string('language'); 
-        //     $table->string('id_user'); 
-        //     $table->timestamps(); 
-        // });
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
             $table->string('title');
@@ -28,10 +18,9 @@ return new class extends Migration
             $table->text('description');
             $table->text('code');
             $table->string('language'); 
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps(); 
         });
-        
     }
 
     /**

@@ -25,6 +25,8 @@ const MonacoEditorComponent = () => {
             ? "javascriptreact"
             : formData.language === "laravel"
             ? "php"
+            : formData.language == "css"
+            ? "css"
             : formData.language
         }
         defaultValue={
@@ -34,7 +36,9 @@ const MonacoEditorComponent = () => {
             ? `# ${formData.language} code here`
             : formData.language === "laravel"
             ? `<?php\n// ${formData.language} code here`
-            : `// ${formData.language} code here`
+            : formData.language === "css"? 
+            `/* ${formData.language} code here */ `:
+            `// ${formData.language} code here`
         }
         theme="vs-dark"
         options={{

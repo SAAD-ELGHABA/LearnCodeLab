@@ -123,7 +123,7 @@ const initialState = {
     question: "",
     description: "",
     code: "",
-    id_user: userState.user ? userState.user.id : null, 
+    user_id: userState.user ? userState.user.id : null, 
 };
 
 export const collectionReducer = (state = initialState, action) => {
@@ -148,12 +148,12 @@ export const collectionReducer = (state = initialState, action) => {
         case 'SET_USER_ID': 
             return {
                 ...state,
-                id_user: action.payload,
+                user_id: action.payload,
             };
         case 'RESET_FORM':
             return {
                 ...initialState,
-                id_user: state.id_user, 
+                user_id: state.user_id, 
             };
         default:
             return state;
