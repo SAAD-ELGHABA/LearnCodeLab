@@ -15,7 +15,8 @@ class Collection extends Model
         'description',
         'code',
         'language',
-        'user_id'
+        'user_id',
+        'slug',
     ];
     public function user()
     {

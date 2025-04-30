@@ -19,6 +19,7 @@ import Help from "../Layouts/userpages/Help";
 import VerifyEmail from "../pages/VerifyEmail";
 import ResendVerification from "../pages/ResendVerification";
 import Add from "../Layouts/userpages/Addcollection/Add";
+import DetailsCollection from "../Layouts/userpages/collection/DetailsCollection";
 
 const REGISTER = "/register";
 const LOGIN = "/login";
@@ -109,6 +110,10 @@ const Router = createBrowserRouter([
       {
         path: ADD,
         element: <Add />,
+      },
+      {
+        path: "/collection/details/:user/:slug",
+        element: <DetailsCollection />,
       },
     ],
   },

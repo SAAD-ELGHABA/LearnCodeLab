@@ -1,20 +1,21 @@
 import {
-    faAnglesDown,
-    faAnglesUp,
+  faAnglesDown,
+  faAnglesUp,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 // eslint-disable-next-line no-unused-vars
 function zIndex({ collection }) {
   return (
-    <div className="bg-gray-900 rounded-lg p-6 mb-6 border border-gray-600">
+    <div className="bg-gray-900 rounded-lg p-6 mb-6 border border-gray-700">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold mb-3">{collection.title}</h2>
-        <button className="flex space-x-2 text-sm items-center hover:text-blue-500 cursor-pointer">
+        <Link to={`/collection/details/${collection.user.firstName+"-"+collection.user.lastName}/${collection.slug}`} className="flex space-x-1 text-sm items-center hover:text-blue-500 cursor-pointer">
           <span>Figure Out</span>
-          <FontAwesomeIcon icon={faChevronRight} />
-        </button>
+          <FontAwesomeIcon icon={faChevronRight} className="text-xs"/>
+        </Link>
       </div>
       <p className="text-gray-300 mb-4">
         The question:
@@ -33,7 +34,7 @@ function zIndex({ collection }) {
               {collection.user.firstName} {collection.user.lastName}
             </span>
             <span className="bg-gray-600 px-2 py-1 rounded">
-                {collection.language}
+              {collection.language}
             </span>
           </div>
           <div className="flex gap-4 items-center">

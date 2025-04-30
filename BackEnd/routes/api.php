@@ -48,6 +48,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('collections', [CollectionController::class, 'store']);
     Route::get('collections/{id}', [CollectionController::class, 'show']);
     Route::get('collections', [CollectionController::class, 'index']);
+    Route::post('feedback',[CollectionController::class,'handleFeedback']);
+    Route::get('/feedbacks-collection/{idCollection}',[CollectionController::class,'loadFeedbacks']);
 });
-// Route::post('collections', [CollectionController::class, 'store']);
-// Route::get('collections/{id}', [CollectionController::class, 'show']);

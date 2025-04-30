@@ -13,7 +13,7 @@ function App() {
   const [process, setProcess] = useState(false);
   useEffect(() => {
     if (!token) {
-      dispatch(login(null, {})); 
+      dispatch(login(null, {}));
       setProcess(true);
       return
     }

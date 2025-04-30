@@ -55,7 +55,7 @@ export default function HomePage() {
           className=" text-white rounded-lg text-center mt-20"
         >
           <section className="mt-16 px-6">
-            <fieldset className="border-1 border-blue-400 p-6 rounded">
+            <fieldset className="border-1 border-[#93c4fd60] p-6 rounded">
               <legend className="text-3xl font-bold text-center px-4">
                 Why Learn Code Lab?
               </legend>

@@ -160,6 +160,26 @@ export const collectionReducer = (state = initialState, action) => {
     }
 };
 
+const collections = []
+
+export const collectionsReducer = (state = collections, action) => {
+    switch (action.type) {
+        case "GET_ALL_COLLECTIONS":
+            return action.payload
+        default:
+            return state;
+    }
+}
+
+const Feedbacks = []
+export const feedbackReducer = (state=Feedbacks,action)=>{
+    switch(action.type){
+        case "GET_FEEDBACK_COLLECTION":
+            return action.payload;
+        default :
+            return state;
+    }
+}
 
 const messages = [
     
