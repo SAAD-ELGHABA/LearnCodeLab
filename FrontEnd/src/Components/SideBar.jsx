@@ -19,7 +19,7 @@ import { useState } from "react";
 import ConfirmAlert from "../Components/ConfirmAlert.jsx";
 
 // eslint-disable-next-line react/prop-types
-function SideBar({ isOpen, setIsOpen }) {
+function SideBar({ isOpen, setIsOpen ,formateur=false}) {
   const user = useSelector((state) => state.userReducer.user);
   const location = useLocation();
   const nav = useNavigate();
@@ -58,12 +58,12 @@ function SideBar({ isOpen, setIsOpen }) {
 
   const links = [
     { to: "/user", icon: <Home className="h-4 w-4" />, label: "Home" },
-    { to: "/settings", icon: <Settings className="h-4 w-4" />, label: "Settings" },
     { to: "/saves", icon: <Bookmark className="h-4 w-4" />, label: "My saves" },
-    { to: "/groups", icon: <Users className="h-4 w-4" />, label: "My Groups" },
-    { to: "/languages", icon: <Code className="h-4 w-4" />, label: "Languages" },
+    { to: formateur ? "/formateur-groups":"/groups", icon: <Users className="h-4 w-4" />, label: `${formateur ? "Groups":"My Groups"}` },
+    !formateur && { to: "/languages", icon: <Code className="h-4 w-4" />, label: "Languages" },
     { to: "/resources", icon: <Folder className="h-4 w-4" />, label: "Resources" },
-    { to: "/help", icon: <HelpCircle className="h-4 w-4" />, label: "Help/Support" },
+    { to: "/settings", icon: <Settings className="h-4 w-4" />, label: "Settings" },
+    !formateur && { to: "/help", icon: <HelpCircle className="h-4 w-4" />, label: "Help/Support" },
   ];
 
   return (
@@ -97,6 +97,7 @@ function SideBar({ isOpen, setIsOpen }) {
 
         <ul className="mt-5 text-sm">
           {links.map((link) => (
+            link &&
             <Link
               key={link.to}
               to={link.to}
