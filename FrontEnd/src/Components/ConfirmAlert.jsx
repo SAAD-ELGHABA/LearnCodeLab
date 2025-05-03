@@ -1,4 +1,3 @@
-
 import spinner from "../Assets/spinner.gif";
 // eslint-disable-next-line react/prop-types
 function ConfirmAlert({ message, onConfirm, onCancel ,isLogout}) {

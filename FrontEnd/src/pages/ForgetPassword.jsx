@@ -80,7 +80,7 @@ const ForgetPassword = () => {
         className="fixed top-5 left-5 text-white hover:text-blue-400 cursor-pointer"
       >
         <FontAwesomeIcon icon={faChevronLeft} className="me-2" />
-        get back
+        Get back
       </Link>
       <div
         className="bg-gray-800 text-white p-12 rounded-sm shadow-lg w-1/3 "

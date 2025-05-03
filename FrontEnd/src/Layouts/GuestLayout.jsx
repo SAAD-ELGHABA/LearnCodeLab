@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 import { useSelector } from "react-redux";
 
 export default function GuestLayout() {
@@ -21,6 +22,7 @@ export default function GuestLayout() {
           {!hideNavBarInPages.includes(location.pathname) && <Navbar />}
           {/* <ParticlesBackground /> */}
           <Outlet />
+          {!hideNavBarInPages.includes(location.pathname) && <Footer />}
         </div>
       )}
     </div>
