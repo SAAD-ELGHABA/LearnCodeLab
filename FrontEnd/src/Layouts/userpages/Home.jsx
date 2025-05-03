@@ -5,11 +5,13 @@ import axios from "axios";
 import { toast } from "sonner";
 import spinner from "../../Assets/spinner.gif";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { saves } from "../../functions/getMySaves";
 function Home() {
   const token = useSelector((state) => state.userReducer.token);
   const [loadingCollections, setLoadingCollections] = useState(false);
   const [collections, setCollections] = useState([]);
+  const dispatch = useDispatch();
   useEffect(() => {
     setLoadingCollections(true);
     const getCollections = async () => {
@@ -20,20 +22,28 @@ function Home() {
           },
         });
         setCollections(response.data.collections);
+        dispatch({
+          type: "GET_ALL_COLLECTIONS",
+          payload: response.data.collections,
+        });
       } catch (error) {
         toast.error(error.response.data.message);
         console.log(error);
-      }finally{
-        setLoadingCollections(false)
+      } finally {
+        setLoadingCollections(false);
       }
     };
+    const fetchSaves = async () => {
+      await saves(dispatch);
+    };
+    fetchSaves();
     getCollections();
   }, []);
   return (
     <div className="bg-gray-800 min-h-screen p-6 text-gray-100">
       {/* Header Section */}
       <div className="mb-8 text-sm">
-        <h1 className="text-2xl font-bold mb-2">Recently Active Questions</h1>
+        <h1 className="text-2xl font-bold mb-2">Recently Active Collections</h1>
         <p className="text-gray-400 mb-4">503 collection with 1202 code</p>
 
         <div className="flex gap-4 mb-6">
@@ -82,7 +92,10 @@ function Home() {
           <img src={spinner} alt="Loading..." className="w-8  mx-auto" />
         </div>
       ) : (
-        collections && collections.map((collection) => <Index key={collection.id} collection={collection}/>)
+        collections &&
+        collections.map((collection) => (
+          <Index key={collection.id} collection={collection} />
+        ))
         // <Index />
       )}
     </div>

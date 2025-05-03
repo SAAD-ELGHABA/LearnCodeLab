@@ -1,16 +1,13 @@
 import {
-  faArrowRightFromBracket,
-  faBars,
-  faBarsStaggered,
-  faBookmark,
-  faCircleQuestion,
-  faCode,
-  faFolderOpen,
-  faGears,
-  faHouse,
-  faUserGroup,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+  Home,
+  Settings,
+  Bookmark,
+  Users,
+  Code,
+  Folder,
+  HelpCircle,
+  LogOut,
+} from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "sonner";
@@ -20,8 +17,9 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../redux/action.js";
 import { useState } from "react";
 import ConfirmAlert from "../Components/ConfirmAlert.jsx";
+
 // eslint-disable-next-line react/prop-types
-function SideBar({ isOpen, setIsOpen }) {
+function SideBar({ isOpen, setIsOpen ,formateur=false}) {
   const user = useSelector((state) => state.userReducer.user);
   const location = useLocation();
   const nav = useNavigate();
@@ -29,6 +27,7 @@ function SideBar({ isOpen, setIsOpen }) {
   const dispatch = useDispatch();
 
   const [isLogOut, setIsLogout] = useState(false);
+
   const handleLogOut = async () => {
     setIsLogout("loading");
     try {
@@ -56,14 +55,15 @@ function SideBar({ isOpen, setIsOpen }) {
       }, 2000);
     }
   };
+
   const links = [
-    { to: "/user", icon: faHouse, label: "Home" },
-    { to: "/settings", icon: faGears, label: "Settings" },
-    { to: "/saves", icon: faBookmark, label: "My saves" },
-    { to: "/groups", icon: faUserGroup, label: "My Groups" },
-    { to: "/languages", icon: faCode, label: "Languages" },
-    { to: "/resources", icon: faFolderOpen, label: "Resources" },
-    { to: "/help", icon: faCircleQuestion, label: "Help/Support" },
+    { to: "/user", icon: <Home className="h-4 w-4" />, label: "Home" },
+    { to: "/saves", icon: <Bookmark className="h-4 w-4" />, label: "My saves" },
+    { to: formateur ? "/formateur-groups":"/groups", icon: <Users className="h-4 w-4" />, label: `${formateur ? "Groups":"My Groups"}` },
+    !formateur && { to: "/languages", icon: <Code className="h-4 w-4" />, label: "Languages" },
+    { to: "/resources", icon: <Folder className="h-4 w-4" />, label: "Resources" },
+    { to: "/settings", icon: <Settings className="h-4 w-4" />, label: "Settings" },
+    !formateur && { to: "/help", icon: <HelpCircle className="h-4 w-4" />, label: "Help/Support" },
   ];
 
   return (
@@ -79,21 +79,25 @@ function SideBar({ isOpen, setIsOpen }) {
             </h1>
           )}
           {isOpen ? (
-            <FontAwesomeIcon
-              icon={faBarsStaggered}
+            <span
               className="cursor-pointer text-xl ml-auto"
               onClick={() => setIsOpen(false)}
-            />
+            >
+              &times;
+            </span>
           ) : (
-            <FontAwesomeIcon
-              icon={faBars}
+            <span
               className="cursor-pointer text-xl ml-auto"
               onClick={() => setIsOpen(true)}
-            />
+            >
+              &#9776;
+            </span>
           )}
         </div>
+
         <ul className="mt-5 text-sm">
           {links.map((link) => (
+            link &&
             <Link
               key={link.to}
               to={link.to}
@@ -103,8 +107,8 @@ function SideBar({ isOpen, setIsOpen }) {
                   : "hover:bg-[#21252B]"
               }`}
             >
-              <FontAwesomeIcon icon={link.icon} />
-              {isOpen && <span>{link.label}</span>}
+              {link.icon}
+              {isOpen && <span className="text-white">{link.label}</span>}
             </Link>
           ))}
         </ul>
@@ -118,11 +122,12 @@ function SideBar({ isOpen, setIsOpen }) {
             }}
             className="space-x-2 hover:bg-gray-800 hover:text-blue-400 py-3 ps-8 cursor-pointer flex items-center"
           >
-            <FontAwesomeIcon icon={faArrowRightFromBracket} />
-            {isOpen && <span>Logout</span>}
+            <LogOut className="h-4 w-4" />
+            {isOpen && <span className="text-white">Logout</span>}
           </li>
         </ul>
       </div>
+
       {isLogOut && (
         <ConfirmAlert
           message={"Are You Sure .. you wanna log out !!"}

@@ -5,9 +5,11 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { BadgeCheck } from "lucide-react";
 
 
-function NavBar() {
+// eslint-disable-next-line react/prop-types
+function NavBar({formateur=false}) {
 
   return (
     <header className=" bg-[#21252B] py-4 border-t-1 border-blue-400 text-white sticky top-0 shadow shadow-gray-800 " style={{zIndex:'999'}}>
@@ -59,10 +61,17 @@ function NavBar() {
             icon={faQuestion}
             className="hover:bg-gray-700 p-3 rounded-full cursor-pointer"
           />
+          <div className="relative">
           <FontAwesomeIcon
             icon={faUser}
-            className="hover:bg-gray-700 p-3 rounded-full cursor-pointer"
+            className="hover:bg-gray-700 p-3 rounded-full cursor-pointer "
           />
+          {
+            formateur && 
+          <BadgeCheck className="absolute top-0 right-0 w-4 h-4 text-blue-500"/>
+          }
+
+          </div>
         </div>
       </nav>
 

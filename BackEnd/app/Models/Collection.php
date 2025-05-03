@@ -15,10 +15,15 @@ class Collection extends Model
         'description',
         'code',
         'language',
-        'user_id'
+        'user_id',
+        'slug',
     ];
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class);
     }
 }

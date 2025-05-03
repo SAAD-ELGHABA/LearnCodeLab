@@ -3,7 +3,7 @@ import spinner from "../Assets/spinner.gif";
 function ConfirmAlert({ message, onConfirm, onCancel ,isLogout}) {
   
   return (
-    <div className={`fixed inset-0 flex items-center justify-center ${isLogout==='loading'?"bg-[#163050de]":"bg-[#163050b9]"} `} style={{zIndex:'9000'}}>
+    <div className={`fixed inset-0 flex items-center justify-center ${isLogout==='loading'?"bg-[#163050de]":"bg-[#163050b9]"} `} style={{zIndex:'999999'}}>
       {
         isLogout === 'loading'?
         <img src={spinner} alt="Loading ..." />

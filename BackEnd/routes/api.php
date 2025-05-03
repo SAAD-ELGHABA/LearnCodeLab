@@ -10,7 +10,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CollectionController;
-
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\SaveController;
+use App\Models\GroupStagiaire;
+use App\Models\Group;
+use App\Models\Save;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -48,6 +52,42 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('collections', [CollectionController::class, 'store']);
     Route::get('collections/{id}', [CollectionController::class, 'show']);
     Route::get('collections', [CollectionController::class, 'index']);
+    Route::post('feedback', [CollectionController::class, 'handleFeedback']);
+    Route::get('/feedbacks-collection/{idCollection}', [CollectionController::class, 'loadFeedbacks']);
+    Route::post('/add-save', [SaveController::class, 'add'])->name('add-saves');
+    Route::get('/mySaves',[SaveController::class,'index'])->name('mySaves');
+    Route::get('/');
 });
-// Route::post('collections', [CollectionController::class, 'store']);
-// Route::get('collections/{id}', [CollectionController::class, 'show']);
+
+
+Route::get('/groups-stagiaire', function () {
+    $GroupsStagiaire = GroupStagiaire::all();
+    return response()->json([
+        'GroupsStagiaire' => $GroupsStagiaire,
+    ]);
+});
+
+Route::post('/create-group', [GroupController::class, 'store']);
+
+Route::get('/get-group/{id}', function ($id) {
+    $user = User::find($id);
+    // $groups = [];
+    if ($user->role === 'stagiaire') {
+        $groupId = $user->group;
+        $groups = Group::all();
+        $filteredGroups = $groups->filter(function ($group) use ($groupId) {
+            $selectedGroups = json_decode($group->selectedGroups, true);
+            return $group->forAllGroups || in_array($groupId, $selectedGroups);
+        })->values();
+        return response()->json([
+            'groups' => $filteredGroups
+        ]);
+    } elseif ($user->role === 'formateur') {
+        $groups = Group::where('formateurId', $user->id)->get();
+    }
+    return response()->json([
+        'groups' => $groups
+    ], 201);
+});
+
+Route::middleware(['formateur'])->group(function () {});

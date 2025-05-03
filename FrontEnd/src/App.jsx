@@ -7,13 +7,15 @@ import axios from "axios";
 import { login } from "./redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import spinner from "./Assets/spinner.gif";
+import { groupstagiaire } from "./functions/groupstagiaire";
 function App() {
   const token = useSelector((state) => state.userReducer.token);
   const dispatch = useDispatch();
   const [process, setProcess] = useState(false);
   useEffect(() => {
     if (!token) {
-      dispatch(login(null, {})); 
+      dispatch(login(null, {}));
+      groupstagiaire(dispatch);
       setProcess(true);
       return
     }
