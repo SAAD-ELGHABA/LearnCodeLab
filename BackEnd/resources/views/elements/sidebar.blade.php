@@ -17,6 +17,7 @@
     ['route' => 'admin.index', 'icon' => 'fa-house', 'label' => 'Home'],
     ['route' => 'admin.index', 'icon' => 'fa-gears', 'label' => 'Settings'],
     ['route' => 'stagiaires.index', 'icon' => 'fa-graduation-cap', 'label' => 'Stagiaires'],
+    ['route' => 'stagiaires.index', 'icon' => 'fa-solid fa-chalkboard-user', 'label' => 'Formateurs'],
     ['route' => 'admin.index', 'icon' => 'fa-user-group', 'label' => 'My Groups'],
     ['route' => 'admin.index', 'icon' => 'fa-code', 'label' => 'Languages'],
     ['route' => 'resources.index', 'icon' => 'fa-folder-open', 'label' => 'Resources'],
