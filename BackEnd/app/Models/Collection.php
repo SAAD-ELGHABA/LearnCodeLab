@@ -22,4 +22,8 @@ class Collection extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class);
+    }
 }

@@ -127,8 +127,12 @@ const Router = createBrowserRouter([
       {
         path: "/formateur",
         index: true,
-        element: <FormateurLayout />,
+        element: <Home />,
       },
+      {
+        path:"/formateur-groups",
+        element: <Groups formateur={true}/>,
+      }
     ],
   },
   {

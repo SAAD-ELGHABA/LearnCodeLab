@@ -90,9 +90,9 @@ function DetailsCollection() {
                     )}
                   </span>
                 </span>
-                <span className="flex items-center gap-1 text-xs">
+                {/* <span className="flex items-center gap-1 text-xs">
                   Membres: 39 <UsersRound className="h-4" />
-                </span>
+                </span> */}
                 <span className="flex items-center gap-1 text-xs">
                   Rate:
                   <Star className="h-4" />
@@ -102,8 +102,8 @@ function DetailsCollection() {
                   <Star className="h-4" />
                 </span>
                 <div className="flex items-center gap-1 text-xs justify-between">
-                  <span>Feedback: 5</span>
-                  <span className="flex items-center gap-1">
+                  <span>Feedback: <span className="font-semibold mx-2">{ChoosedCollection.feedback.length}</span></span>
+                  <span className="flex items-center gap-1 bg-gray-800 px-4 py-2 rounded text-blue-500">
                     <span>{ChoosedCollection.language}</span>
                     <CircleCheck className="h-4" />
                   </span>

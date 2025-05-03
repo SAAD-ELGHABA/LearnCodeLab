@@ -59,7 +59,7 @@ function FeedbackInterface({ language, typeFeedbackChecked, collection }) {
               <div key={index} className="my-4">
                 <div
                   onClick={() => toggleAccordion(index)}
-                  className="flex justify-between items-center bg-gray-800 p-4 rounded-lg text-gray-300 cursor-pointer select-none"
+                  className="flex justify-between items-center bg-[#27304257] p-4 rounded-lg text-gray-300 cursor-pointer select-none"
                 >
                   <div >
                     <div className="flex space-x-2 items-center">
@@ -117,7 +117,7 @@ function FeedbackInterface({ language, typeFeedbackChecked, collection }) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.4 }}
-                className="bg-gray-800 text-white p-3 rounded-2xl rounded-bl-none my-2 w-full min-w-[80%] self-start shadow-md flex flex-col"
+                className="bg-[#27304257] text-white p-3 rounded-2xl rounded-bl-none my-2 w-full min-w-[80%] self-start shadow-md flex flex-col"
               >
                 <div>
                   <div className="flex flex-col space-y-2">

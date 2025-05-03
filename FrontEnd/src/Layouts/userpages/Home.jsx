@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import spinner from "../../Assets/spinner.gif";
 
 import { useDispatch, useSelector } from "react-redux";
+import { saves } from "../../functions/getMySaves";
 function Home() {
   const token = useSelector((state) => state.userReducer.token);
   const [loadingCollections, setLoadingCollections] = useState(false);
@@ -22,16 +23,20 @@ function Home() {
         });
         setCollections(response.data.collections);
         dispatch({
-          type:"GET_ALL_COLLECTIONS",
+          type: "GET_ALL_COLLECTIONS",
           payload: response.data.collections,
-        })
+        });
       } catch (error) {
         toast.error(error.response.data.message);
         console.log(error);
-      }finally{
-        setLoadingCollections(false)
+      } finally {
+        setLoadingCollections(false);
       }
     };
+    const fetchSaves = async () => {
+      await saves(dispatch);
+    };
+    fetchSaves();
     getCollections();
   }, []);
   return (
@@ -87,7 +92,10 @@ function Home() {
           <img src={spinner} alt="Loading..." className="w-8  mx-auto" />
         </div>
       ) : (
-        collections && collections.map((collection) => <Index key={collection.id} collection={collection}/>)
+        collections &&
+        collections.map((collection) => (
+          <Index key={collection.id} collection={collection} />
+        ))
         // <Index />
       )}
     </div>

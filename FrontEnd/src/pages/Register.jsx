@@ -5,8 +5,10 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import Background from "./animation/Background";
+import { useSelector } from "react-redux";
 
 export default function Register() {
+  const groupsStagiaireReducer = useSelector((state) => state.groupsStagiaireReducer);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -48,6 +50,7 @@ export default function Register() {
   // Handle form submission
   const sendData = async (e) => {
     e.preventDefault();
+    console.log(formData)
     if (!validate()) return; // Stop if validation fails
 
     setLoading(true);
@@ -140,14 +143,21 @@ export default function Register() {
           </div>
 
           <div>
-            <input
-              type="text"
-              name="group"
-              placeholder="Group"
-              value={formData.group}
+            <select 
+              id=""
+              className="w-full p-2 mb-1 rounded bg-gray-700 border border-gray-500 text-white focus:outline-none"
               onChange={handleChange}
-              className="w-full p-2 mb-1 rounded bg-gray-700 text-white focus:outline-none"
-            />
+              name="group"
+            >
+              <option value="">select your group</option>
+              { 
+                groupsStagiaireReducer.map((grpstg)=>
+                  <option key={grpstg.id} value={String(grpstg.id)} className="text-white">
+                    {grpstg.name}
+                  </option>
+                )
+              }
+            </select>
             {errors.group && <p className="text-red-500 text-sm">{errors.group}</p>}
           </div>
 

@@ -17,7 +17,7 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        $collections = Collection::with('user')->get()->map(function ($collection) {
+        $collections = Collection::with(['feedback','user'])->get()->map(function ($collection) {
             $collection->code = base64_decode($collection->code);
             return $collection;
         });

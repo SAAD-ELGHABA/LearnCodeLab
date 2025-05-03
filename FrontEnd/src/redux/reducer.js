@@ -195,3 +195,35 @@ export const ChatAiReducer = (state=messages,action)=>{
             return messages;
     }
 }
+
+
+const groupsStagiaire = [];
+
+export const groupsStagiaireReducer = (state=groupsStagiaire,action)=>{
+    switch(action.type){
+        case "GET_GROUPS_STAGIAIRE":
+            return action.payload;
+        default :
+            return state;
+    }
+}
+
+const Groups = []
+export const groupReducer = (state=Groups,action)=>{
+    switch(action.type){
+        case "GET_GROUPS":
+            return action.payload;
+        default :
+            return state;
+    }
+}
+
+const saves = [];
+export const savesReducer = (state=saves,action)=>{
+    switch(action.type){
+        case "GET_MY_SAVES":
+            return action.payload;
+        default:
+            return state;
+    }
+}
