@@ -1,36 +1,38 @@
 import { Link } from "react-router-dom";
+import LCL from '../Assets/LCL.png';
 export default function Navbar() {
   return (
-    <header className="bg-gray-900 sticky top-0 shadow-sm shadow-gray-800 text-white py-5  z-50">
+    <header className="bg-gray-900 sticky top-0 shadow-sm shadow-gray-800 text-white py-1  z-50">
       <nav className="container mx-auto flex items-center justify-around">
-        <div className="text-xl font-bold flex justify-end">
-          <span className="text-blue-400">Learn</span>CodeLab
-        </div>
+        <Link to='/'>
+        <img className="h-23 w-23 text-xl font-bold flex justify-end" src={LCL}/>
+          
+        </Link>
         <ul className="hidden md:flex space-x-6 text-sm">
           <li>
-            <a href="#" className="hover:text-blue-400">
+            <Link to="/" className="hover:text-blue-400">
               Home
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="hover:text-blue-400">
-              Blog
-            </a>
+            <Link to="/About" className="hover:text-blue-400">
+            About
+            </Link>
           </li>
           <li>
-            <a href="#" className="hover:text-blue-400">
-              Contact Us
-            </a>
+            <Link to="/Blog" className="hover:text-blue-400">
+            Blog
+            </Link>
           </li>
           <li>
-            <a href="#" className="hover:text-blue-400">
-              About
-            </a>
+            <Link to="/ContactUs" className="hover:text-blue-400">
+            Contact Us
+            </Link>
           </li>
           <li>
-            <a href="#" className="hover:text-blue-400">
+            <Link to="/block" className="hover:text-blue-400">
               Learn
-            </a>
+            </Link>
           </li>
         </ul>
         <div className="space-x-4 text-sm">
