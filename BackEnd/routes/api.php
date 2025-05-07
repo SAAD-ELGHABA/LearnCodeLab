@@ -56,7 +56,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/feedbacks-collection/{idCollection}', [CollectionController::class, 'loadFeedbacks']);
     Route::post('/add-save', [SaveController::class, 'add'])->name('add-saves');
     Route::get('/mySaves',[SaveController::class,'index'])->name('mySaves');
-    Route::get('/');
+    Route::get('/'); // 
 });
 
 
