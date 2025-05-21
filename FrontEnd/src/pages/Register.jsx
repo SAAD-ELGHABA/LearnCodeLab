@@ -85,7 +85,7 @@ export default function Register() {
         <FontAwesomeIcon icon={faChevronLeft} className="me-2" /> Get back
       </Link>
 
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-1/3" style={{ zIndex: "999" }}>
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg md:w-1/3" style={{ zIndex: "999" }}>
         <h2 className="text-white text-xl font-semibold text-center mb-4">
           Sign up for Learn Code Lab
         </h2>

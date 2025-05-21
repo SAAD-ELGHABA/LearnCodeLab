@@ -98,7 +98,7 @@ const LoginModal = () => {
         Get back
       </Link>
       <div
-        className="bg-gray-800 text-white p-12 rounded-sm shadow-lg w-1/3 "
+        className="bg-gray-800 text-white p-12 rounded-sm shadow-lg  md:w-1/3"
         style={{ zIndex: "99" }}
       >
         <h1 className="text-xl font-bold my-2">Login for Learn Code Lab</h1>

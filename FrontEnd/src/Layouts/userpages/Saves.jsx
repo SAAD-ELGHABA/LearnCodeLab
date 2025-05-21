@@ -11,11 +11,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { saves } from "../../functions/getMySaves";
 import { AddSave } from "../../functions/AddSave";
 import { Link } from "react-router-dom";
+import { themes } from "../../lib/themes.js";
 function Saves() {
   const Mysaves = useSelector((state) => state.savesReducer);
   const collectionsReducer = useSelector((state) => state.collectionsReducer);
   const MysavesColections = collectionsReducer.filter((clt) =>
     Mysaves.some((sv) => clt.id === sv.collection_id)
+  );
+  const choosedTheme = useSelector(
+    (state) => state.themeReducer
   );
   const dispatch = useDispatch();
   useEffect(() => {
@@ -55,10 +59,19 @@ function Saves() {
           {MysavesColections.map((save) => (
             <div
               key={save.id}
-              className="bg-[#273042] shadow-md p-4 rounded-lg flex flex-col justify-between h-64"
+              className="shadow-md p-4 rounded-lg flex flex-col justify-between h-64"
+              style={{
+                backgroundColor: themes.find(
+                  (theme) => theme.name === choosedTheme
+                ).colors[1],
+                color: themes.find((theme) => theme.name === choosedTheme)
+                  .textColor,
+                border: themes.find((theme) => theme.name === choosedTheme)
+                  .colors[2],
+              }}
             >
               <div>
-                <h3 className="text-lg font-semibold text-white mb-2 truncate">
+                <h3 className="text-lg font-semibold mb-2 truncate">
                   {save.title.length > 80
                     ? save.title.substring(0, 80) + "..."
                     : save.title}
@@ -77,9 +90,16 @@ function Saves() {
               <div className="flex items-center justify-between text-sm space-x-2 mt-4">
                 <button
                   onClick={() => handleSave(save)}
-                  className={`text-blue-400  self-start bg-gray-800 px-4 py-2 rounded  ${
+                  className={`  self-start px-4 py-2 rounded  ${
                     !isLoading && "cursor-pointer"
                   }`}
+                  style={{
+                    backgroundColor: themes.find(
+                      (theme) => theme.name === choosedTheme
+                    ).colors[2],
+                    color: themes.find((theme) => theme.name === choosedTheme)
+                      .textColor,
+                  }}
                   title="Unsave this collection"
                 >
                   {isLoading && selectedclctId === save.id ? (

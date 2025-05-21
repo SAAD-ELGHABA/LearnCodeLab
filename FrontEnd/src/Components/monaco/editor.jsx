@@ -115,7 +115,7 @@ function EditorComponent() {
           }`}
         >
           {isloading && (
-            <div className="absolute top-0 left-0 right-0 bg-gray-800 opacity-75 text-white p-2 rounded-t h-[65vh] flex justify-center items-center">
+            <div className="absolute top-0 left-0 right-0  text-white p-2 rounded-t h-[65vh] flex justify-center items-center">
               <img
                 src={spinner}
                 alt="Loading..."
