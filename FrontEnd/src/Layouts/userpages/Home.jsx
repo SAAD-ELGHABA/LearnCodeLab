@@ -40,11 +40,10 @@ function Home() {
     getCollections();
   }, []);
   return (
-    <div className="bg-gray-800 min-h-screen p-6 text-gray-100">
-      {/* Header Section */}
+    <div className=" min-h-screen p-6 ">
       <div className="mb-8 text-sm">
         <h1 className="text-2xl font-bold mb-2">Recently Active Collections</h1>
-        <p className="text-gray-400 mb-4">503 collection with 1202 code</p>
+        <p className=" mb-4">503 collection with 1202 code</p>
 
         <div className="flex gap-4 mb-6">
           <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center gap-2 transition-colors">

@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
         
         {/* Left side */}
-        <div>
+        <div className="flex flex-col items-center  lg:items-start ">
           <Link to='/'>
           <img className="text-2xl font-bold text-white mb-4" src={LCL}/>
           
@@ -34,7 +34,7 @@ export default function Footer() {
         </div>
 
         {/* Center */}
-<div className="flex flex-col">
+<div className="flex flex-col items-center  lg:items-start">
   <h3 className="text-white font-semibold mb-4">Quick Links</h3>
   
   {/* Ligne 1 */}
