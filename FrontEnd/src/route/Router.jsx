@@ -3,6 +3,11 @@ import Register from "./../pages/Register";
 import GuestLayout from "../Layouts/GuestLayout";
 import Login from "../pages/Login";
 import HomePage from "../pages/Home";
+import ContactUs from "../pages/ContactUs";
+import About from "../pages/About";
+import Blog from "../pages/Blog";
+import ThankYou from "../pages/ThankYou";
+import BlockedPage from "../pages/Block";
 import StagiaireLayout from "../Layouts/StagiaireLayout";
 import VerifyAcceessRoutes from "./VerifyRoutes/VerifyAcceessRoutes";
 import ForgetPassword from "../pages/ForgetPassword";
@@ -60,6 +65,26 @@ const Router = createBrowserRouter([
       {
         path: RESET_PASSWORD,
         element: <ResetPassword />,
+      },
+      {
+        path: "/ContactUs",
+        element: <ContactUs />,
+      },
+      {
+        path: "/About",
+        element: <About />,
+      },
+      {
+        path: "/Blog",
+        element: <Blog />,
+      },
+      {
+        path: "/thank-you",
+        element: <ThankYou />,
+      },
+      {
+        path: "/block",
+        element: <BlockedPage />,
       },
     ],
   },
@@ -130,9 +155,21 @@ const Router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path:"/formateur-groups",
-        element: <Groups formateur={true}/>,
-      }
+        path: "/formateur-groups",
+        element: <Groups formateur={true} />,
+      },
+      {
+        path: "/settings-formateur",
+        element: <Settings />,
+      },
+      {
+        path: "/saves-formateur",
+        element: <Saves />,
+      },
+      {
+        path: "/resources-formateur",
+        element: <Resources />,
+      },
     ],
   },
   {

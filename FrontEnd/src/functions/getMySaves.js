@@ -7,10 +7,10 @@ export const saves = async (dispatch) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      if (response) {
+      if (response.status>=200 && response.status<=300) {
         dispatch({
           type: "GET_MY_SAVES",
-          payload: response.data.mysaves,
+          payload: response.data.mySaves,
         });
       }
     } catch (error) {

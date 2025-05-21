@@ -17,10 +17,26 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        $collections = Collection::with(['feedback','user'])->get()->map(function ($collection) {
+        $collections = Collection::with(['feedback', 'user', 'rates'])->get()->map(function ($collection) {
             $collection->code = base64_decode($collection->code);
             return $collection;
         });
+
+        $collections->transform(function ($collection) {
+            $collection->upvotes = $collection->rates->where('type', 'up')->count();
+            $collection->downvotes = $collection->rates->where('type', 'down')->count();
+            return $collection;
+        });
+
+        $collections = $collections->sortByDesc(function ($collection) {
+            return [
+                $collection->rates->count(),
+                $collection->upvotes,
+                strtotime($collection->created_at),
+                -$collection->downvotes
+            ];
+        })->values();
+
         return response()->json([
             'collections' => $collections
         ]);

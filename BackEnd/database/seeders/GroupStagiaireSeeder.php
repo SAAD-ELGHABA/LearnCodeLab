@@ -12,9 +12,19 @@ class GroupStagiaireSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 10; $i <= 10; $i++) {
+        // Seed from dev101 to dev110
+        for ($i = 101; $i <= 110; $i++) {
             DB::table('groupstagiaire')->insert([
-                'name' => 'dev2' . $i,
+                'name' => 'dev' . $i,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // Seed from dev201 to dev210
+        for ($i = 201; $i <= 210; $i++) {
+            DB::table('groupstagiaire')->insert([
+                'name' => 'dev' . $i,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

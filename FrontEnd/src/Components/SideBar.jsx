@@ -57,17 +57,17 @@ function SideBar({ isOpen, setIsOpen ,formateur=false}) {
   };
 
   const links = [
-    { to: "/user", icon: <Home className="h-4 w-4" />, label: "Home" },
-    { to: "/saves", icon: <Bookmark className="h-4 w-4" />, label: "My saves" },
+    { to: formateur ? "/formateur":"/user", icon: <Home className="h-4 w-4" />, label: "Home" },
+    { to: formateur ? "/saves-formateur":"/saves", icon: <Bookmark className="h-4 w-4" />, label: "My saves" },
     { to: formateur ? "/formateur-groups":"/groups", icon: <Users className="h-4 w-4" />, label: `${formateur ? "Groups":"My Groups"}` },
     !formateur && { to: "/languages", icon: <Code className="h-4 w-4" />, label: "Languages" },
-    { to: "/resources", icon: <Folder className="h-4 w-4" />, label: "Resources" },
-    { to: "/settings", icon: <Settings className="h-4 w-4" />, label: "Settings" },
+    { to: formateur ? "/resources-formateur":"/resources", icon: <Folder className="h-4 w-4" />, label: "Resources" },
+    { to: formateur ? "/settings-formateur":"/settings", icon: <Settings className="h-4 w-4" />, label: "Settings" },
     !formateur && { to: "/help", icon: <HelpCircle className="h-4 w-4" />, label: "Help/Support" },
   ];
 
   return (
-    <div className="overflow-hidden h-full flex flex-col">
+    <div className="overflow-hidden h-full flex flex-col ">
       <div className="flex-grow">
         <div className="text-center mt-3 flex items-center px-4">
           {isOpen && (

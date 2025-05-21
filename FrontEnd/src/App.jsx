@@ -8,16 +8,21 @@ import { login } from "./redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import spinner from "./Assets/spinner.gif";
 import { groupstagiaire } from "./functions/groupstagiaire";
+import { fetchLanguages } from "./functions/getLanguages";
 function App() {
   const token = useSelector((state) => state.userReducer.token);
   const dispatch = useDispatch();
   const [process, setProcess] = useState(false);
   useEffect(() => {
+    const lang = async () => await fetchLanguages(dispatch);
+    lang();
     if (!token) {
       dispatch(login(null, {}));
       groupstagiaire(dispatch);
       setProcess(true);
-      return
+      return;
+    } else {
+      groupstagiaire(dispatch);
     }
     try {
       const fetchUserData = async () => {
@@ -30,7 +35,7 @@ function App() {
         });
         if (response) {
           dispatch(login(token, response.data));
-        } 
+        }
       };
       fetchUserData();
     } catch (error) {

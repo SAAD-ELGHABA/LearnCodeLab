@@ -5,7 +5,7 @@
 <div class="flex flex-col space-y-6 w-full justify-center">
     <div id="drop-zone" class="border border-slate-500 rounded w-full m-2 h-40 flex flex-col justify-center items-center space-y-2 relative overflow-hidden hover:bg-[#163050]">
         <i class="fa-regular fa-file text-3xl text-blue-400"></i>
-        <h1 class="text-2xl">Drag files here to open them</h1>
+        <h1 class="text-2xl">Drag file here to open</h1>
         <h3 class="text-sm">
             or
             <span id="file-select" class="text-blue-400 cursor-pointer">choose a file from here</span>

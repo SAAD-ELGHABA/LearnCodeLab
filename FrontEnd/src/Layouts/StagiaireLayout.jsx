@@ -7,32 +7,34 @@ import Chat_bot from "../Components/Chat_bot";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 import { toast } from "sonner";
+import { getCollections } from "../functions/getCollections";
+import { saves } from "../functions/getMySaves";
 function StagiaireLayout() {
   const [isOpen, setIsOpen] = useState(true);
   const [ishovering, setIshovering] = useState(false);
   const [ChatToggle, setChatToggle] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
-    const getCollections = async () => {
+    const CollectionsPromise = async () => {
       try {
-        const response = await axios.get("/api/collections", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        dispatch({
-          type: "GET_ALL_COLLECTIONS",
-          payload: response.data.collections,
-        });
+        // eslint-disable-next-line no-unused-vars
+        const response = await getCollections(dispatch);
       } catch (error) {
-        toast.error(error.response.data.message);
-        console.log(error);
+        toast.error(
+          error.response?.data?.message || "Error loading collections"
+        );
+        console.error(error);
       }
     };
-    getCollections();
-  }, []);
+
+    const fetchSaves = async () => {
+      await saves(dispatch);
+    };
+
+    fetchSaves();
+    CollectionsPromise();
+  }, [dispatch]);
   return (
     <div className="bg-[#273042]">
       <NavBar />
@@ -42,7 +44,7 @@ function StagiaireLayout() {
           initial={{ width: 250 }}
           animate={{ width: isOpen ? 250 : 70 }}
           transition={{ duration: 0.3 }}
-          className="sticky top-20 left-0 h-screen bg-[#273042] flex flex-col text-white shadow-lg"
+          className="sticky top-20  left-0 h-screen bg-[#273042] flex flex-col text-white shadow-lg"
         >
           <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
         </motion.aside>

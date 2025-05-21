@@ -27,10 +27,16 @@
 
     <ul class="mt-5 flex-1 text-sm ms-5">
         @foreach ($links as $link)
-        <a href="{{ route($link['route']) }}" class="py-3 ps-2 flex items-center space-x-4 cursor-pointer hover:bg-[#0E1C2D] transition-all duration-300">
+        @php
+        $isActive = request()->routeIs($link['route']);
+        @endphp
+        <a href="{{ route($link['route']) }}"
+            class="py-3 ps-2 flex items-center space-x-4 cursor-pointer hover:bg-[#0E1C2D] transition-all duration-300 
+           {{ $isActive ? 'text-blue-400 font-semibold' : 'text-white' }}">
             <i class="fas {{ $link['icon'] }} text-sm text-center icons-items"></i>
             <span class="sidebar-text transition-all duration-300">{{ $link['label'] }}</span>
         </a>
         @endforeach
     </ul>
+
 </aside>

@@ -7,6 +7,7 @@ import FeedbackType from "./Feedback/FeedbackType";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import spinner from "../../../Assets/spinner.gif";
+import RateStars from "./Feedback/RateStars";
 function DetailsCollection() {
   const { slug, user } = useParams();
   const collections = useSelector((state) => state.collectionsReducer);
@@ -20,7 +21,7 @@ function DetailsCollection() {
     const loadFeedbacks = async () => {
       try {
         const response = await axios.get(
-          `/api/feedbacks-collection/${ChoosedCollection.id}`,
+          `/api/feedbacks-collection/${ChoosedCollection?.id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -39,6 +40,8 @@ function DetailsCollection() {
     };
     loadFeedbacks();
   });
+  console.log(ChoosedCollection);
+  
   return (
     <div>
       <div className="flex items-center gap-1 mb-4 text-sm">
@@ -57,11 +60,11 @@ function DetailsCollection() {
           <div className="flex gap-4 items-center">
             <div className="w-2/3 flex flex-col gap-4 border-r border-gray-700 pr-4">
               <h1 className="text-2xl font-semibold">
-                {ChoosedCollection.title}
+                {ChoosedCollection?.title}
               </h1>
-              <h3 className="text-sm">{ChoosedCollection.question}</h3>
+              <h3 className="text-sm">{ChoosedCollection?.question}</h3>
               <p className="text-sm text-gray-300">
-                {ChoosedCollection.description}
+                {ChoosedCollection?.description}
               </p>
             </div>
             <div className="w-1/3 px-2">
@@ -72,15 +75,15 @@ function DetailsCollection() {
                 <span className="text-xs">
                   Made By:{" "}
                   <span className="font-bold">
-                    {ChoosedCollection.user.firstName +
+                    {ChoosedCollection?.user?.firstName +
                       " " +
-                      ChoosedCollection.user.lastName}
+                      ChoosedCollection?.user?.lastName}
                   </span>
                 </span>
                 <span className="text-xs">
                   Posted:{" "}
                   <span className="font-bold">
-                    {new Date(ChoosedCollection.created_at).toLocaleDateString(
+                    {new Date(ChoosedCollection?.created_at).toLocaleDateString(
                       "en-US",
                       {
                         year: "numeric",
@@ -93,18 +96,20 @@ function DetailsCollection() {
                 {/* <span className="flex items-center gap-1 text-xs">
                   Membres: 39 <UsersRound className="h-4" />
                 </span> */}
-                <span className="flex items-center gap-1 text-xs">
-                  Rate:
-                  <Star className="h-4" />
-                  <Star className="h-4" />
-                  <Star className="h-4" />
-                  <Star className="h-4" />
-                  <Star className="h-4" />
-                </span>
+                {/* <RateStars
+                  rates={ChoosedCollection?.rates}
+                  uprates={ChoosedCollection?.upvotes}
+                  downrates={ChoosedCollection?.downvotes}
+                /> */}
                 <div className="flex items-center gap-1 text-xs justify-between">
-                  <span>Feedback: <span className="font-semibold mx-2">{ChoosedCollection.feedback.length}</span></span>
+                  <span>
+                    Feedback:{" "}
+                    <span className="font-semibold mx-2">
+                      {ChoosedCollection?.feedback?.length}
+                    </span>
+                  </span>
                   <span className="flex items-center gap-1 bg-gray-800 px-4 py-2 rounded text-blue-500">
-                    <span>{ChoosedCollection.language}</span>
+                    <span>{ChoosedCollection?.language}</span>
                     <CircleCheck className="h-4" />
                   </span>
                 </div>
@@ -114,8 +119,8 @@ function DetailsCollection() {
           <div>
             <h6 className="text-sm font-semibold my-4">The code #1</h6>
             <CodeExecution
-              language={ChoosedCollection.language}
-              code={ChoosedCollection.code}
+              language={ChoosedCollection?.language}
+              code={ChoosedCollection?.code}
               status={true}
             />
           </div>
@@ -127,7 +132,7 @@ function DetailsCollection() {
       )}
       {ChoosedCollection && (
         <FedbackInterface
-          language={ChoosedCollection.language}
+          language={ChoosedCollection?.language}
           typeFeedbackChecked={typeFeedback}
           collection={ChoosedCollection}
         />

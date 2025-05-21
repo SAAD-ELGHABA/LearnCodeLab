@@ -46,8 +46,8 @@ function Saves() {
     <div>
       <div className="mx-8 my-4">
         <h1 className="text-xl font-semibold flex items-center  space-x-2">
-          <BookMarked />
           <span>My Saves ({Mysaves.length}) </span>
+          <BookMarked className="h-7 w-7"/>
         </h1>
       </div>
       {MysavesColections.length > 0 ? (

@@ -13,7 +13,7 @@ class SaveController extends Controller
     public function index()
     {
         $user_id = Auth::id();
-        $mySaves = Save::where('user_id', $user_id);
+        $mySaves = Save::where('user_id', $user_id)->get();
         return response()->json(['mySaves' => $mySaves]);
     }
     public function add(Request $request)

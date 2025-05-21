@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   faAnglesDown,
   faAnglesUp,
@@ -9,14 +10,18 @@ import { BookMarked, LoaderCircle } from "lucide-react";
 import { AddSave } from "../../functions/AddSave";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { handlerate } from "../../functions/handlerate";
 // eslint-disable-next-line no-unused-vars
 function zIndex({ collection }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isLoading, setIsLoading] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [rating, setIsRating] = useState({ state: false, type: "" });
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch = useDispatch();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const Mysaves = useSelector((state) => state.savesReducer);
+  const user = useSelector((state) => state.userReducer.user);
 
   const handleSave = () => {
     setIsLoading(true);
@@ -32,18 +37,44 @@ function zIndex({ collection }) {
     };
     savePromise();
   };
+  const handleRate = (type) => {
+    setIsRating({ state: true, type });
+    const ratePromise = async () => {
+      try {
+        const res = await handlerate(type, collection?.id, dispatch);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsRating({ state: false, type: "" });
+      }
+    };
+    ratePromise();
+  };
   const isCollectionSaved = Mysaves.find(
-    (s) => s.collection_id === collection.id
+    (s) => s.collection_id === collection?.id
+  );
+  const isUp = collection?.rates?.some(
+    (r) =>
+      r.user_id === user?.id &&
+      r.type === "up" &&
+      r.collection_id === collection?.id
+  );
+
+  const isDown = collection?.rates?.some(
+    (r) =>
+      r.user_id === user?.id &&
+      r.type === "down" &&
+      r.collection_id === collection?.id
   );
 
   return (
     <div className="bg-gray-900 rounded-lg p-6 mb-6 border border-gray-700">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold mb-3">{collection.title}</h2>
+        <h2 className="text-xl font-semibold mb-3">{collection?.title}</h2>
         <Link
           to={`/collection/details/${
-            collection.user.firstName + "-" + collection.user.lastName
-          }/${collection.slug}`}
+            collection?.user?.firstName + "-" + collection?.user?.lastName
+          }/${collection?.slug}`}
           className="flex space-x-1 text-sm items-center hover:text-blue-500 cursor-pointer"
         >
           <span>Figure Out</span>
@@ -58,11 +89,28 @@ function zIndex({ collection }) {
       <div className="text-sm text-gray-400 mb-4">
         <p>{collection.description}</p>
       </div>
-
+      <div className="flex justify-end mb-4">
+        <p className="text-gray-500 text-sm ">
+          {new Date(collection?.created_at).toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+          })}{" "}
+          at{" "}
+          {new Date(collection?.created_at).toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </p>
+      </div>
       <div className="border-t border-gray-600 pt-4">
         <div className="flex flex-wrap justify-between text-sm text-gray-400">
           <div className="flex items-center gap-2 mb-2 sm:mb-0">
             <span>Made By:</span>
+            <img
+              src={collection?.user?.image}
+              alt="image-user"
+              className="h-8 w-8 rounded-full"
+            />
             <span className="text-gray-300">
               {collection.user.firstName} {collection.user.lastName}
             </span>
@@ -75,7 +123,7 @@ function zIndex({ collection }) {
             <span>
               Feedback:
               <span className="font-semibold text-white mx-2">
-                {collection?.feedback.length}
+                {collection?.feedback?.length}
               </span>
             </span>
             <button
@@ -104,15 +152,36 @@ function zIndex({ collection }) {
                 </div>
               )}
             </button>
-            <div className="flex space-x-4">
-              <span className="flex items-center space-x-2 border px-2 py-1 rounded border-gray-600 hover:shadow-blue-500 shadow cursor-pointer">
-                <p>Up</p>
+            <div className="flex space-x-1">
+              <button
+                className={`flex items-center space-x-2 border px-4 py-1 rounded border-gray-600 hover:shadow-blue-500 shadow cursor-pointer ${
+                  isUp && "text-blue-500 "
+                }`}
+                title="upVote"
+                onClick={() => handleRate("up")}
+              >
+                {rating?.state && rating?.type === "up" ? (
+                  <LoaderCircle className="h-3 w-3 animate-spin" />
+                ) : (
+                  <p>{collection?.upvotes}</p>
+                )}
+
                 <FontAwesomeIcon icon={faAnglesUp} />
-              </span>
-              <span className="flex items-center space-x-2 border px-2 py-1 rounded border-gray-600 hover:shadow-red-500 shadow cursor-pointer">
-                <p>down</p>
+              </button>
+              <button
+                className={`flex items-center space-x-2 border px-4 py-1.5 rounded border-gray-600 hover:shadow-red-500 shadow cursor-pointer  ${
+                  isDown && "text-red-500"
+                }`}
+                title="downVote"
+                onClick={() => handleRate("down")}
+              >
+                {rating?.state && rating?.type === "down" ? (
+                  <LoaderCircle className="h-3 w-3 animate-spin" />
+                ) : (
+                  <p>{collection?.downvotes}</p>
+                )}
                 <FontAwesomeIcon icon={faAnglesDown} />
-              </span>
+              </button>
             </div>
           </div>
         </div>

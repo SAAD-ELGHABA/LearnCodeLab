@@ -6,13 +6,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BadgeCheck } from "lucide-react";
-
+import { useSelector } from "react-redux";
 
 // eslint-disable-next-line react/prop-types
-function NavBar({formateur=false}) {
+function NavBar({ formateur = false }) {
+  const user = useSelector((state) => state.userReducer.user);
 
   return (
-    <header className=" bg-[#21252B] py-4 border-t-1 border-blue-400 text-white sticky top-0 shadow shadow-gray-800 " style={{zIndex:'999'}}>
+    <header
+      className=" bg-[#21252B] py-4 border-t-1 border-blue-400 text-white sticky top-0 shadow shadow-gray-800 "
+      style={{ zIndex: "999" }}
+    >
       <nav className="container mx-auto flex items-center ">
         <div className="font-bold text-blue-400 text-xl w-1/4 text-center">
           LearnCodeLab
@@ -48,7 +52,7 @@ function NavBar({formateur=false}) {
             />
           </div>
         </div>
-        <div className="w-1/4  flex justify-center space-x-1 text-sm">
+        <div className="w-1/4  flex justify-center items-center space-x-1 text-sm">
           <FontAwesomeIcon
             icon={faPlus}
             className="hover:bg-gray-700 p-3 rounded-full  cursor-pointer"
@@ -62,19 +66,20 @@ function NavBar({formateur=false}) {
             className="hover:bg-gray-700 p-3 rounded-full cursor-pointer"
           />
           <div className="relative">
-          <FontAwesomeIcon
-            icon={faUser}
-            className="hover:bg-gray-700 p-3 rounded-full cursor-pointer "
-          />
-          {
-            formateur && 
-          <BadgeCheck className="absolute top-0 right-0 w-4 h-4 text-blue-500"/>
-          }
-
+            {user?.image ? (
+              <img src={user?.image} alt="user-image" className="w-6 h-6 rounded-full" />
+            ) : (
+              <FontAwesomeIcon
+                icon={faUser}
+                className="hover:bg-gray-700 p-3 rounded-full cursor-pointer "
+              />
+            )}
+            {formateur && (
+              <BadgeCheck className="absolute top-0 right-0 w-4 h-4 text-blue-500" />
+            )}
           </div>
         </div>
       </nav>
-
     </header>
   );
 }

@@ -61,11 +61,20 @@ function FeedbackInterface({ language, typeFeedbackChecked, collection }) {
                   onClick={() => toggleAccordion(index)}
                   className="flex justify-between items-center bg-[#27304257] p-4 rounded-lg text-gray-300 cursor-pointer select-none"
                 >
-                  <div >
+                  <div>
                     <div className="flex space-x-2 items-center">
-                      <span className="underline">
-                        {feedback.user.firstName + " " + feedback.user.lastName}
-                      </span>
+                      <div className="flex items-center space-x-2">
+                        <img
+                          src={feedback?.user?.image}
+                          alt="image-user"
+                          className="h-5 w-5 rounded-full"
+                        />
+                        <span className="underline">
+                          {feedback.user.firstName +
+                            " " +
+                            feedback.user.lastName}
+                        </span>
+                      </div>
                       <span className="text-xs text-gray-400">
                         Code Feedback #{index + 2}
                       </span>
@@ -121,9 +130,16 @@ function FeedbackInterface({ language, typeFeedbackChecked, collection }) {
               >
                 <div>
                   <div className="flex flex-col space-y-2">
-                    <span className="underline">
-                      {feedback.user.firstName + " " + feedback.user.lastName}
-                    </span>
+                    <div className="flex items-center space-x-2">
+                      <img
+                        src={feedback?.user?.image}
+                        alt="image-user"
+                        className="h-5 w-5 rounded-full"
+                      />
+                      <span className="underline">
+                        {feedback.user.firstName + " " + feedback.user.lastName}
+                      </span>
+                    </div>
                     <span className="text-gray-300 text-sm">
                       {feedback.content}
                     </span>

@@ -34,7 +34,7 @@ class RessourceController extends Controller
     {
         try {
             $request->validate([
-                'file' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,ppt,pptx,txt'
+                'file' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx,ppt,pptx,txt'
             ]);
 
             $filePath = $request->file('file')->store('uploads', 'public');

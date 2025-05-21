@@ -166,6 +166,8 @@ export const collectionsReducer = (state = collections, action) => {
     switch (action.type) {
         case "GET_ALL_COLLECTIONS":
             return action.payload
+        case "SET_FILTERED_COLLECTIONS":
+            return action.payload;
         default:
             return state;
     }
@@ -225,5 +227,25 @@ export const savesReducer = (state=saves,action)=>{
             return action.payload;
         default:
             return state;
+    }
+}
+
+const resources = []
+export const resourcesReducer = (state=resources,action)=>{
+    switch(action.type){
+        case "GET_RESOURCES":
+            return action.payload
+        default :
+            return state
+    }
+}
+
+const languages = []
+export const languagesReducer = (state=languages,action)=>{
+    switch(action.type){
+        case "GET_LANGUAGES":
+            return action.payload
+        default:
+            return state
     }
 }

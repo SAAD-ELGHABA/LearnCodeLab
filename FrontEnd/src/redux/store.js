@@ -1,5 +1,5 @@
 import {combineReducers,legacy_createStore} from 'redux'
-import {modeReducer, userReducer,collectionReducer, ChatAiReducer, collectionsReducer, feedbackReducer, groupsStagiaireReducer, groupReducer, savesReducer} from './reducer'
+import {modeReducer, userReducer,collectionReducer, ChatAiReducer, collectionsReducer, feedbackReducer, groupsStagiaireReducer, groupReducer, savesReducer, resourcesReducer, languagesReducer} from './reducer'
 const reducers = combineReducers({
     userReducer,
     modeReducer,
@@ -9,7 +9,9 @@ const reducers = combineReducers({
     feedbackReducer,
     groupsStagiaireReducer,
     groupReducer,
-    savesReducer
+    savesReducer,
+    resourcesReducer,
+    languagesReducer
 })
 
 export const store = legacy_createStore(reducers);

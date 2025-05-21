@@ -26,4 +26,8 @@ class Collection extends Model
     {
         return $this->hasMany(Feedback::class);
     }
+    public function Rates()
+    {
+        return $this->hasMany(Rate::class);
+    }
 }

@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\RateController;
 use App\Http\Controllers\SaveController;
 use App\Models\GroupStagiaire;
 use App\Models\Group;
+use App\Models\Ressource;
 use App\Models\Save;
 
 Route::get('/user', function (Request $request) {
@@ -55,8 +58,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('feedback', [CollectionController::class, 'handleFeedback']);
     Route::get('/feedbacks-collection/{idCollection}', [CollectionController::class, 'loadFeedbacks']);
     Route::post('/add-save', [SaveController::class, 'add'])->name('add-saves');
-    Route::get('/mySaves',[SaveController::class,'index'])->name('mySaves');
-    Route::get('/'); // 
+    Route::get('/mySaves', [SaveController::class, 'index'])->name('mySaves');
+    Route::post('/rate-collection/{id}', [RateController::class, 'rateCollection'])->name('rate.collection');
 });
 
 
@@ -91,3 +94,13 @@ Route::get('/get-group/{id}', function ($id) {
 });
 
 Route::middleware(['formateur'])->group(function () {});
+
+Route::get('/get-resources', function () {
+    $resources = Ressource::all();
+    return response()->json([
+        'resources' => $resources
+    ]);
+});
+
+
+Route::get('/get-languages',[LanguageController::class,'index'])->name('get.languages');
