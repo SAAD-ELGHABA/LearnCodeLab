@@ -11,6 +11,8 @@ import { AddSave } from "../../functions/AddSave";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { handlerate } from "../../functions/handlerate";
+import {themes} from '../../lib/themes.js'
+
 // eslint-disable-next-line no-unused-vars
 function zIndex({ collection }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -23,6 +25,9 @@ function zIndex({ collection }) {
   const Mysaves = useSelector((state) => state.savesReducer);
   const user = useSelector((state) => state.userReducer.user);
 
+  const choosedTheme = useSelector(
+    (state) => state.themeReducer
+  );
   const handleSave = () => {
     setIsLoading(true);
     const savePromise = async () => {
@@ -68,7 +73,7 @@ function zIndex({ collection }) {
   );
 
   return (
-    <div className="bg-gray-900 rounded-lg p-6 mb-6 border border-gray-700">
+    <div className=" rounded-lg p-6 mb-6 border " style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1] ,color:themes.find((theme) => theme.name === choosedTheme).textColor ,border:themes.find((theme) => theme.name === choosedTheme).colors[2]}} >
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold mb-3">{collection?.title}</h2>
         <Link
@@ -81,12 +86,12 @@ function zIndex({ collection }) {
           <FontAwesomeIcon icon={faChevronRight} className="text-xs" />
         </Link>
       </div>
-      <p className="text-gray-300 mb-4">
+      <p className=" mb-4">
         The question:
         <span className="font-medium text-lg ms-2">{collection.question}</span>
       </p>
 
-      <div className="text-sm text-gray-400 mb-4">
+      <div className="text-sm  mb-4">
         <p>{collection.description}</p>
       </div>
       <div className="flex justify-end mb-4">
@@ -114,7 +119,12 @@ function zIndex({ collection }) {
             <span className="text-gray-300">
               {collection.user.firstName} {collection.user.lastName}
             </span>
-            <span className="bg-gray-600 px-2 py-1 rounded">
+            <span className="font-medium px-2 py-1 rounded"
+              style={{
+                backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[2],
+                color: themes.find((theme) => theme.name === choosedTheme).textColor,
+              }}
+            >
               {collection.language}
             </span>
           </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import spinner from "../../../Assets/spinner.gif";
+import {themes} from '../../../lib/themes.js'
 
 import {
   setTitleAndLanguage,
@@ -56,7 +57,7 @@ const Add = () => {
   // };
 
   return (
-    <div className="overflow-hidden mx-auto text-center bg-[#21252B] text-white rounded-lg flex flex-col justify-center">
+    <div className="overflow-hidden mx-auto text-center  rounded-lg flex flex-col justify-center">
       <h2 className="text-sm w-full text-start m-2">Étape {step} sur 3</h2>
 
       {step === 1 && <Step1 onNext={handleNext} />}
@@ -91,18 +92,20 @@ const Step1 = ({ onNext }) => {
     setError("");
     onNext();
   };
-
+  const choosedTheme = useSelector(
+    (state) => state.themeReducer
+  );
   return (
     <div className="w-full mx-auto mt-5 flex flex-col justify-center items-center">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold mb-2">New collection</h1>
-        <p className="text-gray-300 mb-6">
+        <p className=" mb-6">
           Create your own collections, share your code, solution, feedback,
           rates, and your suggestions
         </p>
 
         <div className="w-full mx-auto mb-4 flex justify-evenly items-end ">
-          <label className="block text-gray-300 mb-2 w-1/3 ">
+          <label className="block  mb-2 w-1/3 ">
             Name of your collection:
           </label>
           <input
@@ -112,13 +115,14 @@ const Step1 = ({ onNext }) => {
             onChange={(e) =>
               dispatch(setTitleAndLanguage(e.target.value, language))
             }
-            className="w-2/3 p-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-white"
+            className="w-2/3 p-2  border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-white"
+            style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1] ,color:themes.find((theme) => theme.name === choosedTheme).textColor }}
           />
         </div>
       </div>
       <div className="w-2/3 mx-auto mb-4">
         <div>
-          <label className="block text-gray-300 mb-2">Select language :</label>
+          <label className="block mb-2">Select language :</label>
           <div className="grid grid-cols-3 gap-2">
             {[
               "Javascript",
@@ -131,19 +135,41 @@ const Step1 = ({ onNext }) => {
               "python",
               "Bootstrap",
             ].map((lang) => (
-              <button
-                key={lang}
-                onClick={() =>
-                  dispatch(setTitleAndLanguage(title, lang.toLowerCase()))
-                }
-                className={`cursor-pointer p-2 rounded-md text-sm ${
-                  language === lang.toLowerCase()
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                }`}
-              >
-                #{lang}
-              </button>
+<button
+  key={lang}
+  onClick={() =>
+    dispatch(setTitleAndLanguage(title, lang.toLowerCase()))
+  }
+  className="cursor-pointer p-2 rounded-md text-sm transition-colors duration-200"
+  style={{
+    backgroundColor:
+      language === lang.toLowerCase()
+        ? themes.find((theme) => theme.name === choosedTheme)?.colors[0]
+        : themes.find((theme) => theme.name === choosedTheme)?.colors[2],
+    color:themes.find((theme) => theme.name === choosedTheme)?.textColor,
+    border: `1px solid ${
+      language === lang.toLowerCase()
+        ? themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+        : themes.find((theme) => theme.name === choosedTheme)?.colors[0]
+    }`,
+  }}
+  onMouseEnter={(e) => {
+    if (language !== lang.toLowerCase()) {
+      e.currentTarget.style.backgroundColor =
+        themes.find((theme) => theme.name === choosedTheme)?.colors[1];
+        e.currentTarget.style.border = `1px solid ${themes.find((theme) => theme.name === choosedTheme)?.colors[2]}`;
+    }
+  }}
+  onMouseLeave={(e) => {
+    if (language !== lang.toLowerCase()) {
+      e.currentTarget.style.backgroundColor =
+        themes.find((theme) => theme.name === choosedTheme)?.colors[2];
+    }
+  }}
+>
+  #{lang}
+</button>
+
             ))}
           </div>
         </div>
@@ -173,7 +199,9 @@ const Step2 = ({ onNext, onBack }) => {
     }
     onNext();
   };
-
+  const choosedTheme = useSelector(
+    (state) => state.themeReducer
+  );
   return (
     <div className="space-y-6 w-full mx-auto mt-5">
       <div className="space-y-6 w-1/3 mx-auto mb-4">
@@ -187,7 +215,8 @@ const Step2 = ({ onNext, onBack }) => {
           onChange={(e) =>
             dispatch(setQuestionAndDescription(e.target.value, description))
           }
-          className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white appearance-none"
+          className="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white appearance-none"
+                    style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1] ,color:themes.find((theme) => theme.name === choosedTheme).textColor }}
         />
         <textarea
           rows="8"
@@ -196,13 +225,14 @@ const Step2 = ({ onNext, onBack }) => {
           onChange={(e) =>
             dispatch(setQuestionAndDescription(question, e.target.value))
           }
-          className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white appearance-none"
+          className="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white appearance-none"
+                    style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1] ,color:themes.find((theme) => theme.name === choosedTheme).textColor }}
         />
       </div>
       <div className="flex justify-center space-x-2 mt-4 text-sm">
         <button
           onClick={onBack}
-          className="space-x-2 px-6 cursor-pointer py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg shadow-md transition duration-300"
+          className="space-x-2 px-6 cursor-pointer py-2  font-semibold rounded-lg shadow-md transition duration-300"
         >
           <FontAwesomeIcon icon={faChevronLeft} />
           <span>Retour</span>

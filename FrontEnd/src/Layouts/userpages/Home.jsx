@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import Index from "../../Components/collection/index.collection";
 import axios from "axios";
@@ -15,8 +15,12 @@ import FilterCollections from "../../Components/FilterCollections";
 
 function Home() {
   const collectionsReducer = useSelector((state) => state.collectionsReducer);
-  const [filter, setFilter] = useState({language: "", sortBy: "", commentsSort: "" });
-  
+  const [filter, setFilter] = useState({
+    language: "",
+    sortBy: "",
+    commentsSort: "",
+  });
+
   const token = useSelector((state) => state.userReducer.token);
   const [allCollections, setAllCollections] = useState(collectionsReducer);
   const [visibleCollections, setVisibleCollections] = useState(
@@ -125,8 +129,25 @@ function Home() {
     loadMore();
   }, [page, loadMore, searchTerm]);
 
+  const suggestionRef = useRef();
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        suggestionRef.current &&
+        !suggestionRef.current.contains(event.target)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="bg-gray-800 min-h-screen p-6 text-gray-100">
+    <div className=" min-h-screen p-6">
       <div className="mb-2 text-sm ">
         <div className="flex items-start justify-between">
           <div>
@@ -160,22 +181,22 @@ function Home() {
         </div>
 
         <div className="flex justify-between gap-4 mb-6 w-full items-center">
-          <div className="relative flex items-center rounded-lg w-1/3 px-2 bg-gray-700 justify-between max-w-md">
+          <div
+            ref={suggestionRef}
+            className="relative flex items-center rounded-lg w-1/3 px-2 bg-gray-700 justify-between max-w-md"
+          >
             <input
               type="text"
               className="w-full px-2 py-2 text-white focus:outline-none"
               placeholder="Search collections..."
               value={searchTerm}
               onChange={handleSearchChange}
-              onFocus={() => {
-                if (suggestions.length > 0) setShowSuggestions(true);
-              }}
-              onBlur={() => {
-                setTimeout(() => setShowSuggestions(false), 150);
-              }}
+              // onFocus={() => {
+              //   if (suggestions.length > 0) setShowSuggestions(true);
+              // }}
             />
             <Search className="h-4 w-4 text-gray-400" />
-            {showSuggestions && suggestions.length > 0 && (
+            {showSuggestions && (
               <ul className="custom-scrollbar absolute z-10 top-10 right-0 w-full bg-gray-700 border border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                 {suggestions.map((collection) => (
                   <li
@@ -198,6 +219,7 @@ function Home() {
               </ul>
             )}
           </div>
+
           <button
             className={`py-1.5 px-2.5 hover:bg-gray-700 rounded cursor-pointer flex items-center space-x-2  ${
               toggleFilter && "text-blue-500 bg-gray-700"

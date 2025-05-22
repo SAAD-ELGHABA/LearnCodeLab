@@ -8,13 +8,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import spinner from "../../../Assets/spinner.gif";
 import RateStars from "./Feedback/RateStars";
+import {themes} from '../../../lib/themes.js'
 function DetailsCollection() {
   const { slug, user } = useParams();
   const collections = useSelector((state) => state.collectionsReducer);
   const ChoosedCollection = collections.find(
     (collection) => collection.slug === slug
   );
-
+  const choosedTheme = useSelector(
+    (state) => state.themeReducer
+  );
   const [typeFeedback, setTypeFeedback] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
@@ -49,22 +52,22 @@ function DetailsCollection() {
           onClick={() => {
             window.history.back();
           }}
-          className="flex items-center gap-1 text-gray-400 hover:text-blue-500 cursor-pointer"
+          className="flex items-center gap-1  hover:text-blue-500 cursor-pointer"
         >
           <ChevronLeft className="h-5" />
           <span>Back</span>
         </button>
       </div>
       {ChoosedCollection ? (
-        <div className="flex flex-col mx-2 border border-[#2564eb33] bg-[#1118275b] rounded p-4">
+        <div className="flex flex-col mx-2 rounded p-4">
           <div className="flex gap-4 items-center">
             <div className="w-2/3 flex flex-col gap-4 border-r border-gray-700 pr-4">
               <h1 className="text-2xl font-semibold">
                 {ChoosedCollection?.title}
               </h1>
-              <h3 className="text-sm">{ChoosedCollection?.question}</h3>
-              <p className="text-sm text-gray-300">
-                {ChoosedCollection?.description}
+              <h3 className="text-lg font-medium">{ChoosedCollection.question}</h3>
+              <p className="text-sm ">
+                {ChoosedCollection.description}
               </p>
             </div>
             <div className="w-1/3 px-2">
@@ -110,6 +113,18 @@ function DetailsCollection() {
                   </span>
                   <span className="flex items-center gap-1 bg-gray-800 px-4 py-2 rounded text-blue-500">
                     <span>{ChoosedCollection?.language}</span>
+                  </span>
+                  <span>Feedback: <span className="font-semibold mx-2">{ChoosedCollection.feedback.length}</span></span>
+                  <span className="flex font-medium items-center gap-1  px-4 py-2 rounded "
+                    style={{
+                      backgroundColor: themes.find(
+                        (theme) => theme.name === choosedTheme
+                      ).colors[2],
+                      color: themes.find((theme) => theme.name === choosedTheme)
+                        .textColor,
+                    }}
+                  >
+                    <span>{ChoosedCollection.language}</span>
                     <CircleCheck className="h-4" />
                   </span>
                 </div>

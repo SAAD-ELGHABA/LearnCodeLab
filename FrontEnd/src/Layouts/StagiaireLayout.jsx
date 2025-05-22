@@ -10,11 +10,18 @@ import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import { getCollections } from "../functions/getCollections";
 import { saves } from "../functions/getMySaves";
+import {  useSelector } from "react-redux";
+import axios from "axios";
+import {themes} from '../lib/themes.js'
 function StagiaireLayout() {
   const [isOpen, setIsOpen] = useState(true);
   const [ishovering, setIshovering] = useState(false);
   const [ChatToggle, setChatToggle] = useState(false);
   const dispatch = useDispatch();
+  const choosedTheme = useSelector(
+    (state) => state.themeReducer
+  );
+    
   useEffect(() => {
     const CollectionsPromise = async () => {
       try {
@@ -36,7 +43,7 @@ function StagiaireLayout() {
     CollectionsPromise();
   }, [dispatch]);
   return (
-    <div className="bg-[#273042]">
+    <div style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[0] ,color:themes.find((theme) => theme.name === choosedTheme).textColor }}>
       <NavBar />
 
       <div className="flex">
@@ -44,16 +51,18 @@ function StagiaireLayout() {
           initial={{ width: 250 }}
           animate={{ width: isOpen ? 250 : 70 }}
           transition={{ duration: 0.3 }}
-          className="sticky top-20  left-0 h-screen bg-[#273042] flex flex-col text-white shadow-lg"
+          className="sticky top-18 left-0 h-screen  flex flex-col shadow-lg"
+          style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1],color:themes.find((theme) => theme.name === choosedTheme).textColor }}
         >
           <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
         </motion.aside>
 
         <section
-          className={`p-2 text-white transition-all duration-300 ${
+          className={`p-2 transition-all duration-300 ${
             isOpen ? "w-5/6" : "w-6/6"
           }
-          bg-[#21252B] m-1 rounded`}
+           m-1 rounded`}
+           style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[0] }}
         >
           <Outlet />
         </section>

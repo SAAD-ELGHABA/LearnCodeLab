@@ -247,5 +247,15 @@ export const languagesReducer = (state=languages,action)=>{
             return action.payload
         default:
             return state
+
+    }
+}
+const theme = "Light"
+export const themeReducer = (state=theme,action)=>{
+    switch(action.type){
+        case "SET_THEME":
+        return action.payload;
+        default:
+            return state;
     }
 }

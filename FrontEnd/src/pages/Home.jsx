@@ -100,28 +100,28 @@ export default function HomePage() {
   return (
     <div className="text-white min-h-screen z-50 bg-[#0f172a]">
       {/* HERO */}
-      <div className="flex items-end container mx-auto justify-evenly pt-20 ">
-        <header className="text-start w-2/5 mb-20">
+      <div className="flex items-end container mx-auto justify-evenly pt-20 flex-col md:flex-row"      >
+        <header className="w-full md:w-2/5 mb-20 text-center md:text-start mx-auto"        >
           <h1 className="text-4xl md:text-5xl font-bold text-blue-400 drop-shadow-lg uppercase">
             Your Way to Get <br /> Your Diploma !
           </h1>
-          <p className="mt-4 text-gray-300 w-2/3">
+          <p className="mt-4 text-gray-300 w-3/4 md:w-2/3 mx-auto md:mx-0">
             This is LearnCodeLab, your assistant in the world of programming.
             Learn, Practice, and Share Your Code with Ease.
           </p>
-          <div className="flex space-x-2">
-            <button className="mt-6 px-6 py-3 text-blue-400 border border-blue-400 rounded-md w-1/4 text-sm cursor-pointer">
+          <div className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-6">
+            <button className="px-6 py-3 text-blue-400 border border-blue-400 rounded-md w-1/2 md:w-1/4  text-sm cursor-pointer mx-auto md:mx-5">
               Let&apos;s start!
             </button>
             <Link
               to="/register"
-              className="bg-blue-400 mt-6 px-6 py-3 text-center border hover:bg-blue-600 rounded-md w-1/4 text-sm cursor-pointer"
-            >
+              className="bg-blue-400 mt-4 md:mt-0 px-6 py-3 text-center border hover:bg-blue-600 rounded-md w-1/2 md:w-1/4 text-sm cursor-pointer mx-auto md:mx-0"
+              >
               Sign in
             </Link>
           </div>
         </header>
-        <div className="flex justify-center mt-10 w-1/2">
+        <div className="flex justify-center mt-10 w-full md:w-1/2">
           <img src={peapleCoding} alt="People coding" className="w-full drop-shadow-xl" />
         </div>
       </div>
