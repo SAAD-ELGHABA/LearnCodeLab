@@ -51,7 +51,7 @@ function StagiaireLayout() {
           initial={{ width: 250 }}
           animate={{ width: isOpen ? 250 : 70 }}
           transition={{ duration: 0.3 }}
-          className="sticky top-18 left-0 h-screen  flex flex-col shadow-lg"
+          className="sticky top-18 left-0 h-screen flex flex-col shadow-lg"
           style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1],color:themes.find((theme) => theme.name === choosedTheme).textColor }}
         >
           <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />

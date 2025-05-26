@@ -25,6 +25,7 @@ import VerifyEmail from "../pages/VerifyEmail";
 import ResendVerification from "../pages/ResendVerification";
 import Add from "../Layouts/userpages/Addcollection/Add";
 import DetailsCollection from "../Layouts/userpages/collection/DetailsCollection";
+import Profile from "../Layouts/userpages/Profile";
 
 const REGISTER = "/register";
 const LOGIN = "/login";
@@ -140,6 +141,10 @@ const Router = createBrowserRouter([
         path: "/collection/details/:user/:slug",
         element: <DetailsCollection />,
       },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
     ],
   },
   {
@@ -170,11 +175,19 @@ const Router = createBrowserRouter([
         path: "/resources-formateur",
         element: <Resources />,
       },
+      {
+        path: "/add1",
+        element: <Add />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
     ],
   },
   {
     element: (
-      <VerifyAcceessRoutes role={"admin"} path={"/"}>
+      <VerifyAcceessRoutes role={"admin"}  path={"/"}>
         <AdminGreeting />
       </VerifyAcceessRoutes>
     ),
@@ -183,6 +196,10 @@ const Router = createBrowserRouter([
         path: "/admin",
         index: true,
         element: <AdminGreeting />,
+      },
+      {
+        path: "/admin/collection/details/:user/:slug",
+        element: <DetailsCollection />,
       },
     ],
   },

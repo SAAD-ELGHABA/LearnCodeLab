@@ -1,11 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { PenLine, Users, X } from "lucide-react";
+import { Group, HousePlug, PenLine, Plus, Users, X } from "lucide-react";
 import { groupstagiaire } from "../../functions/groupstagiaire";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "sonner";
+import { themes } from "../../lib/themes.js";
+import { randomColors } from "../../lib/randomColors.js";
+import { hover } from "framer-motion";
+import ActivityInterface from "../../Components/ActivityInterface.jsx";
+
 // eslint-disable-next-line react/prop-types
 function Groups({ formateur = false }) {
+  const choosedTheme = useSelector((state) => state.themeReducer);
+
   const dispatch = useDispatch();
   const groupsReducer = useSelector((state) => state.groupReducer);
   const [groupName, setGroupName] = useState("");
@@ -52,7 +59,6 @@ function Groups({ formateur = false }) {
     setSelectedGroups((prev) => prev.filter((name) => name !== nameToRemove));
   };
 
-  // Hide dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -93,12 +99,24 @@ function Groups({ formateur = false }) {
       setIsLoading(false);
     }
   };
-    const groupsStagiaireReducer = useSelector((state) => state.groupsStagiaireReducer);
-  
+  const groupsStagiaireReducer = useSelector(
+    (state) => state.groupsStagiaireReducer
+  );
+  const [activityInterface, setActivityInterface] = useState(false);
+  const [interfaceGroupChoosed, setInterfaceGroupChoosed] = useState(null);
+
   return (
     <div>
       {formateur && (
-        <div className="mx-8 border rounded border-gray-700 p-4">
+        <div
+          className="mx-8 rounded p-4"
+          style={{
+            backgroundColor: themes.find((theme) => theme.name === choosedTheme)
+              .colors[1],
+            color: themes.find((theme) => theme.name === choosedTheme)
+              .textColor,
+          }}
+        >
           <div className="flex justify-start items-center space-x-2 text-xl">
             <h1>Create a group</h1>
             <PenLine className="w-5 h-5" />
@@ -106,39 +124,86 @@ function Groups({ formateur = false }) {
 
           <form className="my-4 flex gap-4 flex-wrap" onSubmit={handleSubmit}>
             <div className="flex flex-col w-1/3">
-              <label className="text-sm text-gray-400 mb-1">Group Name</label>
+              <label className="text-sm  mb-1">Group Name</label>
               <input
                 type="text"
                 placeholder="group name"
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
-                className="py-2 px-2.5 outline-none border border-gray-700 rounded"
-                disabled={isLoading} // Disable input while loading
+                className="py-2 px-2.5 outline-none  rounded"
+                style={{
+                  backgroundColor: themes.find(
+                    (theme) => theme.name === choosedTheme
+                  ).colors[1],
+                  color: themes.find((theme) => theme.name === choosedTheme)
+                    .textColor,
+                  border: `1px solid ${
+                    themes.find((theme) => theme.name === choosedTheme)
+                      .colors[2]
+                  }`,
+                }}
+                disabled={isLoading}
               />
             </div>
 
-            <div className="flex flex-col w-1/3 relative" ref={dropdownRef}>
-              <label className="text-sm text-gray-400 mb-1">
-                Groups to Associate
-              </label>
+            <div className="flex flex-col w-1/3 relative z-0" ref={dropdownRef}>
+              <label className="text-sm  mb-1">Groups to Associate</label>
               <input
                 type="text"
                 placeholder="group to associate"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="py-2 px-2.5 outline-none border border-gray-700 rounded"
-                disabled={isLoading} // Disable input while loading
+                className="py-2 px-2.5 outline-none  rounded"
+                style={{
+                  backgroundColor: themes.find(
+                    (theme) => theme.name === choosedTheme
+                  ).colors[1],
+                  color: themes.find((theme) => theme.name === choosedTheme)
+                    .textColor,
+                  border: `1px solid ${
+                    themes.find((theme) => theme.name === choosedTheme)
+                      .colors[2]
+                  }`,
+                }}
+                disabled={isLoading}
               />
 
               {dropdownVisible && groupsStagiaireReducer.length > 0 && (
-                <ul className="absolute z-10 w-full bg-gray-800 border border-gray-700 mt-1 rounded top-16 shadow-md max-h-40 overflow-y-auto custom-scrollbar">
+                <ul
+                  className="absolute z-5 w-full mt-1 rounded top-16 shadow-md max-h-40 overflow-y-auto custom-scrollbar"
+                  style={{
+                    backgroundColor: themes.find(
+                      (theme) => theme.name === choosedTheme
+                    ).colors[1],
+                    color: themes.find((theme) => theme.name === choosedTheme)
+                      .textColor,
+                  }}
+                >
                   {groupsStagiaireReducer
                     .filter((gstr) => gstr.name.includes(searchTerm))
                     .map((item, index) => (
                       <li
                         key={index}
                         onClick={() => handleSelect(item.name)}
-                        className="px-4 py-2 hover:bg-gray-100 hover:text-gray-900 cursor-pointer border-b border-gray-700"
+                        className="px-4 py-2 cursor-pointer"
+                        style={{
+                          backgroundColor: themes.find(
+                            (theme) => theme.name === choosedTheme
+                          ).colors[1],
+                          color: themes.find(
+                            (theme) => theme.name === choosedTheme
+                          ).textColor,
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = themes.find(
+                            (theme) => theme.name === choosedTheme
+                          ).colors[0];
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = themes.find(
+                            (theme) => theme.name === choosedTheme
+                          ).colors[1];
+                        }}
                       >
                         {item.name}
                       </li>
@@ -152,7 +217,15 @@ function Groups({ formateur = false }) {
                   {selectedGroups.map((group, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-1 px-2 py-1 bg-gray-200 text-gray-800 rounded-full text-sm"
+                      className="flex items-center gap-1 px-2 py-1 rounded-full text-sm"
+                      style={{
+                        backgroundColor: themes.find(
+                          (theme) => theme.name === choosedTheme
+                        ).colors[1],
+                        color: themes.find(
+                          (theme) => theme.name === choosedTheme
+                        ).textColor,
+                      }}
                     >
                       {group}
                       <button type="button" onClick={() => removeGroup(group)}>
@@ -165,12 +238,19 @@ function Groups({ formateur = false }) {
             </div>
 
             <div className="flex w-1/3 items-center space-x-2 ">
-              <label className="text-sm text-gray-400">For All Groups</label>
+              <label className="text-sm">For All Groups</label>
               <input
                 type="checkbox"
                 checked={forAllGroups}
                 onChange={(e) => setForAllGroups(e.target.checked)}
-                disabled={isLoading} // Disable checkbox while loading
+                disabled={isLoading}
+                style={{
+                  backgroundColor: themes.find(
+                    (theme) => theme.name === choosedTheme
+                  ).colors[1],
+                  color: themes.find((theme) => theme.name === choosedTheme)
+                    .textColor,
+                }}
               />
             </div>
 
@@ -198,58 +278,129 @@ function Groups({ formateur = false }) {
         {!formateur && (
           <div className=" my-4 flex items-center space-x-2">
             <h1 className="text-xl font-semibold">My Groups</h1>
-            <Users className="h-7 w-7" />
+            <Users className="h-6 w-6" />
           </div>
         )}
         {groupsReducer.length > 0 ? (
-          groupsReducer.map((grp) => (
-            <div
-              key={grp.id}
-              className="border text-sm bg-gray-800 border-gray-600 p-4 rounded text-white my-2"
-            >
-              <h1 className="text-gray-200 text-xl">
-                <span className="font-semibold text-gray-100">Title :</span>{" "}
-                {grp.groupName}
-              </h1>
-              {!grp?.forAllGroups && (
-                <div className="flex space-x-2 items-center">
-                  {JSON.parse(grp?.selectedGroups || "[]").map((id) => {
-                    const matchedGroup = groupsStagiaireReducer?.find(
-                      (grpstg) => grpstg?.id === Number(id)
-                    );
-                    console.log(grp?.selectedGroups);
-                    
-                    return matchedGroup ? (
-                      matchedGroup?.name
-                    ) : null;
-                  })}
-                </div>
-              )}
+          <div className="grid grid-cols-3 gap-4">
+            {groupsReducer.map((grp) => (
+              <div
+                key={grp.id}
+                className=" text-sm  p-4 rounded my-2"
+                style={{
+                  backgroundColor: themes.find(
+                    (theme) => theme.name === choosedTheme
+                  )?.colors[1],
+                  color: themes.find((theme) => theme.name === choosedTheme)
+                    ?.textColor,
+                  border: `1px solid ${
+                    themes.find((theme) => theme.name === choosedTheme)
+                      ?.colors[2]
+                  }`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = themes.find(
+                    (theme) => theme.name === choosedTheme
+                  )?.colors[0];
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = themes.find(
+                    (theme) => theme.name === choosedTheme
+                  )?.colors[1];
+                }}
+              >
+                <div className="flex space-x-4 py-2 ">
+                  <div>
+                    {grp?.forAllGroups ? (
+                      <div
+                        className="w-16 h-16 rounded flex justify-center items-center"
+                        style={{
+                          backgroundColor: randomColors[0],
+                        }}
+                      >
+                        <Users className="w-5 h-5 text-white" />
+                      </div>
+                    ) : grp?.selectedGroups &&
+                      JSON.parse(grp?.selectedGroups).length > 0 ? (
+                      <div
+                        className="w-16 h-16 rounded flex justify-center items-center"
+                        style={{
+                          backgroundColor:
+                            randomColors[JSON.parse(grp?.selectedGroups)[0]],
+                        }}
+                      >
+                        <Group className="w-5 h-5 text-white" />
+                      </div>
+                    ) : (
+                      <div className="w-16 h-16 rounded-full flex justify-center items-center bg-gray-500">
+                        <Users className="w-5 h-5 text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col justify-between w-full">
+                    <h1 className=" text-xl">{grp.groupName}</h1>
+                    {!grp?.forAllGroups && (
+                      <div className="flex space-x-2 items-center">
+                        {JSON.parse(grp?.selectedGroups || "[]").map((id) => {
+                          const matchedGroup = groupsStagiaireReducer?.find(
+                            (grpstg) => grpstg?.id === Number(id)
+                          );
 
-              {grp?.forAllGroups && (
-                <div className="mt-6">
-                  <span className="text-blue-500 animate-pulse underline">
-                    For All Groups
-                  </span>
+                          return matchedGroup ? " " + matchedGroup?.name : null;
+                        })}
+                      </div>
+                    )}
+
+                    {grp?.forAllGroups ? (
+                      <div className="mt-6">
+                        <span className="text-blue-500 animate-pulse underline">
+                          For All Groups
+                        </span>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
-              )}
-              <div className="flex justify-end items-center">
-                <button className="bg-green-400 text-white px-4 py-2 cursor-pointer">
-                  Join
-                </button>
+                <div className="flex justify-between items-center w-full ">
+                  <p className="text-xs text-gray-500">
+                    {grp?.created_at &&
+                      new Date(grp.created_at).toLocaleString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false,
+                      })}
+                  </p>
+                  <div className="flex space-x-2 items-center">
+                    {formateur && (
+                      <button
+                        className="cursor-pointer flex items-center space-x-1px-4 py-2 rounded"
+                        onClick={() => {
+                          setActivityInterface(true);
+                          setInterfaceGroupChoosed(grp?.id);
+                        }}
+                      >
+                        <Plus className="h-4 w-4" />
+                        <span>Add Activity</span>
+                      </button>
+                    )}
+                    <button className="bg-green-400 text-white px-4 py-2 cursor-pointer flex items-center space-x-1 rounded">
+                      <HousePlug className="h-4 w-4" />
+                      <span>Join</span>
+                    </button>
+                  </div>
+                </div>
+                {activityInterface && grp?.id === interfaceGroupChoosed && (
+                  <ActivityInterface
+                    setActivityInterface={setActivityInterface}
+                    group={grp}
+                  />
+                )}
               </div>
-              <p className="text-xs text-gray-500">
-                {grp?.created_at &&
-                  new Date(grp.created_at).toLocaleString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false,
-                  })}
-              </p>
-            </div>
-          ))
+            ))}
+          </div>
         ) : (
           <div className="flex justify-center items-center h-100">
             <h1 className="text-xl font-semibold">

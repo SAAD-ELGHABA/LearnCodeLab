@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-
+import { themes } from "../lib/themes.js";
 function FilterCollections({ onFilterChange, setFilter }) {
+  const choosedTheme = useSelector((state) => state.themeReducer);
   const [language, setLanguage] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [commentsSort, setCommentsSort] = useState("");
@@ -85,8 +86,18 @@ function FilterCollections({ onFilterChange, setFilter }) {
   const languages = useSelector((state) => state.languagesReducer);
 
   return (
-    <div className="w-full bg-gray-900 border-gray-800 border p-4 my-2 text-sm">
-      <div className="grid grid-cols-3 gap-4 border-gray-500-gray-700 rounded p-4 my-2 w-full">
+    <div
+      className="w-full p-4 my-2 text-sm"
+      style={{
+        backgroundColor: themes.find((theme) => theme.name === choosedTheme)
+          ?.colors[1],
+        color: themes.find((theme) => theme.name === choosedTheme)?.textColor,
+        border: `1px solid ${
+          themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+        }`,
+      }}
+    >
+      <div className="grid grid-cols-3 gap-4 rounded p-4 my-2 w-full">
         {/* Language Dropdown */}
         <div className="relative" ref={languageRef}>
           <label className="block mb-1 font-semibold">Language</label>
@@ -94,19 +105,51 @@ function FilterCollections({ onFilterChange, setFilter }) {
             onClick={() =>
               setOpenDropdown(openDropdown === "language" ? null : "language")
             }
-            className="w-full border border-gray-500 rounded p-2 text-left flex justify-between items-center"
+            className="w-full rounded p-2 text-left flex justify-between items-center"
             type="button"
+            style={{
+              backgroundColor: themes.find(
+                (theme) => theme.name === choosedTheme
+              )?.colors[1],
+              color: themes.find((theme) => theme.name === choosedTheme)
+                ?.textColor,
+              border: `1px solid ${
+                themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+              }`,
+            }}
           >
             {languageDisplay}
             {openDropdown === "language" ? ArrowUp : ArrowDown}
           </button>
           {openDropdown === "language" && (
-            <ul className="absolute custom-scrollbar custom-scroll z-10 w-full border border-gray-500 bg-gray-900 rounded mt-1 max-h-40 overflow-auto shadow-lg">
+            <ul
+              className="absolute custom-scrollbar custom-scroll z-10 w-full rounded mt-1 max-h-40 overflow-auto shadow-lg"
+              style={{
+                backgroundColor: themes.find(
+                  (theme) => theme.name === choosedTheme
+                )?.colors[1],
+                color: themes.find((theme) => theme.name === choosedTheme)
+                  ?.textColor,
+                border: `1px solid ${
+                  themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+                }`,
+              }}
+            >
               {languages.map((lang) => (
                 <li
                   key={lang.name}
-                  className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                  className="px-4 py-2  cursor-pointer"
                   onClick={() => selectLanguage(lang.name)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = themes.find(
+                      (theme) => theme.name === choosedTheme
+                    )?.colors[2];
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = themes.find(
+                      (theme) => theme.name === choosedTheme
+                    )?.colors[1];
+                  }}
                 >
                   {lang.name}
                 </li>
@@ -121,24 +164,56 @@ function FilterCollections({ onFilterChange, setFilter }) {
             onClick={() =>
               setOpenDropdown(openDropdown === "sortBy" ? null : "sortBy")
             }
-            className="w-full border border-gray-500 rounded p-2 text-left flex justify-between items-center"
+            className="w-full rounded p-2 text-left flex justify-between items-center"
             type="button"
+            style={{
+              backgroundColor: themes.find(
+                (theme) => theme.name === choosedTheme
+              )?.colors[1],
+              color: themes.find((theme) => theme.name === choosedTheme)
+                ?.textColor,
+              border: `1px solid ${
+                themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+              }`,
+            }}
           >
             {sortByDisplay}
             {openDropdown === "sortBy" ? ArrowUp : ArrowDown}
           </button>
           {openDropdown === "sortBy" && (
-            <ul className="absolute custom-scrollbar custom-scroll z-10 w-full border border-gray-500 bg-gray-900 rounded mt-1 max-h-40 overflow-auto shadow-lg">
+            <ul
+              className="absolute custom-scrollbar custom-scroll z-10 w-full  rounded mt-1 max-h-40 overflow-auto shadow-lg"
+              style={{
+                backgroundColor: themes.find(
+                  (theme) => theme.name === choosedTheme
+                )?.colors[1],
+                color: themes.find((theme) => theme.name === choosedTheme)
+                  ?.textColor,
+                border: `1px solid ${
+                  themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+                }`,
+              }}
+            >
               {[
                 { val: "", label: "Select" },
                 { val: "newest", label: "Newest" },
                 { val: "oldest", label: "Oldest" },
-                { val: "mostPopular", label: "Most Popular" },
+                { val: "mostPopular", label: "Most Rated" },
               ].map(({ val, label }) => (
                 <li
                   key={val}
-                  className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                  className="px-4 py-2 cursor-pointer"
                   onClick={() => selectSortBy(val)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = themes.find(
+                      (theme) => theme.name === choosedTheme
+                    )?.colors[2];
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = themes.find(
+                      (theme) => theme.name === choosedTheme
+                    )?.colors[1];
+                  }}
                 >
                   {label}
                 </li>
@@ -155,14 +230,36 @@ function FilterCollections({ onFilterChange, setFilter }) {
                 openDropdown === "commentsSort" ? null : "commentsSort"
               )
             }
-            className="w-full border border-gray-500 rounded p-2 text-left flex justify-between items-center"
+            className="w-full rounded p-2 text-left flex justify-between items-center"
             type="button"
+            style={{
+              backgroundColor: themes.find(
+                (theme) => theme.name === choosedTheme
+              )?.colors[1],
+              color: themes.find((theme) => theme.name === choosedTheme)
+                ?.textColor,
+              border: `1px solid ${
+                themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+              }`,
+            }}
           >
             {commentsDisplay}
             {openDropdown === "commentsSort" ? ArrowUp : ArrowDown}
           </button>
           {openDropdown === "commentsSort" && (
-            <ul className="absolute custom-scrollbar custom-scroll z-10 w-full border border-gray-500 bg-gray-900 rounded mt-1 max-h-40 overflow-auto shadow-lg">
+            <ul
+              className="absolute custom-scrollbar custom-scroll z-10 w-full rounded mt-1 max-h-40 overflow-auto shadow-lg"
+              style={{
+                backgroundColor: themes.find(
+                  (theme) => theme.name === choosedTheme
+                )?.colors[1],
+                color: themes.find((theme) => theme.name === choosedTheme)
+                  ?.textColor,
+                border: `1px solid ${
+                  themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+                }`,
+              }}
+            >
               {[
                 { val: "", label: "All" },
                 { val: "Most Commented", label: "Most Commented" },
@@ -170,8 +267,18 @@ function FilterCollections({ onFilterChange, setFilter }) {
               ].map(({ val, label }) => (
                 <li
                   key={val}
-                  className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                  className="px-4 py-2 cursor-pointer"
                   onClick={() => selectCommentsSort(val)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = themes.find(
+                      (theme) => theme.name === choosedTheme
+                    )?.colors[2];
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = themes.find(
+                      (theme) => theme.name === choosedTheme
+                    )?.colors[1];
+                  }}
                 >
                   {label}
                 </li>
@@ -189,7 +296,26 @@ function FilterCollections({ onFilterChange, setFilter }) {
             handleChange({ language: "", sortBy: "", commentsSort: "" });
             setFilter({ language: "", sortBy: "", commentsSort: "" });
           }}
-          className="border border-gray-500 rounded px-4 py-2 mr-2 cursor-pointer hover:bg-gray-700"
+          className=" rounded px-4 py-2 mr-2 cursor-pointer "
+          style={{
+            backgroundColor: themes.find((theme) => theme.name === choosedTheme)
+              ?.colors[1],
+            color: themes.find((theme) => theme.name === choosedTheme)
+              ?.textColor,
+            border: `1px solid ${
+              themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+            }`,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = themes.find(
+              (theme) => theme.name === choosedTheme
+            )?.colors[2];
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = themes.find(
+              (theme) => theme.name === choosedTheme
+            )?.colors[1];
+          }}
         >
           reset filter
         </button>

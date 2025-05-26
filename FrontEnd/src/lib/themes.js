@@ -15,27 +15,27 @@ export const themes = [
     textColor: "#f1f5f9",
   },
   {
-    name: "Aqua Blue",
-colors: ["#0a3f5c", "#062537", "#38bdf8"],
+    name: "AquaBlue",
+    colors: ["#0a3f5c", "#062537", "#075985"],
     textColor: "#e0f7ff",
   },
   {
     name: "Nord",
-    colors: ["#2e3440", "#4c566a", "#88c0d0"],
+    colors: ["#2e3440", "#354259", "#88c0d0"],
     textColor: "#eceff4",
   },
-  {
-    name: "Steel",
-    colors: ["#f0f9ff", "#7dd3fc","#bae6fd" ],
-    textColor: "#1f2937",
-  },
+{
+  name: "Silk",
+  colors: ["#fefcfb", "#e3e3da", "#c2bfb2"], // Warm whites and soft beige tones
+  textColor: "#2d2d2d", // Dark charcoal gray for better readability
+},
   {
     name: "Slate",
     colors: ["#1e293b", "#64748b", "#94a3b8"],
     textColor: "#f1f5f9",
   },
   {
-    name: "Winter Night",
+    name: "WinterNight",
     colors: ["#202833", "#3b4a5a", "#5c7080"],
     textColor: "#e5ecf3",
   },

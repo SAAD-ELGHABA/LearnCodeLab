@@ -17,7 +17,7 @@ class AdminSeeder extends Seeder
             'email' => 'admin@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('adminpwd'), // Use a secure password
-            'group' => 'web',
+            'groupstagiaire_id' => 0,
             'role' => 'admin',
             'image' => null,
             'remember_token' => Str::random(10),

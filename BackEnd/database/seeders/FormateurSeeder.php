@@ -17,7 +17,7 @@ class FormateurSeeder extends Seeder
             'email' => 'formateur@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
-            'group' => 'web',
+            'groupstagiaire_id' => 0,
             'role' => 'formateur',
             'image' => null,
             'remember_token' => Str::random(10),

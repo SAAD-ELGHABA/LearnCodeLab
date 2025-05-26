@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import spinner from "../../../Assets/spinner.gif";
-import {themes} from '../../../lib/themes.js'
+import { themes } from "../../../lib/themes.js";
 
 import {
   setTitleAndLanguage,
@@ -92,9 +92,7 @@ const Step1 = ({ onNext }) => {
     setError("");
     onNext();
   };
-  const choosedTheme = useSelector(
-    (state) => state.themeReducer
-  );
+  const choosedTheme = useSelector((state) => state.themeReducer);
   return (
     <div className="w-full mx-auto mt-5 flex flex-col justify-center items-center">
       <div className="space-y-6">
@@ -105,9 +103,7 @@ const Step1 = ({ onNext }) => {
         </p>
 
         <div className="w-full mx-auto mb-4 flex justify-evenly items-end ">
-          <label className="block  mb-2 w-1/3 ">
-            Name of your collection:
-          </label>
+          <label className="block  mb-2 w-1/3 ">Name of your collection:</label>
           <input
             placeholder="Enter your collection name"
             type="text"
@@ -116,7 +112,13 @@ const Step1 = ({ onNext }) => {
               dispatch(setTitleAndLanguage(e.target.value, language))
             }
             className="w-2/3 p-2  border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-white"
-            style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1] ,color:themes.find((theme) => theme.name === choosedTheme).textColor }}
+            style={{
+              backgroundColor: themes.find(
+                (theme) => theme.name === choosedTheme
+              ).colors[1],
+              color: themes.find((theme) => theme.name === choosedTheme)
+                .textColor,
+            }}
           />
         </div>
       </div>
@@ -135,41 +137,50 @@ const Step1 = ({ onNext }) => {
               "python",
               "Bootstrap",
             ].map((lang) => (
-<button
-  key={lang}
-  onClick={() =>
-    dispatch(setTitleAndLanguage(title, lang.toLowerCase()))
-  }
-  className="cursor-pointer p-2 rounded-md text-sm transition-colors duration-200"
-  style={{
-    backgroundColor:
-      language === lang.toLowerCase()
-        ? themes.find((theme) => theme.name === choosedTheme)?.colors[0]
-        : themes.find((theme) => theme.name === choosedTheme)?.colors[2],
-    color:themes.find((theme) => theme.name === choosedTheme)?.textColor,
-    border: `1px solid ${
-      language === lang.toLowerCase()
-        ? themes.find((theme) => theme.name === choosedTheme)?.colors[2]
-        : themes.find((theme) => theme.name === choosedTheme)?.colors[0]
-    }`,
-  }}
-  onMouseEnter={(e) => {
-    if (language !== lang.toLowerCase()) {
-      e.currentTarget.style.backgroundColor =
-        themes.find((theme) => theme.name === choosedTheme)?.colors[1];
-        e.currentTarget.style.border = `1px solid ${themes.find((theme) => theme.name === choosedTheme)?.colors[2]}`;
-    }
-  }}
-  onMouseLeave={(e) => {
-    if (language !== lang.toLowerCase()) {
-      e.currentTarget.style.backgroundColor =
-        themes.find((theme) => theme.name === choosedTheme)?.colors[2];
-    }
-  }}
->
-  #{lang}
-</button>
-
+              <button
+                key={lang}
+                onClick={() =>
+                  dispatch(setTitleAndLanguage(title, lang.toLowerCase()))
+                }
+                className="cursor-pointer p-2 rounded-md text-sm transition-colors duration-200"
+                style={{
+                  backgroundColor:
+                    language === lang.toLowerCase()
+                      ? themes.find((theme) => theme.name === choosedTheme)
+                          ?.colors[0]
+                      : themes.find((theme) => theme.name === choosedTheme)
+                          ?.colors[2],
+                  color: themes.find((theme) => theme.name === choosedTheme)
+                    ?.textColor,
+                  border: `1px solid ${
+                    language === lang.toLowerCase()
+                      ? themes.find((theme) => theme.name === choosedTheme)
+                          ?.colors[2]
+                      : themes.find((theme) => theme.name === choosedTheme)
+                          ?.colors[0]
+                  }`,
+                }}
+                onMouseEnter={(e) => {
+                  if (language !== lang.toLowerCase()) {
+                    e.currentTarget.style.backgroundColor = themes.find(
+                      (theme) => theme.name === choosedTheme
+                    )?.colors[1];
+                    e.currentTarget.style.border = `1px solid ${
+                      themes.find((theme) => theme.name === choosedTheme)
+                        ?.colors[2]
+                    }`;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (language !== lang.toLowerCase()) {
+                    e.currentTarget.style.backgroundColor = themes.find(
+                      (theme) => theme.name === choosedTheme
+                    )?.colors[2];
+                  }
+                }}
+              >
+                #{lang}
+              </button>
             ))}
           </div>
         </div>
@@ -199,12 +210,10 @@ const Step2 = ({ onNext, onBack }) => {
     }
     onNext();
   };
-  const choosedTheme = useSelector(
-    (state) => state.themeReducer
-  );
+  const choosedTheme = useSelector((state) => state.themeReducer);
   return (
     <div className="space-y-6 w-full mx-auto mt-5">
-      <div className="space-y-6 w-1/3 mx-auto mb-4">
+      <div className="space-y-6 w-1/2 mx-auto mb-4">
         <h3 className="text-xl font-semibold">
           Ajoutez la question et la description
         </h3>
@@ -216,7 +225,15 @@ const Step2 = ({ onNext, onBack }) => {
             dispatch(setQuestionAndDescription(e.target.value, description))
           }
           className="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white appearance-none"
-                    style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1] ,color:themes.find((theme) => theme.name === choosedTheme).textColor }}
+          style={{
+            backgroundColor: themes.find((theme) => theme.name === choosedTheme)
+              .colors[1],
+            color: themes.find((theme) => theme.name === choosedTheme)
+              .textColor,
+            border: `1px solid ${themes.find(
+              (theme) => theme.name === choosedTheme
+            )?.colors[2]}`,
+          }}
         />
         <textarea
           rows="8"
@@ -226,7 +243,15 @@ const Step2 = ({ onNext, onBack }) => {
             dispatch(setQuestionAndDescription(question, e.target.value))
           }
           className="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white appearance-none"
-                    style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1] ,color:themes.find((theme) => theme.name === choosedTheme).textColor }}
+          style={{
+            backgroundColor: themes.find((theme) => theme.name === choosedTheme)
+              .colors[1],
+            color: themes.find((theme) => theme.name === choosedTheme)
+              .textColor,
+            border: `1px solid ${themes.find(
+              (theme) => theme.name === choosedTheme
+            )?.colors[2]}`,
+          }}
         />
       </div>
       <div className="flex justify-center space-x-2 mt-4 text-sm">

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('group');
+            $table->foreignId('groupstagiaire_id')->nullable()->constrained('groupstagiaire')->onDelete('cascade');
             $table->string('role')->default('stagiaire');
             $table->string('image')->nullable();
             $table->rememberToken();

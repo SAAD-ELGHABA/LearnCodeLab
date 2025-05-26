@@ -34,6 +34,8 @@ function App() {
           },
         });
         if (response) {
+          console.log(response.data);
+
           dispatch(login(token, response.data));
         }
       };
@@ -50,12 +52,12 @@ function App() {
   return (
     <>
       {process ? (
-        <>
+        <div className="page-container">
           <RouterProvider router={Router}>
             <Navbar />
           </RouterProvider>
           <Toaster />
-        </>
+        </div>
       ) : (
         <h1 className="w-full text-1xl font-bold text-center h-screen flex items-center justify-center text-slate-700">
           <img src={spinner} alt="spinner" />

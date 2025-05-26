@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
+
 
 <head>
     <meta charset="UTF-8">
@@ -11,11 +12,12 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 </head>
 
 
-<body class="bg-[#0E1C2D] text-slate-50">
+<body class="transition-colors duration-300 ease-in-out bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 overflo-x-scroll custom-scrollbar">
 
     @include('elements.header')
     <div class="flex pt-16">
@@ -54,8 +56,10 @@
         });
     </script>
     <x-toaster-hub />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 
 </html>

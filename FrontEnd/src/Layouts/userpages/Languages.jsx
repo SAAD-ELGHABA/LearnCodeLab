@@ -4,19 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { setTitleAndLanguage } from "../../redux/action";
 import { useNavigate } from "react-router-dom";
-
+import { themes } from "../../lib/themes.js";
 function Languages() {
   const languages = useSelector((state) => state.languagesReducer);
   const [openIndex, setOpenIndex] = useState(0);
-
+  const chooseTheme = useSelector((state) => state.themeReducer);
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
   const dispatch = useDispatch();
-  const nav = useNavigate()
+  const nav = useNavigate();
   const handleCollectionLanguage = (language) => {
     dispatch(setTitleAndLanguage("", language));
-    nav('/add1');
+    nav("/add1");
   };
   return (
     <div className="mx-8 my-4">
@@ -29,7 +29,12 @@ function Languages() {
         {languages.map((lang, index) => (
           <div
             key={index}
-            className="border border-gray-500 rounded-2xl overflow-hidden shadow-sm"
+            className=" rounded-2xl overflow-hidden shadow-sm"
+            style={{
+              backgroundColor: themes.find((theme) => theme.name === chooseTheme)?.colors[1],
+              border: `1px solid ${themes.find((theme) => theme.name === chooseTheme)?.colors[2]}`,
+              color: themes.find((theme) => theme.name === chooseTheme)?.textColor,
+            }}
           >
             <button
               className="flex justify-between items-center w-full px-4 py-3 text-left"
@@ -53,7 +58,7 @@ function Languages() {
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="px-4 py-3 text-white text-sm">
+                  <div className="px-4 py-3  text-sm">
                     {lang?.description}
                     <div className="w-full flex justify-end my-2">
                       <button

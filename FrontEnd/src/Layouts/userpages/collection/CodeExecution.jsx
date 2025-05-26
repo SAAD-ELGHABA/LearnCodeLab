@@ -3,7 +3,8 @@ import { Editor } from "@monaco-editor/react";
 import spinner from "../../../Assets/spinner.gif";
 import { monacoApi } from "../../../Components/monaco/api.monaco";
 import { toast } from "sonner";
-
+import { themes } from "../../../lib/themes.js";
+import { useSelector } from "react-redux";
 // eslint-disable-next-line react/prop-types
 const CodeExecution = ({ language, code = null, status = false, setCode }) => {
   const [editorCode, setEditorCode] = useState(code || "");
@@ -11,7 +12,7 @@ const CodeExecution = ({ language, code = null, status = false, setCode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const editorRef = useRef(null);
-
+  const choosedTheme = useSelector((state) => state.themeReducer);
   function handleEditorDidMount(editor) {
     editorRef.current = editor;
   }
@@ -39,10 +40,25 @@ const CodeExecution = ({ language, code = null, status = false, setCode }) => {
     setIsError(false);
     toast.success("Output cleared successfully!");
   };
+  const themeId = choosedTheme.replace(/\s+/g, "_").toLowerCase();
+  const definedThemes = new Set();
 
   return (
-    <div className="flex">
-      <div className="w-1/2 pr-4">
+    <div className="flex space-x-2">
+      <div
+        className={` pr-4 rounded ${
+          language === "javascript" ||
+          language === "php" ||
+          language === "python"
+            ? "w-1/2"
+            : "w-full"
+        }`}
+        style={{
+          border: `1px solid ${
+            themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+          }`,
+        }}
+      >
         <Editor
           height="65vh"
           language={
@@ -71,7 +87,40 @@ const CodeExecution = ({ language, code = null, status = false, setCode }) => {
             setEditorCode(newValue);
             setCode(newValue);
           }}
-          theme="vs-dark"
+          theme={themeId}
+          beforeMount={(monaco) => {
+            const currentTheme = themes.find((t) => t.name === choosedTheme);
+            if (!currentTheme || definedThemes.has(themeId)) return;
+
+            monaco.editor.defineTheme(themeId, {
+              base:
+                choosedTheme === "Light" || choosedTheme === "Slik"
+                  ? "vs"
+                  : "vs-dark",
+              inherit: true,
+              rules: [
+                {
+                  token: "",
+                  foreground: currentTheme.textColor.replace("#", ""),
+                },
+                { token: "comment", foreground: "6A9955" },
+                { token: "keyword", foreground: "007acc" },
+                { token: "string", foreground: "ce9178" },
+              ],
+              colors: {
+                "editor.background": currentTheme.colors[0],
+                "editor.foreground": currentTheme.textColor,
+                "editorLineNumber.foreground": "#999999",
+                "editorCursor.foreground": currentTheme.textColor,
+                "editor.lineHighlightBackground": currentTheme.colors[1],
+                "editor.selectionBackground": currentTheme.colors[2] + "99",
+                "editor.inactiveSelectionBackground":
+                  currentTheme.colors[2] + "44",
+              },
+            });
+
+            definedThemes.add(themeId);
+          }}
           options={{
             minimap: { enabled: false },
             padding: { top: 10, bottom: 5 },
@@ -81,46 +130,78 @@ const CodeExecution = ({ language, code = null, status = false, setCode }) => {
           onMount={handleEditorDidMount}
         />
       </div>
-
-      <div
-        className={`relative border text-start p-2 me-2 rounded w-1/2 h-[65vh] ${
-          isError ? "border-red-500" : "border-gray-700"
-        }`}
-      >
-        {isLoading && (
-          <div className="absolute top-0 left-0 right-0 bg-gray-800 opacity-75 text-white p-2 rounded-t h-full flex justify-center items-center">
-            <img src={spinner} alt="Loading..." className="w-10 h-10 mx-auto" />
-          </div>
-        )}
-        <div>
-          <div className="w-full flex justify-between items-center text-sm">
-            <button
-              className="border border-blue-500 ms-3 text-blue-500 rounded px-4 py-2 cursor-pointer hover:border-blue-600 hover:text-blue-600 transition duration-300"
-              onClick={showValue}
+      {(language === "javascript" ||
+        language === "php" ||
+        language === "python") && (
+        <div
+          className={`relative  text-start p-2 me-2 rounded w-1/2 h-[65vh]`}
+          style={{
+            border: isError
+              ? "red 1px solid"
+              : `1px solid ${
+                  themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+                }`,
+          }}
+        >
+          {isLoading && (
+            <div
+              className="absolute top-0 left-0 right-0 opacity-75 p-2 rounded-t h-full flex justify-center items-center"
+              style={{
+                backgroundColor: themes.find(
+                  (theme) => theme.name === choosedTheme
+                )?.colors[0],
+                color: themes.find((theme) => theme.name === choosedTheme)
+                  ?.textColor,
+              }}
             >
-              Run Code
-            </button>
-            <button
-              className="flex justify-center items-center space-x-2 text-slate-400 cursor-pointer hover:text-blue-500 transition duration-300 hover:bg-gray-800 rounded px-4 py-2"
-              onClick={clearOutput}
-            >
-              <p>Clear Output</p>
-            </button>
-          </div>
+              <img
+                src={spinner}
+                alt="Loading..."
+                className="w-10 h-10 mx-auto"
+              />
+            </div>
+          )}
 
-          <div className="text-start overflow-y-auto text-sm h-[60vh] m-2">
-            <div>
-              <span
-                className={`whitespace-pre-wrap ${
-                  isError ? "text-red-500" : "text-slate-400"
-                }`}
+          <div>
+            <div className="w-full flex justify-between items-center text-sm">
+              <button
+                className="border border-blue-500 ms-3 text-blue-500 rounded px-4 py-2 cursor-pointer hover:border-blue-600 hover:text-blue-600 transition duration-300"
+                onClick={showValue}
               >
-                {output}
-              </span>
+                Run Code
+              </button>
+              <button
+                className="flex justify-center items-center space-x-2 cursor-pointer hover:text-blue-500 transition duration-300 rounded px-4 py-2"
+                style={{
+                  border: `1px solid ${
+                    themes.find((theme) => theme.name === choosedTheme)
+                      .colors[2]
+                  }`,
+                }}
+                onClick={clearOutput}
+              >
+                <p>Clear Output</p>
+              </button>
+            </div>
+
+            <div className="text-start overflow-y-auto text-sm h-[60vh] m-2">
+              <div>
+                <span
+                  className={`whitespace-pre-wrap `}
+                  style={{
+                    color: isError
+                      ? "red"
+                      : themes.find((theme) => theme.name === choosedTheme)
+                          ?.textColor,
+                  }}
+                >
+                  {output}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

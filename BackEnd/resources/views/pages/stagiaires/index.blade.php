@@ -49,7 +49,7 @@
             <td class="py-2">{{$stagiaire->firstName}}</td>
             <td class="py-2">{{$stagiaire->lastName}}</td>
             <td class="py-2">{{$stagiaire->email}}</td>
-            <td class="py-2">{{$stagiaire->group}}</td>
+            <td class="py-2">{{$stagiaire->groupstagiaire->name}}</td>
             <td class="py-2">{{$stagiaire->created_at}}</td>
             <td class="py-2">
                 <div class="flex justify-center space-x-2">

@@ -1,9 +1,13 @@
-<header class="w-full py-4 bg-gray-900 fixed top-0 left-0 right-0 z-10">
+<header class="w-full py-4 bg-white dark:bg-gray-900 text-black dark:text-white fixed top-0 left-0 right-0 z-10">
     <nav class="container mx-auto flex justify-between items-center px-4">
         <div>
             <h1 class="text-xl font-bold text-blue-400">Dashboard Admin</h1>
         </div>
+        <button onclick="toggleTheme()" class="p-2 bg-gray-200 dark:bg-gray-700 rounded">
+            Toggle Theme
+        </button>
         <div>
+
             <form action="{{ route('admin.logout') }}" method="POST" id="logoutForm">
                 @csrf
                 <button type="button"
@@ -94,6 +98,30 @@
                 padding: 12px 30px;
             }
         </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const theme = localStorage.getItem('theme');
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            });
 
+            function toggleTheme() {
+
+                const html = document.documentElement;
+                const isDark = html.classList.contains('dark');
+                if (isDark) {
+                    html.classList.remove('dark');
+                    html.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.add('dark');
+                    html.classList.remove('light');
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+        </script>
     </nav>
 </header>

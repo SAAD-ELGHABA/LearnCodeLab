@@ -8,16 +8,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import spinner from "../../../Assets/spinner.gif";
 import RateStars from "./Feedback/RateStars";
-import {themes} from '../../../lib/themes.js'
+import { themes } from "../../../lib/themes.js";
 function DetailsCollection() {
   const { slug, user } = useParams();
   const collections = useSelector((state) => state.collectionsReducer);
   const ChoosedCollection = collections.find(
     (collection) => collection.slug === slug
   );
-  const choosedTheme = useSelector(
-    (state) => state.themeReducer
-  );
+  const choosedTheme = useSelector((state) => state.themeReducer);
   const [typeFeedback, setTypeFeedback] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
@@ -44,7 +42,7 @@ function DetailsCollection() {
     loadFeedbacks();
   });
   console.log(ChoosedCollection);
-  
+
   return (
     <div>
       <div className="flex items-center gap-1 mb-4 text-sm">
@@ -61,14 +59,21 @@ function DetailsCollection() {
       {ChoosedCollection ? (
         <div className="flex flex-col mx-2 rounded p-4">
           <div className="flex gap-4 items-center">
-            <div className="w-2/3 flex flex-col gap-4 border-r border-gray-700 pr-4">
+            <div
+              className="w-2/3 flex flex-col gap-4 pr-4"
+              style={{
+                borderRight: `1px solid ${
+                  themes.find((theme) => theme.name === choosedTheme).colors[2]
+                }`,
+              }}
+            >
               <h1 className="text-2xl font-semibold">
                 {ChoosedCollection?.title}
               </h1>
-              <h3 className="text-lg font-medium">{ChoosedCollection.question}</h3>
-              <p className="text-sm ">
-                {ChoosedCollection.description}
-              </p>
+              <h3 className="text-lg font-medium">
+                {ChoosedCollection.question}
+              </h3>
+              <p className="text-sm ">{ChoosedCollection.description}</p>
             </div>
             <div className="w-1/3 px-2">
               <div className="flex justify-end">
@@ -105,17 +110,15 @@ function DetailsCollection() {
                   downrates={ChoosedCollection?.downvotes}
                 /> */}
                 <div className="flex items-center gap-1 text-xs justify-between">
+
                   <span>
                     Feedback:{" "}
                     <span className="font-semibold mx-2">
-                      {ChoosedCollection?.feedback?.length}
+                      {ChoosedCollection.feedback.length}
                     </span>
                   </span>
-                  <span className="flex items-center gap-1 bg-gray-800 px-4 py-2 rounded text-blue-500">
-                    <span>{ChoosedCollection?.language}</span>
-                  </span>
-                  <span>Feedback: <span className="font-semibold mx-2">{ChoosedCollection.feedback.length}</span></span>
-                  <span className="flex font-medium items-center gap-1  px-4 py-2 rounded "
+                  <span
+                    className="flex font-medium items-center gap-1  px-4 py-2 rounded "
                     style={{
                       backgroundColor: themes.find(
                         (theme) => theme.name === choosedTheme

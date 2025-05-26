@@ -250,7 +250,7 @@ export const languagesReducer = (state=languages,action)=>{
 
     }
 }
-const theme = "Light"
+const theme = localStorage.getItem('theme') || "Light"
 export const themeReducer = (state=theme,action)=>{
     switch(action.type){
         case "SET_THEME":

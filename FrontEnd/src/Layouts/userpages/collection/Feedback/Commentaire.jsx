@@ -3,10 +3,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { feedbackPromise } from "./feedbackPromise";
 import spinner from "../../../../Assets/spinner.gif";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { themes } from "../../../../lib/themes.js";
 // eslint-disable-next-line react/prop-types
 function Commentaire({ collection, setTypeFeedback }) {
+  const choosedTheme = useSelector((state) => state.themeReducer);
   const [commentaireValue, setCommentaireValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -35,9 +36,19 @@ function Commentaire({ collection, setTypeFeedback }) {
   };
   return (
     <div className="w-full  p-4">
-      <div className="relative bg-gray-800 text-white p-4 rounded-xl rounded-bl-none min-w-xl w-full">
+      <div
+        className="relative p-4 rounded-xl rounded-bl-none min-w-xl w-full"
+        style={{
+          backgroundColor: themes.find((theme) => theme.name === choosedTheme)
+            ?.colors[1],
+          color: themes.find((theme) => theme.name === choosedTheme)?.textColor,
+          border: `1px solid ${
+            themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+          }`,
+        }}
+      >
         <textarea
-          className="w-full h-32 bg-transparent text-gray-300 placeholder-gray-500 outline-none resize-none  "
+          className="w-full h-32 bg-transparent outline-none resize-none  "
           placeholder="Write your comment here..."
           onChange={(e) => setCommentaireValue(e.target.value)}
           value={commentaireValue}
@@ -46,7 +57,7 @@ function Commentaire({ collection, setTypeFeedback }) {
       </div>
       <div className="flex justify-start my-4 text-sm space-x-2 items-center">
         <button
-          className="bg-blue-500 px-6 py-2 rounded cursor-pointer hover:bg-blue-600"
+          className="bg-blue-500 px-6 py-2 rounded cursor-pointer hover:bg-blue-600 text-white"
           onClick={handleCommentaire}
         >
           {isLoading ? (

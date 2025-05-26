@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-
+import { toast } from "sonner";
 
 function AdminGreeting() {
   const token = useSelector((state) => state.userReducer.token);
@@ -18,7 +18,13 @@ function AdminGreeting() {
   const nav = useNavigate();
   const dispatch = useDispatch();
   const handleLogOut = async () => {
-    if (confirm("log out !")) {
+    if (
+      token &&
+      toast("Logging out...", {
+        duration: 2000,
+        icon: "🔒",
+      })
+    ) {
       const response = await axios.post(
         "/api/logout",
         {},

@@ -15,13 +15,12 @@
     @php
     $links = [
     ['route' => 'admin.index', 'icon' => 'fa-house', 'label' => 'Home'],
-    ['route' => 'admin.index', 'icon' => 'fa-gears', 'label' => 'Settings'],
     ['route' => 'stagiaires.index', 'icon' => 'fa-graduation-cap', 'label' => 'Stagiaires'],
-    ['route' => 'stagiaires.index', 'icon' => 'fa-solid fa-chalkboard-user', 'label' => 'Formateurs'],
-    ['route' => 'admin.index', 'icon' => 'fa-user-group', 'label' => 'My Groups'],
-    ['route' => 'admin.index', 'icon' => 'fa-code', 'label' => 'Languages'],
-    ['route' => 'resources.index', 'icon' => 'fa-folder-open', 'label' => 'Resources'],
-    ['route' => 'admin.index', 'icon' => 'fa-circle-question', 'label' => 'Help/Support'],
+    ['route' => 'formateurs.index', 'icon' => 'fa-solid fa-chalkboard-user', 'label' => 'Formateurs'],
+    ['route' => 'admin.collections', 'icon' => 'fa-regular fa-file-lines', 'label' => 'Collections'],
+    ['route' => 'resources.index', 'icon' => 'fa-solid fa-users-line', 'label' => 'Groups'],
+    ['route' => 'admin.languages', 'icon' => 'fa-code', 'label' => 'Languages'],
+    ['route' => 'resources.index', 'icon' => 'fa-folder-open', 'label' => 'Resources']
     ];
     @endphp
 

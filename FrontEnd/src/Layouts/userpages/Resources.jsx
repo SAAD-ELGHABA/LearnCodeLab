@@ -7,11 +7,12 @@ import {
   Search,
   Share2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ViewToggle from "../../Components/ViewToggle";
-
+import { themes } from "../../lib/themes.js";
 function Resources() {
+  const choosedTheme = useSelector((state) => state.themeReducer);
   const resourcesReducer = useSelector((state) => state.resourcesReducer);
   const dispatch = useDispatch();
 
@@ -69,7 +70,6 @@ function Resources() {
     };
     responsefun();
   }, [dispatch]);
-  const [dorpDown, setDropDown] = useState(false);
   return (
     <div className="p-4 ">
       <div className="mx-8">
@@ -80,27 +80,51 @@ function Resources() {
 
         {/* Search and View Toggle */}
         <div className="my-4 flex items-center justify-between">
-          <div className="flex items-center border border-gray-600 rounded w-1/3">
-            <span className="p-2 border-r border-gray-600">
+          <div
+            className="flex items-center  rounded w-1/3"
+            style={{
+              color: themes.find((theme) => theme.name === choosedTheme)
+                ?.textColor,
+              border: `1px solid ${
+                themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+              }`,
+            }}
+          >
+            <span
+              className="p-2"
+              style={{
+                backgroundColor: themes.find(
+                  (theme) => theme.name === choosedTheme
+                )?.colors[0],
+                color: themes.find((theme) => theme.name === choosedTheme)
+                  ?.textColor,
+                borderRight: `1px solid ${
+                  themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+                }`,
+              }}
+            >
               <Search className="h-4 w-4" />
             </span>
             <input
               type="text"
-              className="w-full px-2 py-2 text-white bg-transparent focus:outline-none"
+              className="w-full px-2 py-2 bg-transparent focus:outline-none"
               placeholder="Search collections..."
               onChange={(e) => setItemSearch(e.target.value)}
+              style={{
+                color: themes.find((theme) => theme.name === choosedTheme)
+                  ?.textColor,
+              }}
             />
           </div>
           <ViewToggle onChange={(viewType) => setViewType(viewType)} />
         </div>
 
-        {/* Resources List */}
         {resourcesReducer?.length > 0 && (
           <div
             className={
               viewType === "grid"
                 ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
-                : "space-y-4"
+                : "space-y-1"
             }
           >
             {resourcesReducer
@@ -118,14 +142,30 @@ function Resources() {
                 return (
                   <div
                     key={resource.id}
-                    className={`relative bg-[#273042] border border-[#1d3a4f] rounded-lg shadow hover:shadow-lg transition-all duration-300 p-2 ${
+                    className={`relative rounded-lg shadow hover:shadow-lg transition-all duration-300 px-2 py-1 ${
                       viewType === "list" ? "flex space-x-4 items-center" : ""
                     }`}
+                    style={{
+                      backgroundColor: themes.find(
+                        (theme) => theme.name === choosedTheme
+                      )?.colors[1],
+                      color: themes.find((theme) => theme.name === choosedTheme)
+                        ?.textColor,
+                      border: `1px solid ${
+                        themes.find((theme) => theme.name === choosedTheme)
+                          ?.colors[2]
+                      }`,
+                    }}
                   >
                     <div
                       className={`${
                         viewType === "list" ? "h-20 w-32" : "h-32"
-                      } flex items-center justify-center bg-white rounded-md overflow-hidden`}
+                      } flex items-center justify-center rounded-md overflow-hidden`}
+                      style={{
+                        backgroundColor: themes.find(
+                          (theme) => theme.name === choosedTheme
+                        )?.colors[0],
+                      }}
                     >
                       {isImage ? (
                         <img
@@ -140,7 +180,7 @@ function Resources() {
                           className="h-full w-full"
                         />
                       ) : (
-                        <div className="flex items-center justify-center h-full w-full text-sm text-gray-600 font-medium">
+                        <div className="flex items-center justify-center h-full w-full text-sm  font-medium">
                           <span>{resource.type.toUpperCase()}</span>
                         </div>
                       )}
@@ -151,30 +191,66 @@ function Resources() {
                           viewType === "list"
                             ? "flex items-center justify-between w-full"
                             : "mt-2"
-                        } text-white`}
+                        }`}
                       >
                         <div className="text-sm truncate">{resource.title}</div>
 
                         <div className="flex items-center space-x-2 mt-1">
                           <span
-                            className="p-1 rounded-full hover:bg-gray-800 cursor-pointer"
+                            className="p-1 rounded-full  cursor-pointer"
                             onClick={() => handlePreview(resource)}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                themes.find(
+                                  (theme) => theme.name === choosedTheme
+                                )?.colors[2];
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                themes.find(
+                                  (theme) => theme.name === choosedTheme
+                                )?.colors[1];
+                            }}
                           >
                             <Eye className="h-4 w-4" />
                           </span>
 
                           <span
-                            className="p-1 rounded-full hover:bg-gray-800 cursor-pointer"
+                            className="p-1 rounded-full  cursor-pointer"
                             onClick={() =>
                               handleDownload(fullUrl, resource.title)
                             }
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                themes.find(
+                                  (theme) => theme.name === choosedTheme
+                                )?.colors[2];
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                themes.find(
+                                  (theme) => theme.name === choosedTheme
+                                )?.colors[1];
+                            }}
                           >
                             <Download className="h-4 w-4" />
                           </span>
 
                           <span
-                            className="p-1 rounded-full hover:bg-gray-800 cursor-pointer"
+                            className="p-1 rounded-full cursor-pointer"
                             onClick={() => handleShare(resource.file)}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                themes.find(
+                                  (theme) => theme.name === choosedTheme
+                                )?.colors[2];
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                themes.find(
+                                  (theme) => theme.name === choosedTheme
+                                )?.colors[1];
+                            }}
                           >
                             <Share2 className="h-4 w-4" />
                           </span>

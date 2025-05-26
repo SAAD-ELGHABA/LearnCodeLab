@@ -14,13 +14,14 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\SaveController;
+use App\Models\Collection;
 use App\Models\GroupStagiaire;
 use App\Models\Group;
 use App\Models\Ressource;
 use App\Models\Save;
 
 Route::get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user()->load('groupstagiaire');
 })->middleware(['auth:sanctum', 'verified']);
 
 
@@ -60,6 +61,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/add-save', [SaveController::class, 'add'])->name('add-saves');
     Route::get('/mySaves', [SaveController::class, 'index'])->name('mySaves');
     Route::post('/rate-collection/{id}', [RateController::class, 'rateCollection'])->name('rate.collection');
+    Route::get('/get-mycollections/{userId}', function ($userId) {
+        $MyCollections = Collection::where('user_id', $userId)
+            ->with(['user', 'rates'])
+            ->get();
+        return response()->json([
+            'MyCollections' => $MyCollections,
+        ]);
+    });
 });
 
 
@@ -74,9 +83,8 @@ Route::post('/create-group', [GroupController::class, 'store']);
 
 Route::get('/get-group/{id}', function ($id) {
     $user = User::find($id);
-    // $groups = [];
     if ($user->role === 'stagiaire') {
-        $groupId = $user->group;
+        $groupId = $user->groupstagiaire_id;
         $groups = Group::all();
         $filteredGroups = $groups->filter(function ($group) use ($groupId) {
             $selectedGroups = json_decode($group->selectedGroups, true);
@@ -103,4 +111,4 @@ Route::get('/get-resources', function () {
 });
 
 
-Route::get('/get-languages',[LanguageController::class,'index'])->name('get.languages');
+Route::get('/get-languages', [LanguageController::class, 'index'])->name('get.languages');

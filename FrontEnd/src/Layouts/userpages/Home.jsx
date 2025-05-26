@@ -12,8 +12,9 @@ import { Search, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getCollections } from "../../functions/getCollections";
 import FilterCollections from "../../Components/FilterCollections";
-
+import { themes } from "../../lib/themes.js";
 function Home() {
+  const choosedTheme = useSelector((state) => state.themeReducer);
   const collectionsReducer = useSelector((state) => state.collectionsReducer);
   const [filter, setFilter] = useState({
     language: "",
@@ -53,7 +54,10 @@ function Home() {
       const filtered = allCollections.filter(
         (collection) =>
           collection.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          collection.question.toLowerCase().includes(searchTerm.toLowerCase())
+          collection.question
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          collection.language.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
       setSuggestions(filtered.slice(0, 5));
@@ -160,7 +164,7 @@ function Home() {
           </div>
           <Link
             to="/add1"
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-1 transition-colors"
+            className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg flex items-center gap-1 transition-colors"
           >
             <span>Add a collection</span>
             <svg
@@ -183,26 +187,63 @@ function Home() {
         <div className="flex justify-between gap-4 mb-6 w-full items-center">
           <div
             ref={suggestionRef}
-            className="relative flex items-center rounded-lg w-1/3 px-2 bg-gray-700 justify-between max-w-md"
+            className="relative flex items-center rounded-lg w-1/3 px-2 justify-between max-w-md"
+            style={{
+              backgroundColor: themes.find(
+                (theme) => theme.name === choosedTheme
+              )?.colors[1],
+              color: themes.find((theme) => theme.name === choosedTheme)
+                ?.textColor,
+              border: `1px solid ${
+                themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+              }`,
+            }}
           >
             <input
               type="text"
-              className="w-full px-2 py-2 text-white focus:outline-none"
+              className="w-full px-2 py-2 focus:outline-none"
               placeholder="Search collections..."
               value={searchTerm}
               onChange={handleSearchChange}
-              // onFocus={() => {
-              //   if (suggestions.length > 0) setShowSuggestions(true);
-              // }}
+              style={{
+                backgroundColor: themes.find(
+                  (theme) => theme.name === choosedTheme
+                )?.colors[1],
+                color: themes.find((theme) => theme.name === choosedTheme)
+                  ?.textColor,
+              }}
             />
             <Search className="h-4 w-4 text-gray-400" />
             {showSuggestions && (
-              <ul className="custom-scrollbar absolute z-10 top-10 right-0 w-full bg-gray-700 border border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              <ul
+                className="custom-scrollbar absolute z-10 top-10 right-0 w-full rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                style={{
+                  backgroundColor: themes.find(
+                    (theme) => theme.name === choosedTheme
+                  )?.colors[1],
+                  color: themes.find((theme) => theme.name === choosedTheme)
+                    ?.textColor,
+                  border: `1px solid ${
+                    themes.find((theme) => theme.name === choosedTheme)
+                      ?.colors[2]
+                  }`,
+                }}
+              >
                 {suggestions.map((collection) => (
                   <li
                     key={collection.id}
                     onClick={() => handleSuggestionClick(collection.title)}
-                    className="px-4 py-2 hover:bg-gray-600 cursor-pointer"
+                    className="px-4 py-2 cursor-pointer"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = themes.find(
+                        (theme) => theme.name === choosedTheme
+                      )?.colors[2];
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = themes.find(
+                        (theme) => theme.name === choosedTheme
+                      )?.colors[1];
+                    }}
                   >
                     <div className="flex items-center space-x-2">
                       <span>
@@ -221,9 +262,19 @@ function Home() {
           </div>
 
           <button
-            className={`py-1.5 px-2.5 hover:bg-gray-700 rounded cursor-pointer flex items-center space-x-2  ${
+            className={`py-1.5 px-2.5 rounded cursor-pointer flex items-center space-x-2  ${
               toggleFilter && "text-blue-500 bg-gray-700"
             }`}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = themes.find(
+                (theme) => theme.name === choosedTheme
+              )?.colors[2];
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = themes.find(
+                (theme) => theme.name === choosedTheme
+              )?.colors[1];
+            }}
             onClick={() => setToggleFilter((prev) => !prev)}
           >
             <span>filter</span>
@@ -257,6 +308,9 @@ function Home() {
               .includes(selectSuggestionSearchItem.trim().toLowerCase()) ||
             collection.question
               .toLowerCase()
+              .includes(selectSuggestionSearchItem.trim().toLowerCase()) ||
+            collection.language
+              .toLowerCase()
               .includes(selectSuggestionSearchItem.trim().toLowerCase())
           );
         })
@@ -266,25 +320,27 @@ function Home() {
 
           const matchLanguage =
             filters.language === "" || collection.language === filters.language;
-
-          const commentCount = collection.feedback?.length || 0;
-          const matchComments =
-            filters.commentsSort === "" ||
-            (filters.commentsSort === "Most Commented" && commentCount > 5) ||
-            (filters.commentsSort === "Least Commented" && commentCount <= 5);
-
-          return matchLanguage && matchComments;
+          return matchLanguage;
         })
         .sort((a, b) => {
-          const sortBy = "newest";
-
-          if (sortBy === "newest") {
+          const filters = filter;
+          if (!filters) return true;
+          if (filter.commentsSort === "Most Commented") {
+            return b.feedback?.length - a.feedback?.length;
+          } else if (filter.commentsSort === "Least Commented") {
+            return a.feedback?.length - b.feedback?.length;
+          }
+        })
+        .sort((a, b) => {
+          const filters = filter;
+          if (!filters) return true;
+          if (filter?.sortBy === "newest") {
             return new Date(b.created_at) - new Date(a.created_at);
           }
-          if (sortBy === "oldest") {
+          if (filter?.sortBy === "oldest") {
             return new Date(a.created_at) - new Date(b.created_at);
           }
-          if (sortBy === "mostPopular") {
+          if (filter?.sortBy === "mostPopular") {
             return b.upvotes - a.upvotes;
           }
           return 0;

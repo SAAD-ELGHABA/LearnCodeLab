@@ -26,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'lastName',
         'email',
         'password',
-        'group',
+        'groupstagiaire_id',
         'role',
         'email_verified_at',
         'image',
@@ -63,7 +63,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new VerifyEmailCustom());
     }
-    public function Group(){
-        return $this->hasMany(Group::class);
+    public function groupstagiaire()
+    {
+        return $this->belongsTo(GroupStagiaire::class);
     }
 }

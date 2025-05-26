@@ -30,13 +30,15 @@ class AuthentificationController extends Controller
                 'password' => 'required|min:3',
                 'group' => 'required',
             ]);
+
             if ($validation) {
                 $user = User::create([
                     'firstName' => $request->firstName,
                     'lastName' => $request->lastName,
                     'email' => $request->email,
-                    'password' => bcrypt($request->password), 
-                    'group' => $request->group,
+                    'password' => bcrypt($request->password),
+                    'groupstagiaire_id' => $request->group,
+                    'image' => $request->image ?? 'staticImages/logo-v-2.png',
                 ]);
                 if ($user) {
                     event(new Registered($user));
@@ -62,7 +64,7 @@ class AuthentificationController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
         if ($validation && Auth::attempt($credentials)) {
-            $user = Auth::user();
+            $user = Auth::user()->load('groupstagiaire');
             $token = $user->createToken('authToken')->plainTextToken;
             if ($request->input('remember')) {
                 return response()->json([

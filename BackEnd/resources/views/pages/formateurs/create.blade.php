@@ -6,11 +6,11 @@
 <div class="mt-5">
     <div class="flex justify-between items-center mb-2">
         <h1 class="text-xl font-bold">Create New Stagiaire</h1>
-        <a href="{{ route('stagiaires.index') }}" class="bg-[#163050] rounded-lg text-white cursor-pointer duration-300 hover:bg-[#0E1C2D] px-3 py-1 transition-all">
+        <a href="{{ route('formateurs.index') }}" class="bg-[#163050] rounded-lg text-white cursor-pointer duration-300 hover:bg-[#0E1C2D] px-3 py-1 transition-all">
             <i class="fa-arrow-left fas"></i>
         </a>
     </div>
-    <form action="{{route('stagiaires.store')}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('formateurs.store')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="flex bg-gray-900 justify-around items-center">
             <div class="p-5 rounded w-1/2">
@@ -33,11 +33,6 @@
                             class="bg-gray-800 border border-gray-700 p-2 rounded text-white outline-none">
                     </div>
                     <div class="flex flex-col">
-                        <label for="group" class="text-sm text-white ms-2">Group</label>
-                        <input type="text" name="group" id="group" placeholder="Group"
-                            class="bg-gray-800 border border-gray-700 p-2 rounded text-white outline-none">
-                    </div>
-                    <div class="flex flex-col">
                         <label for="password" class="text-sm text-white ms-2">Password</label>
                         <div class="relative">
                             <input type="password" name="password" id="password" placeholder="******"
@@ -57,7 +52,7 @@
                 </div>
             </div>
 
-            <input type="file" name="stagiaire_image" id="fileInput" class="hidden" accept="image/*" onchange="previewImage(event)">
+            <input type="file" name="formateur_image" id="fileInput" class="hidden" accept="image/*" onchange="previewImage(event)">
 
             <div class="flex bg-[#163050] h-96 justify-center p-5 rounded w-96 cursor-pointer hover:bg-[#1e2d46] items-center"
                 onclick="document.getElementById('fileInput').click();">

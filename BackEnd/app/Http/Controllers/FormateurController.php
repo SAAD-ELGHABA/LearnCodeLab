@@ -3,23 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\GroupStagiaire;
 use App\Models\User;
 use Error;
 use Illuminate\Http\Request;
-use Masmerise\Toaster\Toaster;
 
-class stagiairesController extends Controller
+class FormateurController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $stagiaires = User::where(['role' => 'stagiaire'])
-            ->with('groupstagiaire')
-            ->get();
-        return view('pages.stagiaires.index', compact('stagiaires'));
+        $formateurs = User::where(['role' => 'formateur'])->get();
+        return view('pages.formateurs.index', compact('formateurs'));
     }
 
     /**
@@ -27,8 +20,7 @@ class stagiairesController extends Controller
      */
     public function create()
     {
-        $groupsStagiaires = GroupStagiaire::all();
-        return view('pages.stagiaires.create', compact('groupsStagiaires'));
+        return view('pages.formateurs.create');
     }
 
     public function store(Request $request)
@@ -39,26 +31,25 @@ class stagiairesController extends Controller
                 'lastName' => 'required',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:6',
-                'group' => 'required',
             ]);
             if (!$validation) {
                 return redirect()->back()->with('error', 'Please fill all the fields!');
             }
-            $image = $request->file('stagiaire_image')->store('public/UsersImages');
+            $image = $request->file('formateur_image')->store('public/UsersImages');
 
             $user = User::create([
                 'firstName' => $request->firstName,
                 'lastName' => $request->lastName,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'groupstagiaire_id' => $request->group,
-                'role' => 'stagiaire',
+                'groupstagiaire_id' => 0,
+                'role' => 'formateur',
                 'email_verified_at' => now(),
-                'image' => $image,
+                'image' => "http://127.0.0.1:8000/".$image,
             ]);
 
             if ($user) {
-                return redirect()->route('stagiaires.index')->with('success', 'Stagiaire has been added successfully!');
+                return redirect()->route('formateurs.index')->with('success', 'Formateur has been added successfully!');
             }
         } catch (Error $error) {
             return redirect()->back()->with('error', $error->getMessage());
@@ -71,8 +62,8 @@ class stagiairesController extends Controller
      */
     public function show(string $id)
     {
-        $stagiaire = User::findOrFail($id);
-        return view('pages.stagiaires.show', compact('stagiaire'));
+        $formateur = User::findOrFail($id);
+        return view('pages.formateurs.show', compact('formateur'));
     }
 
     /**
@@ -80,8 +71,8 @@ class stagiairesController extends Controller
      */
     public function edit(string $id)
     {
-        $stagiaire = User::findOrFail($id);
-        return view('pages.stagiaires.edit', compact('stagiaire'));
+        $formateur = User::findOrFail($id);
+        return view('pages.formateurs.edit', compact('formateur'));
     }
 
     /**
@@ -90,7 +81,7 @@ class stagiairesController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $stagiaire = User::findOrFail($id);
+            $formateur = User::findOrFail($id);
             $validation = $request->validate([
                 'firstName' => 'required',
                 'lastName' => 'required',
@@ -98,19 +89,19 @@ class stagiairesController extends Controller
                 'group' => 'required',
                 'password' => 'required|min:6',
             ]);
-            if ($request->hasFile('stagiaire_image')) {
-                if ($stagiaire->image) {
-                    $oldImagePath = storage_path('app/' . $stagiaire->image);
+            if ($request->hasFile('formateur_image')) {
+                if ($formateur->image) {
+                    $oldImagePath = storage_path('app/' . $formateur->image);
                     if (file_exists($oldImagePath)) {
                         unlink($oldImagePath);
                     }
                 }
-                $image = $request->file('stagiaire_image')->store('UsersImages');
+                $image = $request->file('formateur_image')->store('UsersImages');
             } else {
-                $image = $stagiaire->image;
+                $image = $formateur->image;
             }
 
-            $stagiaire->update([
+            $formateur->update([
                 'firstName' => $request->firstName,
                 'lastName' => $request->lastName,
                 'email' => $request->email,
@@ -118,7 +109,7 @@ class stagiairesController extends Controller
                 'password' => bcrypt($request->password),
                 'image' => $image,
             ]);
-            return redirect()->route('stagiaires.index')->with('success', $stagiaire->firstName . " " . $stagiaire->lastName . ' has been updated successfully!');
+            return redirect()->route('formateurs.index')->with('success', $formateur->firstName . " " . $formateur->lastName . ' has been updated successfully!');
         } catch (Error $error) {
             return redirect()->back()->with('error', $error->getMessage());
         }
@@ -129,8 +120,8 @@ class stagiairesController extends Controller
      */
     public function destroy(string $id)
     {
-        $stagiaire = User::findOrFail($id);
-        $stagiaire->delete();
-        return redirect()->back()->with('deletingStagiaire', $stagiaire->firstName . " " . $stagiaire->lastName . " has been deleted successfully!");
+        $formateur = User::findOrFail($id);
+        $formateur->delete();
+        return redirect()->back()->with('deletingformateur', $formateur->firstName . " " . $formateur->lastName . " has been deleted successfully!");
     }
 }

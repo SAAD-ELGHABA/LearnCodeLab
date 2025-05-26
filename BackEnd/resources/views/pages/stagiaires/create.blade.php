@@ -34,8 +34,11 @@
                     </div>
                     <div class="flex flex-col">
                         <label for="group" class="text-sm text-white ms-2">Group</label>
-                        <input type="text" name="group" id="group" placeholder="Group"
-                            class="bg-gray-800 border border-gray-700 p-2 rounded text-white outline-none">
+                            <select name="group" id="group" class="bg-gray-800 border border-gray-700 p-2 rounded text-white outline-none">
+                            @foreach ($groupsStagiaires as $groupsStagiaire)
+                            <option value="{{ $groupsStagiaire->id }}">{{ $groupsStagiaire->name }}</option>
+                            @endforeach
+                            </select>
                     </div>
                     <div class="flex flex-col">
                         <label for="password" class="text-sm text-white ms-2">Password</label>
