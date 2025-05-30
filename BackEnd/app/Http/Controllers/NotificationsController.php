@@ -26,15 +26,15 @@ class NotificationsController extends Controller
     }
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'sender_id' => 'required|exists:users,id',
-            'title' => 'required|string',
-            'message' => 'required|string',
-        ]);
+        try {
+            $notification = Notification::create($request->all());
 
-        $notification = Notification::create($data);
-
-        return response()->json($notification, 201);
+            return response()->json($notification, 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'Failed to make the activity!',
+                'details' => $th->getMessage()
+            ], 500);
+        }
     }
 }

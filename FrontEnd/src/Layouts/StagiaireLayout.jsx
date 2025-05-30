@@ -24,6 +24,9 @@ function StagiaireLayout() {
   const [toggleLogOut, setToggleLogOut] = useState(false);
   const nav = useNavigate();
   const token = useSelector((state) => state.userReducer.token);
+  const messagesChatAi = useSelector((state) => state.ChatAiReducer);
+  const lastMessage = messagesChatAi[messagesChatAi?.length - 1];
+
   useEffect(() => {
     const CollectionsPromise = async () => {
       try {
@@ -107,7 +110,7 @@ function StagiaireLayout() {
         <section
           className="transition-all duration-300 p-2 m-1 rounded min-h-screen w-full overflow-hidden"
           style={{
-            marginLeft: isOpen ? 250 : 70, // match sidebar width
+            marginLeft: isOpen ? 250 : 70,
             backgroundColor: themes.find((theme) => theme.name === choosedTheme)
               .colors[0],
           }}
@@ -141,7 +144,7 @@ function StagiaireLayout() {
         title="Open The Chat AI"
         style={{ zIndex: 1005 }}
       >
-        <div className="flex justify-between items-center space-x-2">
+        <div className="flex justify-between items-center space-x-2 relative">
           {ishovering && (
             <p className="pt-1 text-blue-500 text-sm">
               {ChatToggle
@@ -153,8 +156,18 @@ function StagiaireLayout() {
             onMouseEnter={() => setIshovering(true)}
             onMouseLeave={() => setIshovering(false)}
             icon={faRobot}
-            className="text-blue-500 hover:text-blue-600 text-lg drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]"
+            className=" text-lg drop-shadow-[0_0_15px_rgba(59,130,246,0.8)] p-2 rounded-full"
+            style={{
+              backgroundColor: themes.find(
+                (theme) => theme.name === choosedTheme
+              ).colors[1],
+              color: themes.find((theme) => theme.name === choosedTheme)
+                .textColor,
+            }}
           />
+          {lastMessage?.role === "ai" && (
+            <div className="h-2 w-2 bg-blue-500 rounded-full absolute -top-1 right-2"></div>
+          )}
         </div>
       </button>
       {toggleLogOut && (

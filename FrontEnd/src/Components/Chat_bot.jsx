@@ -125,19 +125,15 @@ When answering:
 `.trim(),
     };
 
-    // Transform your old chat messages to OpenAI chat format
     const chatHistoryMessages = messagesChatAi.map((msg) => ({
       role: msg.role === "ai" ? "assistant" : "user",
       content: msg.data,
     }));
-
-    // Append the new user message
     const userMessage = {
       role: "user",
       content: message,
     };
 
-    // Final messages array sent to API
     const messages = [systemMessage, ...chatHistoryMessages, userMessage];
 
     try {

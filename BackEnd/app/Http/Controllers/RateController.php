@@ -7,6 +7,7 @@ use App\Models\Collection;
 use App\Models\Rate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class RateController extends Controller
 {
@@ -26,7 +27,13 @@ class RateController extends Controller
             $existingRate = Rate::where('collection_id', $id)
                 ->where('user_id', $userId)
                 ->first();
-
+            Http::post("http://localhost:3001/api/notify", [
+                'sender_id' => $userId,
+                'userIds' => [$collection->user_id],
+                'title' => 'New rate to your collection',
+                'message' => Auth::user()->firstName . " " . Auth::user()->lastName . ' has rated your collection',
+                'data' => json_encode(['url' => '/user'])
+            ]);
             if ($existingRate) {
                 if ($existingRate->type === $typeRate) {
                     $existingRate->delete();
@@ -42,7 +49,7 @@ class RateController extends Controller
                 ]);
             }
 
-            $collections = Collection::with(['feedback','rates', 'user'])->get();
+            $collections = Collection::with(['feedback', 'rates', 'user'])->get();
 
             $collections->transform(function ($collection) {
                 $collection->upvotes = $collection->rates->where('type', 'up')->count();

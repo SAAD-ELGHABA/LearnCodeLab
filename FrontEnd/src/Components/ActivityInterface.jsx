@@ -94,91 +94,89 @@ function ActivityInterface({ setActivityInterface, group = null }) {
           border: `1px solid ${theme.colors[2]}`,
         }}
       >
-        {user?.role === "formateur" && (
-          <div>
-            {group && (
-              <div className="flex items-center justify-between space-x-4 mb-4">
-                <div>
-                  <h1 className="text-2xl font-bold">Activity Interface</h1>
-                  <h2 className="text-xl">
-                    <span className="text-blue-500 font-medium">
-                      {group?.groupName}
-                    </span>
-                  </h2>
-                </div>
-                <div>
-                  <button
-                    className="cursor-pointer flex space-x-2 items-center bg-blue-500 text-white rounded px-5 py-2 hover:bg-blue-600"
-                    onClick={handleSubmit}
-                  >
-                    <ArrowsUpFromLine className="h-4 w-4" />
-                    <span>submit</span>
-                  </button>
-                </div>
-              </div>
-            )}
-            <div
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              className={`w-full h-40 border-2 border-dashed rounded-lg flex items-center justify-center transition-colors ${
-                dragOver ? "border-blue-500 bg-blue-50/10" : "border-gray-500"
-              }`}
-              style={{
-                borderColor: dragOver ? "#3B82F6" : theme.colors[2],
-                backgroundColor: dragOver ? "#3b82f620" : "transparent",
-                color: theme.textColor,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = themes.find(
-                  (theme) => theme.name === choosedTheme
-                )?.colors[2];
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = themes.find(
-                  (theme) => theme.name === choosedTheme
-                )?.colors[1];
-              }}
-            >
-              <label className="w-full h-full flex flex-col justify-center items-center cursor-pointer">
-                <p className="text-center text-xl font-medium">
-                  Drag and drop files here
-                  <br />
-                  <span className="text-blue-500 text-sm">
-                    or choose a file here
+        <div>
+          {group && (
+            <div className="flex items-center justify-between space-x-4 mb-4">
+              <div>
+                <h1 className="text-2xl font-bold">Activity Interface</h1>
+                <h2 className="text-xl">
+                  <span className="text-blue-500 font-medium">
+                    {group?.groupName}
                   </span>
-                </p>
-                <input
-                  type="file"
-                  multiple
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </label>
+                </h2>
+              </div>
+              <div>
+                <button
+                  className="cursor-pointer flex space-x-2 items-center bg-blue-500 text-white rounded px-5 py-2 hover:bg-blue-600"
+                  onClick={handleSubmit}
+                >
+                  <ArrowsUpFromLine className="h-4 w-4" />
+                  <span>submit</span>
+                </button>
+              </div>
             </div>
-            {droppedFiles.length > 0 && (
-              <ul className="text-sm grid grid-cols-6 gap-2 mt-4">
-                {droppedFiles.map((file, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-center space-x-1 bg-gray-700 rounded-lg overflow-hidden py-2 px-3 justify-between"
+          )}
+          <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`w-full h-40 border-2 border-dashed rounded-lg flex items-center justify-center transition-colors ${
+              dragOver ? "border-blue-500 bg-blue-50/10" : "border-gray-500"
+            }`}
+            style={{
+              borderColor: dragOver ? "#3B82F6" : theme.colors[2],
+              backgroundColor: dragOver ? "#3b82f620" : "transparent",
+              color: theme.textColor,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = themes.find(
+                (theme) => theme.name === choosedTheme
+              )?.colors[2];
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = themes.find(
+                (theme) => theme.name === choosedTheme
+              )?.colors[1];
+            }}
+          >
+            <label className="w-full h-full flex flex-col justify-center items-center cursor-pointer">
+              <p className="text-center text-xl font-medium">
+                Drag and drop files here
+                <br />
+                <span className="text-blue-500 text-sm">
+                  or choose a file here
+                </span>
+              </p>
+              <input
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </label>
+          </div>
+          {droppedFiles.length > 0 && (
+            <ul className="text-sm grid grid-cols-6 gap-2 mt-4">
+              {droppedFiles.map((file, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-center space-x-1 bg-gray-700 rounded-lg overflow-hidden py-2 px-3 justify-between"
+                >
+                  <span className="text-blue-500 font-medium">{idx + 1}.</span>
+                  <File className="h-4 w-4" />
+                  <span className="truncate max-w-[100px]">{file.name}</span>
+                  <button
+                    className="cursor-pointer text-red-400 hover:text-red-500"
+                    onClick={() => handleRemoveFile(idx)}
+                    title="Remove file"
                   >
-                    <span className="text-blue-500 font-medium">
-                      {idx + 1}.
-                    </span>
-                    <File className="h-4 w-4" />
-                    <span className="truncate max-w-[100px]">{file.name}</span>
-                    <button
-                      className="cursor-pointer text-red-400 hover:text-red-500"
-                      onClick={() => handleRemoveFile(idx)}
-                      title="Remove file"
-                    >
-                      <CircleX className="h-4 w-4" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
+                    <CircleX className="h-4 w-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          {user?.role === "formateur" && (
             <div className="mt-4">
               <label className="text-lg">Activity Description</label>
               <textarea
@@ -193,6 +191,8 @@ function ActivityInterface({ setActivityInterface, group = null }) {
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
+          )}
+          {user?.role === "formateur" && (
             <div className="flex items-center space-x-2">
               <label className="inline-flex items-center space-x-2 cursor-pointer">
                 <input
@@ -231,8 +231,8 @@ function ActivityInterface({ setActivityInterface, group = null }) {
                 </span>
               </label>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <button
         className="absolute top-2 right-0 px-4 py-2 rounded-full text-white cursor-pointer"

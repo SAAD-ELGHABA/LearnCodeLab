@@ -7,7 +7,7 @@ export default function Navbar() {
         <Link
           to={"/"}
           className="font-bold text-2xl w-1/4 text-center  
-             bg-gradient-to-r from-blue-100 to-blue-800 bg-clip-text text-transparent"
+             bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent"
         >
           LearnCodeLab
         </Link>

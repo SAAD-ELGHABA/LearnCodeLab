@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Collection;
 use App\Models\Feedback;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Error;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -111,6 +113,16 @@ class CollectionController extends Controller
                     $f->content = base64_decode($f->content);
                 }
             }
+            $collection = Collection::where('id', $data['collection_id'])->first();
+            $collectionOwner = User::where('id', $collection->user_id)->first();
+            $user = Auth::user();
+            Http::post("http://localhost:3001/api/notify", [
+                'sender_id' => $user->id,
+                'userIds' => [$collectionOwner->id],
+                'title' => 'New feedback in your collection',
+                'message' => Auth::user()->firstName . " " . Auth::user()->lastName . ' has made a feedback in your collection',
+                'data' => json_encode(['url' => '/user'])
+            ]);
             return response()->json([
                 'message' => 'Feedback submitted successfully!',
                 'feedback' => $feedback,

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Bell, Megaphone } from "lucide-react";
+import { Bell, Megaphone, MessageCircleCode, Star } from "lucide-react";
 import { themes } from "../lib/themes.js";
 import { useSelector } from "react-redux";
 import Notif from "./Notif.jsx";
@@ -23,7 +23,6 @@ const NotificationBell = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -45,13 +44,15 @@ const NotificationBell = () => {
       >
         {notificationsReducer.length ? (
           <div className="top-1.5 right-2 bg-red-500 text-xs h-2 w-2 rounded-full absolute"></div>
-        ):""}
+        ) : (
+          ""
+        )}
         <Bell className="h-5 w-5" />
       </button>
 
       {open && (
         <div
-          className="absolute right-0 mt-2 w-96  shadow-lg rounded-md overflow-hidden z-50 max-h-[85vh] overflow-y-scroll custom-scrollbar"
+          className="absolute right-0 top-full w-96  shadow-lg rounded-md overflow-hidden z-50 max-h-[85vh] overflow-y-scroll custom-scrollbar"
           style={{
             backgroundColor: themes.find((theme) => theme.name === choosedTheme)
               ?.colors[1],
@@ -84,8 +85,16 @@ const NotificationBell = () => {
                   }`}
                 >
                   {note?.title === "New Group Created" ? (
-                    <div className="p-1 bg-yellow-500 text-white">
+                    <div className="p-1 bg-yellow-500 text-white rounded">
                       <Megaphone />
+                    </div>
+                  ) : note?.title === "New rate to your collection" ? (
+                    <div className="p-1 bg-blue-500 text-white rounded">
+                      <Star />
+                    </div>
+                  ) : note?.title === "New feedback in your collection" ? (
+                    <div className="p-1 bg-green-500 text-white rounded">
+                      <MessageCircleCode />
                     </div>
                   ) : (
                     ""
@@ -100,14 +109,12 @@ const NotificationBell = () => {
                     ""
                   )}
                 </div>
-                <div
-                  className="text-gray-500 mt-2 w-full flex justify-end text-xs "
-                >
+                <div className="text-gray-500 mt-2 w-full flex justify-end text-xs ">
                   {note?.created_at
                     ? new Date(note.created_at).toLocaleString("en-US", {
-                        month: "long", 
-                        day: "numeric", 
-                        hour: "2-digit", 
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
                         minute: "2-digit",
                       })
                     : "just now"}

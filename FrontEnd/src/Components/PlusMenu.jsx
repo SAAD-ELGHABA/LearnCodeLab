@@ -12,8 +12,10 @@ import {
   Plus,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import ActivityInterface from "./ActivityInterface.jsx";
+import { motion } from "framer-motion";
+
 import { toast } from "sonner";
+import Add from "../Layouts/userpages/Addcollection/Add.jsx";
 function PlusMenu() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
@@ -57,7 +59,7 @@ function PlusMenu() {
 
       {open && (
         <div
-          className="absolute top-12 right-0 w-48 bg-white shadow-lg rounded-md  z-50"
+          className="absolute top-full right-0 w-48 bg-white shadow-lg rounded-md  z-50"
           style={{
             backgroundColor: theme?.colors[1],
             color: theme?.textColor,
@@ -126,7 +128,33 @@ function PlusMenu() {
             </Link>
           </ul>
           {activityInterface && (
-            <ActivityInterface setActivityInterface={setActivityInterface} />
+            <div
+              className="flex flex-col h-full w-[100vw] justify-center fixed top-0 right-0 items-center rounded-lg shadow-lg bg-[#21252b5e]"
+              style={{
+                color: theme.textColor,
+                zIndex: 1005,
+              }}
+              onClick={() => setActivityInterface(false)}
+            >
+              <div
+                className="w-[90%] h-[90%] p-6 rounded relative overflow-y-scroll custom-scrollbar"
+                style={{
+                  backgroundColor: theme.colors[1],
+                  color: theme.textColor,
+                  border: `1px solid ${theme.colors[2]}`,
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="mt-2 text-sm "
+                >
+                  <Add isActivity={true} />
+                </motion.div>
+              </div>
+            </div>
           )}
         </div>
       )}

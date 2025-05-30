@@ -12,6 +12,7 @@ import {
   FileKey2,
   FilePlus2,
   Group,
+  MessageSquareReply,
   Plus,
   PlusIcon,
   Users,
@@ -78,7 +79,8 @@ function GroupJoin() {
   const [showMembersList, setShowMembersList] = useState(false);
   let timeoutRef = useRef(null);
   const members = GroupJoiningReducer?.users || [];
-  console.log(members);
+  const [choosedAct, setChoosedAct] = useState(null);
+  console.log(choiceActivity, choosedAct);
 
   return (
     <div>
@@ -294,7 +296,7 @@ function GroupJoin() {
             </div>
           </div>
           <div>
-            {GroupJoiningReducer?.activity_groups?.length > 0 &&
+            {GroupJoiningReducer?.activity_groups?.length > 0 ? (
               GroupJoiningReducer?.activity_groups?.map((a) => (
                 <div
                   key={a?.id}
@@ -306,10 +308,81 @@ function GroupJoin() {
                 >
                   <div>
                     <div className="flex w-full my-2 justify-between">
-                      <h4 className="opacity-50">#Activity N {a?.id}</h4>
-                      <button className="text-sm px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 text-white">
-                        Give Your Response
-                      </button>
+                      <h4 className="opacity-50 text-sm">
+                        #Activity N {a?.id}
+                      </h4>
+                      {GroupJoiningReducer?.formateurId !== user?.id && (
+                        <div
+                          className="relative inline-block"
+                          ref={dropdownRef}
+                        >
+                          <button
+                            className="cursor-pointer flex items-center space-x-2 px-8 py-2 rounded text-sm bg-blue-500 hover:bg-blue-600 text-white"
+                            onClick={() => {
+                              setShowActivityList(!showActivityList);
+                              setChoosedAct(a?.id);
+                            }}
+                          >
+                            <MessageSquareReply className="h-4 w-4" />
+                            <span>Give Your Feedback</span>
+                          </button>
+
+                          {showActivityList && choosedAct === a?.id && (
+                            <div
+                              className="absolute top-full right-0 mt-1 w-max p-2 rounded shadow z-20"
+                              style={{
+                                backgroundColor: themes.find(
+                                  (theme) => theme.name === choosedTheme
+                                ).colors[1],
+                                color: themes.find(
+                                  (theme) => theme.name === choosedTheme
+                                ).textColor,
+                                border: `1px solid ${
+                                  themes.find(
+                                    (theme) => theme.name === choosedTheme
+                                  ).colors[2]
+                                }`,
+                              }}
+                            >
+                              <ul className="space-y-1 min-w-49">
+                                <li
+                                  className="cursor-pointer hover:underline flex space-x-2 items-center py-1 bg-red-500"
+                                  onClick={() => {
+                                    setChoiceActivity("activity");
+                                    setActivityInterface(true);
+                                    setInterfaceGroupChoosed(
+                                      GroupJoiningReducer?.id
+                                    );
+                                    setShowActivityList(false);
+                                  }}
+                                  style={{
+                                    borderBottom: `1px solid ${theme.colors[2]}`,
+                                  }}
+                                >
+                                  <PlusIcon />
+                                  <span>Activity</span>
+                                </li>
+                                <li
+                                  className="cursor-pointer hover:underline flex space-x-2 items-center py-1"
+                                  onClick={() => {
+                                    setChoiceActivity("collection");
+                                    setActivityInterface(true);
+                                    setInterfaceGroupChoosed(
+                                      GroupJoiningReducer?.id
+                                    );
+                                    setShowActivityList(false);
+                                  }}
+                                >
+                                  <FilePlus2 className="h-4 w-4" />
+                                  <span>Collection</span>
+                                </li>
+                              </ul>
+                            </div>
+                          )}
+                          {choosedAct === a?.id &&
+                            choiceActivity === "activity" && <div>test</div>}
+                        </div>
+                      )}
                     </div>
                     <p className="opacity-75">{a?.description}</p>
                     <div className="grid grid-cols-4 gap-4 my-2">
@@ -367,7 +440,15 @@ function GroupJoin() {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="h-[40vh] w-full flex justify-center items-center">
+                <h2>
+                  There is no activities or collections published for the
+                  current time
+                </h2>
+              </div>
+            )}
           </div>
         </div>
       )}

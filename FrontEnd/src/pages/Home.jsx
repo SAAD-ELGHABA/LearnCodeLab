@@ -204,7 +204,7 @@ export default function HomePage() {
       </div>
       <div className="flex flex-col items-center my-10  p-4 md:p-4 border  border-gray-700 rounded-lg relative w-[80%] mx-auto bg-[#33415c31]">
         <div className="bg-blue-500 rounded-full h-[80vh]  top-0  w-[90%] blur-3xl opacity-25"></div>
-        <div className="flex justify-center w-4/5 absolute top-20 z-20">
+        <div className="flex justify-center w-4/5 absolute top-20 z-20 shadow">
           <video
             src="/video.mp4"
             className="w-full h-auto mt-10 rounded-lg shadow-lg"

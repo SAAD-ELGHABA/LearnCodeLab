@@ -62,7 +62,7 @@ class GroupController extends Controller
                 'userIds' => $stagiaires->pluck('id')->toArray(),
                 'title' => 'New Group Created',
                 'message' => 'You have been added to the group: "' . $group->groupName,
-                'data' => json_encode(['url' => '/groups'])
+                'data' => json_encode(['url' => '/group' . '/' . $group->groupName . '/' . $group->access_key])
             ]);
 
             return response()->json([
