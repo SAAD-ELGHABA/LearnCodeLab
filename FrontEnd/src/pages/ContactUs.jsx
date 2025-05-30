@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { FiArrowRight, FiCheckCircle, FiXCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-// import emailjs from 'emailjs-com';
+import emailjs from 'emailjs-com';
 import contactImg from "../Assets/bg1.jpg";
+import { toast } from 'sonner';
 
 const ContactUs = ({ isHelpSection = false, selectedTheme, user = {} }) => {
   console.log(user);
-  
+
   const [formData, setFormData] = useState({
     message: "",
     firstName: user?.firstName || "",
@@ -39,16 +40,16 @@ const ContactUs = ({ isHelpSection = false, selectedTheme, user = {} }) => {
     } else {
       setErrors({});
 
-      const serviceID = "service_gzy4me4";
+      const serviceID = "service_jbdhkf7";
       const templateID = "template_f3hfbhx";
-      const publicKey = "L8q2xx3TM2zG5WSRY";
+      const publicKey = "M7vuX5P4HONvCOLaf";
 
       emailjs.send(serviceID, templateID, formData, publicKey).then(
         () => {
-          alert("✅ Got it! Your request is being processed by LearnCodeLab.");
+          toast.success("✅ Request received! LearnCodeLab will respond shortly.");
           localStorage.setItem(
             "submissionMessage",
-            "Your request has been sent to LocaTech. We will get back to you as soon as possible."
+            "Your request has been sent to LearnCodeLab. We will get back to you as soon as possible."
           );
 
           setTimeout(() => {
@@ -56,20 +57,18 @@ const ContactUs = ({ isHelpSection = false, selectedTheme, user = {} }) => {
           }, 1000);
 
           setFormData({
-            profile: "",
-            request: "",
             message: "",
             firstName: "",
             lastName: "",
-            postalCode: "",
             email: "",
             phone: "",
           });
+
           setTouchedFields({});
         },
         (err) => {
           console.log("FAILED...", err);
-          alert("❌ An error occurred. Please try again.");
+          toast.error("❌ An error occurred. Please try again later.");
         }
       );
     }
@@ -90,29 +89,30 @@ const ContactUs = ({ isHelpSection = false, selectedTheme, user = {} }) => {
 
   return (
     <div className={`${!isHelpSection && "bg-white"}`}>
+    
+
       {!isHelpSection && (
         <div
-          className="h-130 bg-cover bg-center flex flex-col items-center justify-center  text-center px-4 mb-20"
+          className="h-130 bg-cover bg-center flex flex-col items-center justify-center text-center px-4 mb-20"
           style={{ backgroundImage: `url(${contactImg})` }}
         ></div>
       )}
 
       <div
         className={`
-        flex justify-center  px-4 z-20 relative mb-50
-        ${!isHelpSection && "-mt-35"}
+          flex justify-center px-4 z-20 relative mb-50
+          ${!isHelpSection && "-mt-35"}
         `}
       >
         <div
           className={`
-          ${!isHelpSection && "bg-white"}  rounded w-full max-w-4xl p-8`}
+            ${!isHelpSection && "bg-white"} rounded w-full max-w-4xl p-8`}
         >
-          <p className="mb-8 text-center ">
+          <p className="mb-8 text-center">
             To better assist you, please fill out the form below.
           </p>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Profile & Request */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
 
             <div>
@@ -201,7 +201,9 @@ const ContactUs = ({ isHelpSection = false, selectedTheme, user = {} }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm mb-1 font-medium">Email*</label>
+                <label className="block text-sm mb-1 font-medium">
+                  Email*
+                </label>
                 <div className="relative">
                   <input
                     type="email"
@@ -232,9 +234,9 @@ const ContactUs = ({ isHelpSection = false, selectedTheme, user = {} }) => {
               </label>
               <div className="relative">
                 <input
-                placeholder="+212 6 12 34 56 78" 
                   type="tel"
                   name="phone"
+                  placeholder="+212 6 12 34 56 78"
                   className={`w-full border ${
                     errors.phone
                       ? "border-blue-500"

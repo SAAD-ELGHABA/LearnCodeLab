@@ -11,10 +11,13 @@ export default function Footer() {
         
         {/* Left side */}
         <div className="flex flex-col items-center  lg:items-start ">
-          <Link to='/'>
-          <img className="text-2xl font-bold text-white mb-4" src={LCL}/>
-          
-          </Link>
+          <Link
+          to={"/"}
+          className="font-bold text-2xl  text-center  
+             bg-gradient-to-r from-blue-100 to-blue-800 bg-clip-text text-transparent"
+        >
+          LearnCodeLab
+        </Link>
           <p className="mb-2 text-sm">+212 6 18 76 91 58</p>
           <p className="mb-2 text-sm">learncodelab@gmail.com</p>
           <div className="flex space-x-4 mt-6">
@@ -55,30 +58,7 @@ export default function Footer() {
 
         {/* Right side */}
         <div>
-          <form className="flex flex-col space-y-4">
-            <div>
-              <label className="text-sm mb-1 block" htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                placeholder="mail@mail.com"
-                className="w-full p-2 rounded bg-white text-gray-800 text-sm focus:outline-none"
-              />
-            </div>
-            <div className="relative">
-              <label className="text-sm mb-1 block" htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                placeholder="6digits"
-                className="w-full p-2 rounded bg-white text-gray-800 text-sm focus:outline-none"
-              />
-              <IoEyeOutline className="absolute right-3 top-9 text-gray-500 cursor-pointer" size={20} />
-            </div>
-            <button type="submit" className="bg-blue-400 hover:bg-blue-500 text-white rounded py-2 mt-2 cursor-pointer">
-              Log in
-            </button>
-          </form>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3398.275922399814!2d-7.9670547246442895!3d31.59889834325853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdafefd72c155555%3A0x48c2c108c7c6008c!2sInstitut%20Sp%C3%A9cialis%C3%A9%20De%20Technologie%20Appliqu%C3%A9e%20NTIC!5e0!3m2!1sfr!2sma!4v1748630029213!5m2!1sfr!2sma" className="w-full h-46"  style={{border:'0'}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
 
       </div>
