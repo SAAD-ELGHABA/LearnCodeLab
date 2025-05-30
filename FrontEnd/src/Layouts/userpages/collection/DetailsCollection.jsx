@@ -72,15 +72,15 @@ function DetailsCollection() {
               <h3 className="text-lg font-medium">
                 {ChoosedCollection.question}
               </h3>
-              <p className="text-sm ">{ChoosedCollection.description}</p>
+              <p className="text-sm opacity-75">{ChoosedCollection.description}</p>
             </div>
             <div className="w-1/3 px-2">
               <div className="flex justify-end">
                 <FeedbackType setTypeFeedback={setTypeFeedback} />
               </div>
               <div className="flex flex-col gap-4 mt-4">
-                <span className="text-xs">
-                  Made By:{" "}
+                <span className="text-xs flex items-center space-x-2">
+                  <img src={ChoosedCollection?.user?.image} alt="user-image" className="h-7 w-7 rounded-full" />
                   <span className="font-bold">
                     {ChoosedCollection?.user?.firstName +
                       " " +
@@ -100,14 +100,6 @@ function DetailsCollection() {
                     )}
                   </span>
                 </span>
-                {/* <span className="flex items-center gap-1 text-xs">
-                  Membres: 39 <UsersRound className="h-4" />
-                </span> */}
-                {/* <RateStars
-                  rates={ChoosedCollection?.rates}
-                  uprates={ChoosedCollection?.upvotes}
-                  downrates={ChoosedCollection?.downvotes}
-                /> */}
                 <div className="flex items-center gap-1 text-xs justify-between">
 
                   <span>

@@ -164,6 +164,7 @@ function GlobalSearch() {
           type: "GET_RESULT_GLOBAL_SEARCH",
           payload: normalizeSearchResults(res.data),
         });
+        console.log(normalizeSearchResults(res.data));
       } catch (err) {
         console.error("Error loading data", err);
       }
@@ -324,6 +325,8 @@ function GlobalSearch() {
                               }/${item?.original?.slug}`
                             : item?.type === "resources"
                             ? "/resources"
+                            : item?.type === "Group"
+                            ? `/group/${item?.original?.groupName}/${item?.original?.access_key}`
                             : "/user"
                         }
                         className="block p-2 rounded transition"

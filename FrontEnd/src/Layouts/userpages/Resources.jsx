@@ -291,7 +291,6 @@ function Resources() {
                         )}
                       </div>
 
-                      {/* Preview Modal */}
                       {previewFile && previewFile.id === resource.id && (
                         <div
                           className="fixed inset-0 bg-[#00000079] bg-opacity-50 flex justify-center items-center z-50"

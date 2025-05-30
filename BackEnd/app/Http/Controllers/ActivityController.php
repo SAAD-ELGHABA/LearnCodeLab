@@ -55,16 +55,31 @@ class ActivityController extends Controller
         try {
             $user = Auth::user();
 
-            $request->validate([
-                'description' => 'required|string',
-                'group' => 'required|string',
-                'data' => 'required|array',
-            ]);
+            $data = json_decode($request->input('data'), true);
+            $uploadedFiles = $request->file('files');
+
+            $storedFiles = [];
+
+            if ($uploadedFiles && is_array($uploadedFiles)) {
+                foreach ($uploadedFiles as $file) {
+                    if ($file instanceof \Illuminate\Http\UploadedFile) {
+                        $path = $file->store('activities', 'public');
+                        $storedFiles[] = [
+                            'url' => asset("storage/" . $path),
+                            'name' => $file->getClientOriginalName(),
+                        ];
+                    }
+                }
+            }
+
+            if (!empty($storedFiles)) {
+                $data['files'] = $storedFiles;
+            }
 
             $activity = activityGroup::create([
                 'description' => $request->input('description'),
-                'group' => $request->input('group'),
-                'data' => json_encode($request->input('data')),
+                'group_id' => $request->input('group_id'),
+                'data' => json_encode($data),
                 'user_id' => $user->id,
             ]);
 

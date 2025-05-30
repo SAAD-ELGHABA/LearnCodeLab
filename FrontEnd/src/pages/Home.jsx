@@ -149,7 +149,7 @@ export default function HomePage() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-white text-center mt-20 px-6"
       >
-        <fieldset className="border-1 border-blue-400 p-6 rounded-lg">
+        <fieldset className="border-1 border-blue-400 p-6 rounded-lg w-[80%] mx-auto">
           <legend className="text-3xl font-bold px-4">
             Why Learn Code Lab?
           </legend>
@@ -202,8 +202,8 @@ export default function HomePage() {
         <h2 className="text-3xl text-center font-bold">OFPPT ROADMAP</h2>
         <Carousel />
       </div>
-      <div className="flex flex-col items-center my-10  p-4 md:p-20 border  border-gray-700 rounded-lg relative mx-8 bg-[#33415c31]">
-        <div className="bg-blue-500 rounded-full h-[80vh]  top-0  w-[90%] blur-3xl opacity-50"></div>
+      <div className="flex flex-col items-center my-10  p-4 md:p-4 border  border-gray-700 rounded-lg relative w-[80%] mx-auto bg-[#33415c31]">
+        <div className="bg-blue-500 rounded-full h-[80vh]  top-0  w-[90%] blur-3xl opacity-25"></div>
         <div className="flex justify-center w-4/5 absolute top-20 z-20">
           <video
             src="/video.mp4"

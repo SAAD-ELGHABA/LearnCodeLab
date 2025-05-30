@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
-import LCL from '../Assets/LCL.png';
+import LCL from "../Assets/LCL.png";
 export default function Navbar() {
   return (
     <header className="bg-gray-900 sticky top-0 shadow-sm shadow-gray-800 text-white py-1  z-50">
       <nav className="container mx-auto flex items-center justify-around py-4">
-        <Link to='/' className="flex items-centerfont-bold text-2xl font-black">
-        {/* <img className="h-23 w-23 text-xl font-bold flex justify-end" src={LCL}/> */}
-            <h1 className="text-blue-500">Learn</h1>
-            <h1>Code</h1>
-            <h1 className="text-blue-500">Lab</h1>
+        <Link
+          to={"/"}
+          className="font-bold text-2xl w-1/4 text-center  
+             bg-gradient-to-r from-blue-100 to-blue-800 bg-clip-text text-transparent"
+        >
+          LearnCodeLab
         </Link>
         <ul className="hidden md:flex space-x-6 text-sm">
           <li>
@@ -18,17 +19,17 @@ export default function Navbar() {
           </li>
           <li>
             <Link to="/About" className="hover:text-blue-400">
-            About
+              About
             </Link>
           </li>
           <li>
             <Link to="/Blog" className="hover:text-blue-400">
-            Blog
+              Blog
             </Link>
           </li>
           <li>
             <Link to="/ContactUs" className="hover:text-blue-400">
-            Contact Us
+              Contact Us
             </Link>
           </li>
           <li>
@@ -50,7 +51,6 @@ export default function Navbar() {
           >
             Sign Up
           </Link>
-
         </div>
       </nav>
     </header>

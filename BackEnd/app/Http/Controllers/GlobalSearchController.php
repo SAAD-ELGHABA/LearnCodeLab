@@ -43,7 +43,7 @@ class GlobalSearchController extends Controller
                 'languages' => $languages,
                 'resources' => $resources,
                 'myNotifications' => $myNotifications,
-                'Groups' => $filteredGroups
+                'Groups' => $user->role === 'stagiaire' ? $filteredGroups : $groups
             ]);
         } catch (\Throwable $th) {
             return response()->json([

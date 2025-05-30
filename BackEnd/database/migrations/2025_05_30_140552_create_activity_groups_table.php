@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activitiesGroup', function (Blueprint $table) {
+        Schema::create('activity_groups', function (Blueprint $table) {
             $table->id();
             $table->foreignId('group_id')->constrained('groups')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('title')->nullable();
             $table->time('duration')->nullable();
-            $table->time('description')->nullable();
+            $table->text('description')->nullable();
             $table->json('data')->nullable();
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activities');
+        Schema::dropIfExists('activity_groups');
     }
 };

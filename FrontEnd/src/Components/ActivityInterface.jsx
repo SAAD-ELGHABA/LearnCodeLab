@@ -46,23 +46,35 @@ function ActivityInterface({ setActivityInterface, group = null }) {
   };
 
   const handleSubmit = async () => {
-    const data = { files: droppedFiles, typeActivity: "request", isPrivate };
-    const activityData = {
-      data: data,
-      description,
-      group_id: group?.id || null,
-    };
-    console.log(activityData);
-
     try {
-      const res = await axios.post("/api/create-activity", activityData, {
+      const formData = new FormData();
+
+      const data = {
+        files: [],
+        typeActivity: "request",
+        isPrivate,
+      };
+
+      formData.append("data", JSON.stringify(data));
+
+      formData.append("description", description);
+      formData.append("group_id", group?.id || "");
+
+      droppedFiles.forEach((file) => {
+        formData.append("files[]", file);
+      });
+      console.log(formData);
+      setActivityInterface(false);
+      const res = await axios.post("/api/create-activity", formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
         },
       });
+
       toast.success(res?.data?.message);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

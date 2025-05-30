@@ -81,20 +81,22 @@ class GroupController extends Controller
     {
         try {
             $user_id = Auth::user()->id;
-            $group = Group::where('access_key', $access_key)->first();
-
+            $group = Group::where('access_key', $access_key)
+                ->with(['activity_groups', 'formateur'])
+                ->first();
+            $formateur = User::where('id', $group->formateurId)->first();
             if (!$group) {
                 return response()->json([
                     'valid' => false,
                     'message' => 'Invalid access key'
                 ], 404);
             }
-
             if ($group->users()->where('user_id', $user_id)->exists()) {
                 return response()->json([
                     'valid' => true,
                     'message' => 'User already a member',
                     'group' => $group->load('users'),
+                    'formateur' => $formateur,
                     'members_count' => $group->users()->count(),
                     'member_ids' => $group->users()->pluck('users.id')
                 ]);

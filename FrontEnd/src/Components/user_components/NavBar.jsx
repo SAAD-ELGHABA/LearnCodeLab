@@ -27,10 +27,12 @@ function NavBar({ formateur = false }) {
       <nav className="container mx-auto flex items-center ">
         <Link
           to={"/"}
-          className="font-bold text-blue-400 text-xl w-1/4 text-center "
+          className="font-bold text-xl w-1/4 text-center  
+             bg-gradient-to-r from-blue-100 to-blue-800 bg-clip-text text-transparent"
         >
           LearnCodeLab
         </Link>
+
         <div className="w-2/4 flex items-center justify-center">
           <GlobalSearch />
         </div>

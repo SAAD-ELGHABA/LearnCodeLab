@@ -7,6 +7,9 @@ import { randomColors } from "../../lib/randomColors.js";
 import { motion } from "framer-motion";
 import Add from "./Addcollection/Add.jsx";
 import {
+  ArrowDownToLine,
+  BadgeCheck,
+  FileKey2,
   FilePlus2,
   Group,
   Plus,
@@ -18,7 +21,7 @@ import { themes } from "../../lib/themes.js";
 import ActivityInterface from "../../Components/ActivityInterface.jsx";
 function GroupJoin() {
   const choosedTheme = useSelector((state) => state.themeReducer);
-
+  const [memebersCount, setMembersCount] = useState(0);
   const { title, access_key } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -43,6 +46,7 @@ function GroupJoin() {
           type: "JOIN_GROUP",
           payload: res.data.group,
         });
+        setMembersCount(res?.data?.members_count);
         console.log(res);
       } catch (error) {
         console.log(error);
@@ -71,6 +75,10 @@ function GroupJoin() {
     };
   }, []);
   const theme = themes.find((theme) => theme.name === choosedTheme);
+  const [showMembersList, setShowMembersList] = useState(false);
+  let timeoutRef = useRef(null);
+  const members = GroupJoiningReducer?.users || [];
+  console.log(members);
 
   return (
     <div>
@@ -102,7 +110,7 @@ function GroupJoin() {
                       backgroundColor: randomColors[0],
                     }}
                   >
-                    <Users className="w-5 h-5 text-white" />
+                    <Users className="w-5 h-5 " />
                   </div>
                 ) : GroupJoiningReducer?.selectedGroups &&
                   JSON.parse(GroupJoiningReducer?.selectedGroups).length > 0 ? (
@@ -115,11 +123,11 @@ function GroupJoin() {
                         ],
                     }}
                   >
-                    <Group className="w-5 h-5 text-white" />
+                    <Group className="w-5 h-5 " />
                   </div>
                 ) : (
                   <div className="w-16 h-16 rounded-full flex justify-center items-center bg-gray-500">
-                    <Users className="w-5 h-5 text-white" />
+                    <Users className="w-5 h-5 " />
                   </div>
                 )}
               </div>
@@ -127,46 +135,82 @@ function GroupJoin() {
                 <h1 className="text-xl font-semibold">
                   {GroupJoiningReducer?.groupName}
                 </h1>
-                <div className="flex items-center space-x-2">
+                <div
+                  className="flex items-center space-x-2 hover:underline relative"
+                  onMouseEnter={() => {
+                    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+                    setShowMembersList(true);
+                  }}
+                  onMouseLeave={() => {
+                    timeoutRef.current = setTimeout(
+                      () => setShowMembersList(false),
+                      200
+                    );
+                  }}
+                >
                   <UsersRound className="h-4 w-4" />
-                  <span>{GroupJoiningReducer?.Members}</span>
-                </div>
-                <div className="flex space-x-1 items-center">
-                  {GroupJoiningReducer?.users?.slice(0, 4).map((user) => (
-                    <img
-                      src={user?.image}
-                      className="h-5 w-5 rounded-full"
-                      style={{
-                        border: `1px solid ${
-                          themes.find((theme) => theme.name === choosedTheme)
-                            .colors[2]
-                        }`,
-                      }}
-                      alt="img-member"
-                      key={user?.id}
-                    />
-                  ))}
+                  <span>{memebersCount}</span>
 
-                  {GroupJoiningReducer?.users?.length > 4 && (
+                  {showMembersList && GroupJoiningReducer?.Members > 0 && (
                     <div
-                      className="h-5 w-5 rounded-full text-xs flex items-center justify-center font-semibold"
-                      style={{
-                        border: `1px solid ${
-                          themes.find((theme) => theme.name === choosedTheme)
-                            .colors[2]
-                        }`,
-                        backgroundColor: themes.find(
-                          (theme) => theme.name === choosedTheme
-                        ).colors[0],
-                        color: themes.find(
-                          (theme) => theme.name === choosedTheme
-                        ).textColor,
+                      className="absolute top-full left-0 w-auto max-h-40 overflow-y-auto rounded shadow-lg z-50"
+                      onMouseEnter={() => {
+                        if (timeoutRef.current)
+                          clearTimeout(timeoutRef.current);
+                        setShowMembersList(true);
+                      }}
+                      onMouseLeave={() => {
+                        timeoutRef.current = setTimeout(
+                          () => setShowMembersList(false),
+                          200
+                        );
                       }}
                     >
-                      +{GroupJoiningReducer.users.length - 4}
+                      <ul
+                        className="p-2 text-sm"
+                        style={{
+                          color: theme.textColor,
+                          border: `1px solid ${theme.colors[2]}`,
+                          backgroundColor: theme.colors[1],
+                        }}
+                      >
+                        {members.map((member) => (
+                          <li
+                            key={member.id}
+                            className="py-1 px-2 cursor-default rounded flex items-center space-x-2 relative"
+                          >
+                            <div>
+                              <img
+                                src={member?.image}
+                                alt="member-image"
+                                className="h-5 w-5 rounded-full"
+                              />
+                            </div>
+                            <div>
+                              <p className="font-semibold">
+                                {member?.firstName + " " + member?.lastName}
+                              </p>
+                              <p>{member?.email}</p>
+                            </div>
+                            {member?.role === "formateur" && (
+                              <BadgeCheck className="absolute top-2 right-2 w-4 h-4 text-blue-500" />
+                            )}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   )}
                 </div>
+                {user?.id !== GroupJoiningReducer?.formateurId && (
+                  <div className="text-sm">
+                    Made By :{" "}
+                    <span className="font-semibold">
+                      {GroupJoiningReducer?.formateur?.firstName +
+                        " " +
+                        GroupJoiningReducer?.formateur?.lastName}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
             <div>
@@ -248,6 +292,82 @@ function GroupJoin() {
                 </div>
               )}
             </div>
+          </div>
+          <div>
+            {GroupJoiningReducer?.activity_groups?.length > 0 &&
+              GroupJoiningReducer?.activity_groups?.map((a) => (
+                <div
+                  key={a?.id}
+                  className="p-5 my-4 rounded"
+                  style={{
+                    color: theme.textColor,
+                    border: `1px solid ${theme.colors[2]}`,
+                  }}
+                >
+                  <div>
+                    <div className="flex w-full my-2 justify-between">
+                      <h4 className="opacity-50">#Activity N {a?.id}</h4>
+                      <button className="text-sm px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 text-white">
+                        Give Your Response
+                      </button>
+                    </div>
+                    <p className="opacity-75">{a?.description}</p>
+                    <div className="grid grid-cols-4 gap-4 my-2">
+                      {JSON.parse(a?.data)?.files?.map((f, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center space-x-2 w-auto justify-between px-2 py-4 rounded-lg cursor-pointer"
+                          style={{
+                            backgroundColor: theme.colors[1],
+                            color: theme.textColor,
+                            border: `1px solid ${theme.colors[2]}`,
+                          }}
+                          onClick={() => {
+                            const link = document.createElement("a");
+                            link.href = f.url;
+                            link.download = f.name || "download";
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = themes.find(
+                              (theme) => theme.name === choosedTheme
+                            )?.colors[2];
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = themes.find(
+                              (theme) => theme.name === choosedTheme
+                            )?.colors[1];
+                          }}
+                        >
+                          <div>
+                            <FileKey2 className="h-5 w-5" />
+                          </div>
+                          <h3 className="overflow-hidden">
+                            {f?.name?.length > 25
+                              ? f?.name?.substring(0, 25) + ".."
+                              : f?.name}
+                          </h3>
+                          <div>
+                            <ArrowDownToLine className="h-5 w-5" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="w-full flex justify-end text-xs opacity-75">
+                      {a.created_at
+                        ? new Date(a?.created_at).toLocaleString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        : "just now"}
+                    </div>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       )}
