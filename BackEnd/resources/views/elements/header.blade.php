@@ -1,11 +1,19 @@
-<header class="w-full py-4 bg-white dark:bg-gray-900 text-black dark:text-white fixed top-0 left-0 right-0 z-10">
+<header class="w-full py-4 fixed top-0 left-0 right-0 z-10" id="header">
     <nav class="container mx-auto flex justify-between items-center px-4">
         <div>
             <h1 class="text-xl font-bold text-blue-400">Dashboard Admin</h1>
         </div>
-        <button onclick="toggleTheme()" class="p-2 bg-gray-200 dark:bg-gray-700 rounded">
-            Toggle Theme
-        </button>
+<button id="theme-toggle"
+    class="relative w-14 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center transition-colors duration-300 focus:outline-none">
+    <span class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 flex items-center justify-center"
+        id="toggle-thumb">
+        <i id="theme-icon" class="fas fa-moon text-gray-800 text-sm"></i>
+    </span>
+</button>
+
+
+
+
         <div>
 
             <form action="{{ route('admin.logout') }}" method="POST" id="logoutForm">
@@ -98,30 +106,6 @@
                 padding: 12px 30px;
             }
         </style>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const theme = localStorage.getItem('theme');
-                if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
-            });
 
-            function toggleTheme() {
-
-                const html = document.documentElement;
-                const isDark = html.classList.contains('dark');
-                if (isDark) {
-                    html.classList.remove('dark');
-                    html.classList.add('light');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    html.classList.add('dark');
-                    html.classList.remove('light');
-                    localStorage.setItem('theme', 'dark');
-                }
-            }
-        </script>
     </nav>
 </header>

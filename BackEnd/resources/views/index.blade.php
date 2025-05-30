@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col justify-between items-start mt-4 space-x-2">
+    <div class="flex flex-col  justify-between items-start mt-4 space-x-2">
         <div class="mt-4 border rounded border-gray-700 p-4 w-5/6">
             <h2 class="text-2xl font-bold mb-4">
             <i class="fa-solid fa-chart-column me-2"></i>    
@@ -52,7 +52,7 @@
             </h2>
             <canvas id="dashboardChart" height="100"></canvas>
         </div>
-        <div class="grid lg:grid-cols-5 gap-6 mt-6">
+        <div class="grid lg:grid-cols-5 gap-6 mt-6 w-full">
     <div class=" p-4 rounded shadow" >
         <h2 class="text-xl font-semibold text-center mb-2">Stagiaires</h2>
         <canvas id="stagiairesChart"></canvas>

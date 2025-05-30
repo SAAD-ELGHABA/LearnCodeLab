@@ -33,6 +33,7 @@ Route::middleware(['admin'])->group(function () {
     Route::delete('/delete-collection/{id}', [AdminController::class, 'destroyCollection'])->name('collections.delete');
     Route::get('/groups',[AdminController::class, 'groups'])->name('admin.groups');
     Route::get('/languages',[AdminController::class, 'languages'])->name('admin.languages');
+    Route::post('/languages',[AdminController::class, 'storeLanguage'])->name('language.store');
 });
 
 Route::fallback(function () {

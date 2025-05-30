@@ -19,8 +19,10 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { CircleCheck } from "lucide-react";
 
-const Add = () => {
+// eslint-disable-next-line react/prop-types
+const Add = ({ isActivity = false, group_id = null }) => {
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,11 +42,25 @@ const Add = () => {
     }
 
     try {
-      const response = await axios.post("/api/collections", formData);
+      const url = isActivity ? "/create-activity" : "/collections";
+      const data = { typeActivity: "request", formData };
+      const activityData = {
+        data: data,
+        group_id: group_id || null,
+      };
+      const response = await axios.post(
+        `/api${url}`,
+        isActivity ? activityData : formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       if (response.ok) {
-        toast.success("Collection ajoutée avec succès !");
+        toast.success(response?.data?.message || "created successfully !");
         dispatch(resetForm());
-        navigate("/");
+        navigate(isActivity ? -1 : "/");
       } else {
         toast.error("Erreur lors de l'ajout.");
       }
@@ -77,6 +93,8 @@ const Add = () => {
 const Step1 = ({ onNext }) => {
   const dispatch = useDispatch();
   const { title, language } = useSelector((state) => state.collectionReducer);
+  const languages = useSelector((state) => state.languagesReducer);
+
   const [error, setError] = useState("");
   const handleNext = () => {
     if (!title || !language) {
@@ -95,7 +113,12 @@ const Step1 = ({ onNext }) => {
   const choosedTheme = useSelector((state) => state.themeReducer);
   return (
     <div className="w-full mx-auto mt-5 flex flex-col justify-center items-center">
-      <div className="space-y-6">
+      <div
+        className="space-y-6"
+        style={{
+          color: themes.find((theme) => theme.name === choosedTheme).textColor,
+        }}
+      >
         <h1 className="text-2xl font-bold mb-2">New collection</h1>
         <p className=" mb-6">
           Create your own collections, share your code, solution, feedback,
@@ -126,26 +149,16 @@ const Step1 = ({ onNext }) => {
         <div>
           <label className="block mb-2">Select language :</label>
           <div className="grid grid-cols-3 gap-2">
-            {[
-              "Javascript",
-              "html",
-              "algorithm",
-              "css",
-              "laravel",
-              "react",
-              "php",
-              "python",
-              "Bootstrap",
-            ].map((lang) => (
+            {languages.map((lang) => (
               <button
-                key={lang}
+                key={lang?.name}
                 onClick={() =>
-                  dispatch(setTitleAndLanguage(title, lang.toLowerCase()))
+                  dispatch(setTitleAndLanguage(title, lang?.name.toLowerCase()))
                 }
-                className="cursor-pointer p-2 rounded-md text-sm transition-colors duration-200"
+                className="cursor-pointer p-2 rounded-md text-sm transition-colors duration-200 relative"
                 style={{
                   backgroundColor:
-                    language === lang.toLowerCase()
+                    language === lang?.name.toLowerCase()
                       ? themes.find((theme) => theme.name === choosedTheme)
                           ?.colors[0]
                       : themes.find((theme) => theme.name === choosedTheme)
@@ -153,7 +166,7 @@ const Step1 = ({ onNext }) => {
                   color: themes.find((theme) => theme.name === choosedTheme)
                     ?.textColor,
                   border: `1px solid ${
-                    language === lang.toLowerCase()
+                    language === lang?.name.toLowerCase()
                       ? themes.find((theme) => theme.name === choosedTheme)
                           ?.colors[2]
                       : themes.find((theme) => theme.name === choosedTheme)
@@ -161,7 +174,7 @@ const Step1 = ({ onNext }) => {
                   }`,
                 }}
                 onMouseEnter={(e) => {
-                  if (language !== lang.toLowerCase()) {
+                  if (language !== lang?.name.toLowerCase()) {
                     e.currentTarget.style.backgroundColor = themes.find(
                       (theme) => theme.name === choosedTheme
                     )?.colors[1];
@@ -172,14 +185,23 @@ const Step1 = ({ onNext }) => {
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (language !== lang.toLowerCase()) {
+                  if (language !== lang?.name.toLowerCase()) {
                     e.currentTarget.style.backgroundColor = themes.find(
                       (theme) => theme.name === choosedTheme
                     )?.colors[2];
                   }
                 }}
               >
-                #{lang}
+                #{lang?.name}
+                {language === lang?.name.toLowerCase() && (
+                  <CircleCheck
+                    className="absolute fill-blue-500  -top-2 -right-2"
+                    style={{
+                      color: themes.find((theme) => theme.name === choosedTheme)
+                        ?.colors[2],
+                    }}
+                  />
+                )}
               </button>
             ))}
           </div>
@@ -212,7 +234,12 @@ const Step2 = ({ onNext, onBack }) => {
   };
   const choosedTheme = useSelector((state) => state.themeReducer);
   return (
-    <div className="space-y-6 w-full mx-auto mt-5">
+    <div
+      className="space-y-6 w-full mx-auto mt-5"
+      style={{
+        color: themes.find((theme) => theme.name === choosedTheme).textColor,
+      }}
+    >
       <div className="space-y-6 w-1/2 mx-auto mb-4">
         <h3 className="text-xl font-semibold">
           Ajoutez la question et la description
@@ -230,9 +257,9 @@ const Step2 = ({ onNext, onBack }) => {
               .colors[1],
             color: themes.find((theme) => theme.name === choosedTheme)
               .textColor,
-            border: `1px solid ${themes.find(
-              (theme) => theme.name === choosedTheme
-            )?.colors[2]}`,
+            border: `1px solid ${
+              themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+            }`,
           }}
         />
         <textarea
@@ -248,9 +275,9 @@ const Step2 = ({ onNext, onBack }) => {
               .colors[1],
             color: themes.find((theme) => theme.name === choosedTheme)
               .textColor,
-            border: `1px solid ${themes.find(
-              (theme) => theme.name === choosedTheme
-            )?.colors[2]}`,
+            border: `1px solid ${
+              themes.find((theme) => theme.name === choosedTheme)?.colors[2]
+            }`,
           }}
         />
       </div>

@@ -7,7 +7,8 @@ function MonacoComponent() {
   if (
     formData.language === "javascript" ||
     formData.language === "python" ||
-    formData.language === "php"
+    formData.language === "php" ||
+    formData.language === "c#" 
   ) {
     return (
       <div>

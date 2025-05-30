@@ -1,20 +1,28 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { themes } from "../lib/themes.js";
 import { useDispatch, useSelector } from "react-redux";
-import { CircleX, File } from "lucide-react";
-import FeedbackInterface from "../Layouts/userpages/collection/Feedback/FedbackInterface.jsx";
-import { motion, AnimatePresence } from "framer-motion";
+import { ArrowsUpFromLine, CircleX, File } from "lucide-react";
 import Add from "../Layouts/userpages/Addcollection/Add.jsx";
 import { setTitleAndLanguage } from "../redux/action.js";
-function ActivityInterface({ setActivityInterface, group }) {
+import axios from "axios";
+import { toast } from "sonner";
+function ActivityInterface({ setActivityInterface, group = null }) {
   const choosedTheme = useSelector((state) => state.themeReducer);
   const theme = themes.find((theme) => theme.name === choosedTheme);
   const languages = useSelector((state) => state.languagesReducer);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.userReducer.user);
+  const [description, setDescription] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
 
   const [dragOver, setDragOver] = useState(false);
   const [droppedFiles, setDroppedFiles] = useState([]);
+  const handleRemoveFile = (indexToRemove) => {
+    setDroppedFiles((prev) =>
+      prev.filter((_, index) => index !== indexToRemove)
+    );
+  };
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -36,51 +44,28 @@ function ActivityInterface({ setActivityInterface, group }) {
     const files = Array.from(e.target.files);
     setDroppedFiles((prev) => [...prev, ...files]);
   };
-  const [language, setLanguage] = useState("");
-  const [openDropdown, setOpenDropdown] = useState(null);
-  const languageRef = useRef(null);
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (languageRef.current && !languageRef.current.contains(event.target)) {
-        setOpenDropdown(null);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+  const handleSubmit = async () => {
+    const data = { files: droppedFiles, typeActivity: "request", isPrivate };
+    const activityData = {
+      data: data,
+      description,
+      group_id: group?.id || null,
     };
-  }, []);
-  const ArrowDown = (
-    <svg
-      className="w-4 h-4 inline-block ml-2"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-    </svg>
-  );
+    console.log(activityData);
 
-  const ArrowUp = (
-    <svg
-      className="w-4 h-4 inline-block ml-2"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-    </svg>
-  );
-  const languageDisplay = language || "All Languages";
-  const selectLanguage = (val) => {
-    dispatch(setTitleAndLanguage('',val.toLowerCase()));
-    setLanguage(val);
-    setOpenDropdown(null);
+    try {
+      const res = await axios.post("/api/create-activity", activityData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      toast.success(res?.data?.message);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const [isOpenCollection, setIsOpenCollection] = useState(false);
+
   return (
     <div
       className="flex flex-col h-full w-[100vw] justify-center fixed top-0 right-0 items-center rounded-lg shadow-lg bg-[#21252b5e]"
@@ -90,152 +75,151 @@ function ActivityInterface({ setActivityInterface, group }) {
       }}
     >
       <div
-        className="w-[90%] h-[90%] p-8 rounded relative overflow-y-scroll custom-scrollbar"
+        className="w-[90%] h-[90%] p-6 rounded relative overflow-y-scroll custom-scrollbar"
         style={{
           backgroundColor: theme.colors[1],
           color: theme.textColor,
           border: `1px solid ${theme.colors[2]}`,
         }}
       >
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold">Activity Interface</h1>
-          <h2 className="text-xl">
-            Title Group:{" "}
-            <span className="text-blue-500 font-medium">
-              {group?.groupName}
-            </span>
-          </h2>
-        </div>
-        <div
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          className={`w-full h-40 border-2 border-dashed rounded-lg flex items-center justify-center transition-colors ${
-            dragOver ? "border-blue-500 bg-blue-50/10" : "border-gray-500"
-          }`}
-          style={{
-            borderColor: dragOver ? "#3B82F6" : theme.colors[2],
-            backgroundColor: dragOver ? "#3b82f620" : "transparent",
-            color: theme.textColor,
-          }}
-        >
-          <label className="w-full h-full flex flex-col justify-center items-center cursor-pointer">
-            <p className="text-center text-xl font-medium">
-              Drag and drop files here
-              <br />
-              <span className="text-blue-500 text-sm">
-                or choose a file here
-              </span>
-            </p>
-            <input
-              type="file"
-              multiple
-              onChange={handleFileChange}
-              className="hidden"
-            />
-          </label>
-        </div>
-        {droppedFiles.length > 0 && (
-          <ul className="text-sm grid grid-cols-6 gap-2 mt-4">
-            {droppedFiles.map((file, idx) => (
-              <li
-                key={idx}
-                className="flex items-center space-x-1 bg-gray-700 rounded-lg overflow-hidden p-1"
-              >
-                <span className="text-blue-500 font-medium">{idx + 1}.</span>
-                <File className="h-4 w-4" />
-                <span>{file.name}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-        <div className="mt-4">
-          <label className="text-lg">Activity Description</label>
-          <textarea
-            className="w-full p-3 mt-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
-            placeholder="Write your activity description here..."
-            style={{
-              backgroundColor: theme.colors[1],
-              color: theme.textColor,
-              border: `1px solid ${theme.colors[2]}`,
-            }}
-          ></textarea>
-        </div>
-        <div>
-          <div className="flex items-center justify-between my-4 w-full">
-            <button
-              onClick={() =>
-                setOpenDropdown(openDropdown === "language" ? null : "language")
-              }
-              className="w-auto rounded p-2 text-left flex justify-between items-center"
-              type="button"
+        {user?.role === "formateur" && (
+          <div>
+            {group && (
+              <div className="flex items-center justify-between space-x-4 mb-4">
+                <div>
+                  <h1 className="text-2xl font-bold">Activity Interface</h1>
+                  <h2 className="text-xl">
+                    <span className="text-blue-500 font-medium">
+                      {group?.groupName}
+                    </span>
+                  </h2>
+                </div>
+                <div>
+                  <button
+                    className="cursor-pointer flex space-x-2 items-center bg-blue-500 text-white rounded px-5 py-2 hover:bg-blue-600"
+                    onClick={handleSubmit}
+                  >
+                    <ArrowsUpFromLine className="h-4 w-4" />
+                    <span>submit</span>
+                  </button>
+                </div>
+              </div>
+            )}
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              className={`w-full h-40 border-2 border-dashed rounded-lg flex items-center justify-center transition-colors ${
+                dragOver ? "border-blue-500 bg-blue-50/10" : "border-gray-500"
+              }`}
               style={{
-                backgroundColor: theme.colors[1],
+                borderColor: dragOver ? "#3B82F6" : theme.colors[2],
+                backgroundColor: dragOver ? "#3b82f620" : "transparent",
                 color: theme.textColor,
-                border: `1px solid ${theme.colors[2]}`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = themes.find(
+                  (theme) => theme.name === choosedTheme
+                )?.colors[2];
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = themes.find(
+                  (theme) => theme.name === choosedTheme
+                )?.colors[1];
               }}
             >
-              {languageDisplay}
-              {openDropdown === "language" ? ArrowUp : ArrowDown}
-            </button>
-            <button
-              className="px-4 py-2 rounded bg-blue-500 text-white"
-              onClick={() => setIsOpenCollection(!isOpenCollection)}
-            >
-              {isOpenCollection ? "- Close" : "+ Open"} Collection
-            </button>
-          </div>
-          <div className="relative w-1/3" ref={languageRef}>
-            {openDropdown === "language" && (
-              <ul
-                className="absolute custom-scrollbar custom-scroll z-10 w-full  rounded mt-1 max-h-40 overflow-auto shadow-lg"
+              <label className="w-full h-full flex flex-col justify-center items-center cursor-pointer">
+                <p className="text-center text-xl font-medium">
+                  Drag and drop files here
+                  <br />
+                  <span className="text-blue-500 text-sm">
+                    or choose a file here
+                  </span>
+                </p>
+                <input
+                  type="file"
+                  multiple
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+            </div>
+            {droppedFiles.length > 0 && (
+              <ul className="text-sm grid grid-cols-6 gap-2 mt-4">
+                {droppedFiles.map((file, idx) => (
+                  <li
+                    key={idx}
+                    className="flex items-center space-x-1 bg-gray-700 rounded-lg overflow-hidden py-2 px-3 justify-between"
+                  >
+                    <span className="text-blue-500 font-medium">
+                      {idx + 1}.
+                    </span>
+                    <File className="h-4 w-4" />
+                    <span className="truncate max-w-[100px]">{file.name}</span>
+                    <button
+                      className="cursor-pointer text-red-400 hover:text-red-500"
+                      onClick={() => handleRemoveFile(idx)}
+                      title="Remove file"
+                    >
+                      <CircleX className="h-4 w-4" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <div className="mt-4">
+              <label className="text-lg">Activity Description</label>
+              <textarea
+                className="w-full p-3 mt-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 text-white"
+                placeholder="Write your activity description here..."
                 style={{
                   backgroundColor: theme.colors[1],
                   color: theme.textColor,
                   border: `1px solid ${theme.colors[2]}`,
                 }}
-              >
-                {languages.map((lang) => (
-                  <li
-                    key={lang.name}
-                    className="px-4 py-2 cursor-pointer"
-                    onClick={() => selectLanguage(lang.name)}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = theme.colors[0];
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "transparent";
-                    }}
+                rows={6}
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
+            </div>
+            <div className="flex items-center space-x-2">
+              <label className="inline-flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="checkbox"
+                  id="checkbox"
+                  className="peer hidden"
+                  onChange={(e) => setIsPrivate(e.target.checked)}
+                />
+                <div
+                  className="h-4 w-4 rounded flex items-center justify-center peer-checked:bg-blue-600 peer-checked:border-blue-600 transition opacity-75"
+                  style={{
+                    border: `1px solid ${theme.textColor}`,
+                  }}
+                >
+                  <svg
+                    className="w-3 h-3 text-white hidden peer-checked:block"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
                   >
-                    {lang.name}
-                  </li>
-                ))}
-              </ul>
-            )}
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 111.414-1.414L8.414 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <span
+                  className="text-sm opacity-75"
+                  style={{
+                    color: theme.textColor,
+                  }}
+                >
+                  Check if the response should be private
+                </span>
+              </label>
+            </div>
           </div>
-          {language && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="mt-2 text-sm text-gray-500"
-            >
-              <p>
-                You have selected the language:{" "}
-                <span className="text-blue-500 font-medium">{language}</span>
-              </p>
-            </motion.div>
-          )}
-        </div>
-        {isOpenCollection && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="mt-2 text-sm text-gray-500"
-          >
-            <Add />
-          </motion.div>
         )}
       </div>
       <button

@@ -44,7 +44,7 @@ class stagiairesController extends Controller
             if (!$validation) {
                 return redirect()->back()->with('error', 'Please fill all the fields!');
             }
-            $image = $request->file('stagiaire_image')->store('public/UsersImages');
+            $image = $request->file('image')->store('UserImages', 'public');
 
             $user = User::create([
                 'firstName' => $request->firstName,

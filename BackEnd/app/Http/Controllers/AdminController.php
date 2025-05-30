@@ -57,4 +57,18 @@ class AdminController extends Controller
         $languages = Language::all();
         return view('pages.languages.index', compact('languages'));
     }
+    public function storeLanguage(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required',
+        ]);
+
+        $language = Language::updateOrCreate(
+            ['name' => $request->name],
+            ['description' => $request->description]
+        );
+
+        return redirect()->back()->with('success', 'Language saved successfully!');
+    }
 }

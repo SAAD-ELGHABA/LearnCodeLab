@@ -6,13 +6,17 @@ import {
   faShuffle,
   faUpRightAndDownLeftFromCenter,
 } from "@fortawesome/free-solid-svg-icons";
-import {  useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { setCode } from "../../redux/action";
 import spinner from "../../Assets/spinner.gif";
 import { toast } from "sonner";
 import { monacoApi } from "./api.monaco";
 import EditorMaximize from "./EditorMaximize";
+import { themes } from "../../lib/themes";
 function EditorComponent() {
+  const choosedTheme = useSelector((state) => state.themeReducer);
+  const themeId = choosedTheme.replace(/\s+/g, "_").toLowerCase();
+  const definedThemes = new Set();
   const [isMaximized, setIsMaximized] = useState(false);
   const formData = useSelector((state) => state.collectionReducer);
   const [code, setCodeMonaco] = useState("");
@@ -46,7 +50,11 @@ function EditorComponent() {
       setIsLoading(false);
     }
   }
-
+  const clearOutput = () => {
+    setOutput("");
+    setIsError(false);
+    toast.success("Output cleared successfully!");
+  };
   return (
     <div
       style={{ height: "500px" }}
@@ -56,15 +64,25 @@ function EditorComponent() {
 
       <div className="flex">
         <div className="w-1/2 flex justify-start items-center">
-          <h3 className="text-sm text-slate-400">
+          <h3 className="text-sm ">
             The Selected Language:{" "}
             <span className="text-blue-500">{formData.language}</span>
           </h3>
         </div>
         <div className="w-1/2 flex justify-end items-center space-x-2 text-sm text-blue-500">
           <button
-            className="hover:bg-gray-800 rounded px-2 py-2 flex justify-center items-center space-x-2 cursor-pointer"
+            className=" rounded px-4 py-2 flex justify-center items-center space-x-2 cursor-pointer"
             onClick={() => setIsMaximized(true)}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = themes.find(
+                (theme) => theme.name === choosedTheme
+              )?.colors[2];
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = themes.find(
+                (theme) => theme.name === choosedTheme
+              )?.colors[1];
+            }}
           >
             <p>Maximize the editor</p>
             <FontAwesomeIcon
@@ -75,10 +93,20 @@ function EditorComponent() {
         </div>
       </div>
       <div className="flex space-x-2">
-        <div className="w-2/5 border border-gray-700 rounded overflow-hidden shadow">
+        <div
+          className="w-2/5  rounded overflow-hidden shadow"
+          style={{
+            backgroundColor: themes.find((t) => t.name === choosedTheme)
+              .colors[2],
+            color: themes.find((t) => t.name === choosedTheme).textColor,
+            border: `1px solid ${
+              themes.find((t) => t.name === choosedTheme).colors[2]
+            }`,
+          }}
+        >
           <Editor
             height="65vh"
-            language={formData.language}
+            language={formData.language === 'c#' ? "csharp":formData.language}
             defaultValue={
               formData.language === "javascript"
                 ? `// ${formData.language} code here \n${formData.code}`
@@ -86,16 +114,50 @@ function EditorComponent() {
                 ? `# ${formData.language} code here\n${formData.code}`
                 : formData.language === "php"
                 ? `<?php\n// ${formData.language} code here\n${formData.code}`
+                : formData.language === "c#"
+                ? `\n// ${formData.language} code here\n${formData.code}`
                 : `// ${formData.language} code here\n${formData.code}`
             }
-            theme="vs-dark"
+            theme={themeId}
+            beforeMount={(monaco) => {
+              const currentTheme = themes.find((t) => t.name === choosedTheme);
+              if (!currentTheme || definedThemes.has(themeId)) return;
+
+              monaco.editor.defineTheme(themeId, {
+                base:
+                  choosedTheme === "Light" || choosedTheme === "Slik"
+                    ? "vs"
+                    : "vs-dark",
+                inherit: true,
+                rules: [
+                  {
+                    token: "",
+                    foreground: currentTheme.textColor.replace("#", ""),
+                  },
+                  { token: "comment", foreground: "6A9955" },
+                  { token: "keyword", foreground: "007acc" },
+                  { token: "string", foreground: "ce9178" },
+                ],
+                colors: {
+                  "editor.background": currentTheme.colors[0],
+                  "editor.foreground": currentTheme.textColor,
+                  "editorLineNumber.foreground": "#999999",
+                  "editorCursor.foreground": currentTheme.textColor,
+                  "editor.lineHighlightBackground": currentTheme.colors[1],
+                  "editor.selectionBackground": currentTheme.colors[2] + "99",
+                  "editor.inactiveSelectionBackground":
+                    currentTheme.colors[2] + "44",
+                },
+              });
+
+              definedThemes.add(themeId);
+            }}
             options={{
               minimap: { enabled: false },
-              padding: {
-                top: 10,
-                bottom: 5,
-              },
+              padding: { top: 10, bottom: 5 },
+              readOnly: status,
             }}
+            readOnly={status}
             value={formData.code}
             onChange={(value) => dispatch(setCode(value))}
             onMount={handleEditorDidMount}
@@ -113,6 +175,14 @@ function EditorComponent() {
           className={`relative border text-start p-2 rounded w-2/5 h-[65vh] ${
             iserror ? "border-red-500" : "border-gray-700"
           }`}
+          style={{
+            color: iserror
+              ? "red"
+              : themes.find((t) => t.name === choosedTheme).textColor,
+            border: `1px solid ${
+              themes.find((t) => t.name === choosedTheme).colors[2]
+            }`,
+          }}
         >
           {isloading && (
             <div className="absolute top-0 left-0 right-0  text-white p-2 rounded-t h-[65vh] flex justify-center items-center">
@@ -131,17 +201,31 @@ function EditorComponent() {
               >
                 run code
               </button>
-              <button className="flex justify-center items-center space-x-2 text-slate-400 ">
-                <p>clear output</p>
-                <FontAwesomeIcon icon={faBroom} />
+              <button
+                className="flex justify-center items-center space-x-2 cursor-pointer hover:text-blue-500 transition duration-300 rounded px-4 py-2"
+                style={{
+                  border: `1px solid ${
+                    themes.find((theme) => theme.name === choosedTheme)
+                      .colors[2]
+                  }`,
+                }}
+                onClick={clearOutput}
+              >
+                <p>Clear Output</p>
               </button>
             </div>
             <div className="text-start overflow-hidden scroll-y-auto text-sm h-[65vh] m-2">
               <div>
                 <span
-                  className={`
-              ${iserror ? "text-red-500" : "text-slate-400"}
-              `}
+                className={`whitespace-pre-wrap `}
+                  style={{
+                    color: iserror
+                      ? "red"
+                      : `${
+                          themes.find((theme) => theme.name === choosedTheme)
+                            .textColor
+                        }`,
+                  }}
                 >
                   {output}
                 </span>

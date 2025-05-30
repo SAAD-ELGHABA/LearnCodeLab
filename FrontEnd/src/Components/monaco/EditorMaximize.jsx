@@ -7,8 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCode } from "../../redux/action";
 import { monacoApi } from "./api.monaco";
 import { toast } from "sonner";
+import { themes } from "../../lib/themes.js";
 // eslint-disable-next-line react/prop-types
 function EditorMaximize({ setIsMaximized }) {
+  const choosedTheme = useSelector((state) => state.themeReducer);
+  const themeId = choosedTheme.replace(/\s+/g, "_").toLowerCase();
+  const definedThemes = new Set();
   const formData = useSelector((state) => state.collectionReducer);
   const [code, setCodeMonaco] = useState("");
   const [output, setOutput] = useState("");
@@ -41,12 +45,24 @@ function EditorMaximize({ setIsMaximized }) {
       setIsLoading(false);
     }
   }
+  const clearOutput = () => {
+    setOutput("");
+    setIsError(false);
+    toast.success("Output cleared successfully!");
+  };
   return (
     <div
       className=" h-screen w-screen flex justify-center items-center fixed top-0 left-0"
       style={{ zIndex: "1000" }}
     >
-      <div className="flex flex-col w-full h-full  bg-[#21252b]">
+      <div
+        className="flex flex-col w-full h-full  "
+        style={{
+          backgroundColor: themes.find((theme) => theme.name === choosedTheme)
+            .colors[1],
+          color: themes.find((theme) => theme.name === choosedTheme).textColor,
+        }}
+      >
         <div className=" text-sm text-blue-500 ">
           <button
             className="fixed bottom-4 left-1/2 -translate-x-1/2 transform bg-gray-900 hover:bg-gray-800 text-white rounded px-4 py-2 flex justify-center items-center space-x-2 cursor-pointer z-50 shadow-lg"
@@ -70,15 +86,49 @@ function EditorMaximize({ setIsMaximized }) {
                   ? `<?php\n// ${formData.language} code here`
                   : `// ${formData.language} code here`
               }
-              theme="vs-dark"
+              theme={themeId}
+              beforeMount={(monaco) => {
+                const currentTheme = themes.find(
+                  (t) => t.name === choosedTheme
+                );
+                if (!currentTheme || definedThemes.has(themeId)) return;
+
+                monaco.editor.defineTheme(themeId, {
+                  base:
+                    choosedTheme === "Light" || choosedTheme === "Slik"
+                      ? "vs"
+                      : "vs-dark",
+                  inherit: true,
+                  rules: [
+                    {
+                      token: "",
+                      foreground: currentTheme.textColor.replace("#", ""),
+                    },
+                    { token: "comment", foreground: "6A9955" },
+                    { token: "keyword", foreground: "007acc" },
+                    { token: "string", foreground: "ce9178" },
+                  ],
+                  colors: {
+                    "editor.background": currentTheme.colors[0],
+                    "editor.foreground": currentTheme.textColor,
+                    "editorLineNumber.foreground": "#999999",
+                    "editorCursor.foreground": currentTheme.textColor,
+                    "editor.lineHighlightBackground": currentTheme.colors[1],
+                    "editor.selectionBackground": currentTheme.colors[2] + "99",
+                    "editor.inactiveSelectionBackground":
+                      currentTheme.colors[2] + "44",
+                  },
+                });
+
+                definedThemes.add(themeId);
+              }}
               options={{
                 minimap: { enabled: false },
-                padding: {
-                  top: 10,
-                  bottom: 5,
-                },
+                padding: { top: 10, bottom: 5 },
+                readOnly: status,
               }}
-              value={formData.code || code} 
+              readOnly={status}
+              value={formData.code}
               onChange={(value) => dispatch(setCode(value))}
               onMount={handleEditorDidMount}
             />
@@ -89,7 +139,14 @@ function EditorMaximize({ setIsMaximized }) {
             }`}
           >
             {isloading && (
-              <div className="absolute top-0 left-0 right-0 bg-gray-800 opacity-75 text-white p-2 rounded-t h-[100vh] flex justify-center items-center">
+              <div
+                className="absolute top-0 left-0 right-0 opacity-75  p-2 rounded-t h-[100vh] flex justify-center items-center"
+                style={{
+                  backgroundColor: themes.find(
+                    (theme) => theme.name === choosedTheme
+                  ).colors[1],
+                }}
+              >
                 <img
                   src={spinner}
                   alt="Loading..."
@@ -105,17 +162,31 @@ function EditorMaximize({ setIsMaximized }) {
                 >
                   run code
                 </button>
-                <button className="flex justify-center items-center space-x-2 text-slate-400 ">
-                  <p>clear output</p>
-                  <FontAwesomeIcon icon={faBroom} />
+                <button
+                  className="flex justify-center items-center space-x-2 cursor-pointer hover:text-blue-500 transition duration-300 rounded px-4 py-2"
+                  style={{
+                    border: `1px solid ${
+                      themes.find((theme) => theme.name === choosedTheme)
+                        .colors[2]
+                    }`,
+                  }}
+                  onClick={clearOutput}
+                >
+                  <p>Clear Output</p>
                 </button>
               </div>
               <div className="text-start overflow-y-auto text-sm h-[65vh] m-2">
                 <div>
                   <span
-                    className={`whitespace-pre-wrap ${
-                      iserror ? "text-red-500" : "text-slate-400"
-                    }`}
+                    className={`whitespace-pre-wrap `}
+                    style={{
+                      color: iserror
+                        ? "red"
+                        : `${
+                            themes.find((theme) => theme.name === choosedTheme)
+                              .textColor
+                          }`,
+                    }}
                   >
                     {output}
                   </span>

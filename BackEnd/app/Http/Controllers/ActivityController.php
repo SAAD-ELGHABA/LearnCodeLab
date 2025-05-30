@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\activityGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ActivityController extends Controller
 {
@@ -44,6 +46,36 @@ class ActivityController extends Controller
             return response()->json([
                 'error' => 'Failed to make the activity!',
                 'details' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function createActivity(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            $request->validate([
+                'description' => 'required|string',
+                'group' => 'required|string',
+                'data' => 'required|array',
+            ]);
+
+            $activity = activityGroup::create([
+                'description' => $request->input('description'),
+                'group' => $request->input('group'),
+                'data' => json_encode($request->input('data')),
+                'user_id' => $user->id,
+            ]);
+
+            return response()->json([
+                'message' => 'Activity created successfully',
+                'activity' => $activity,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'Failed to make the activity!',
+                'details' => $th->getMessage(),
             ], 500);
         }
     }

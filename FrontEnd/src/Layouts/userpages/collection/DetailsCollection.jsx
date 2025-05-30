@@ -41,7 +41,6 @@ function DetailsCollection() {
     };
     loadFeedbacks();
   });
-  console.log(ChoosedCollection);
 
   return (
     <div>

@@ -49,6 +49,7 @@ const CodeExecution = ({ language, code = null, status = false, setCode }) => {
         className={` pr-4 rounded ${
           language === "javascript" ||
           language === "php" ||
+          language === "c#" ||
           language === "python"
             ? "w-1/2"
             : "w-full"
@@ -68,6 +69,8 @@ const CodeExecution = ({ language, code = null, status = false, setCode }) => {
               ? "php"
               : language === "css"
               ? "css"
+              : language === "c#"
+              ? "csharp"
               : language
           }
           defaultValue={
@@ -132,7 +135,8 @@ const CodeExecution = ({ language, code = null, status = false, setCode }) => {
       </div>
       {(language === "javascript" ||
         language === "php" ||
-        language === "python") && (
+        language === "python" ||
+        language === "c#") && (
         <div
           className={`relative  text-start p-2 me-2 rounded w-1/2 h-[65vh]`}
           style={{

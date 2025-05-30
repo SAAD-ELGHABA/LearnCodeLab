@@ -184,7 +184,10 @@ export const feedbackReducer = (state=Feedbacks,action)=>{
 }
 
 const messages = [
-    
+    {
+        data: "Hi! I am your virtual assistant. How can I help you today 😊?",
+        role: "ai",
+    }
 ]
 
 export const ChatAiReducer = (state=messages,action)=>{
@@ -257,5 +260,40 @@ export const themeReducer = (state=theme,action)=>{
         return action.payload;
         default:
             return state;
+    }
+}
+
+const notifications = [];
+
+export const notificationsReducer = (state = notifications, action) => {
+    switch (action.type) {
+        case "GET_NOTIFICATION":
+            return action.payload;
+
+        case "ADD_NOTIFICATION":
+            return [action.payload, ...state];
+
+        default:
+            return state;
+    }
+};
+
+const globalSearchResult = [];
+export const globalSearchResultReducer = (state=globalSearchResult,action)=>{
+    switch(action.type){
+        case "GET_RESULT_GLOBAL_SEARCH":
+            return action.payload
+        default :
+            return state;
+    }
+}
+
+const GroupJoining = {}
+export const GroupJoiningReducer = (state=GroupJoining,action)=>{
+    switch(action.type){
+        case "JOIN_GROUP":
+            return action.payload
+        default:
+            return state
     }
 }

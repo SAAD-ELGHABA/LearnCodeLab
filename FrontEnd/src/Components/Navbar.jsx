@@ -3,10 +3,12 @@ import LCL from '../Assets/LCL.png';
 export default function Navbar() {
   return (
     <header className="bg-gray-900 sticky top-0 shadow-sm shadow-gray-800 text-white py-1  z-50">
-      <nav className="container mx-auto flex items-center justify-around">
-        <Link to='/'>
-        <img className="h-23 w-23 text-xl font-bold flex justify-end" src={LCL}/>
-          
+      <nav className="container mx-auto flex items-center justify-around py-4">
+        <Link to='/' className="flex items-centerfont-bold text-2xl font-black">
+        {/* <img className="h-23 w-23 text-xl font-bold flex justify-end" src={LCL}/> */}
+            <h1 className="text-blue-500">Learn</h1>
+            <h1>Code</h1>
+            <h1 className="text-blue-500">Lab</h1>
         </Link>
         <ul className="hidden md:flex space-x-6 text-sm">
           <li>

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const handlerate = async (type,idCollection,dispatch)=>{
+export const handlerate = async (type,idCollection,dispatch,setMyCollections=null,user)=>{
     try {
         const response = await axios.post(`/api/rate-collection/${idCollection}`,{
             type
@@ -14,6 +14,9 @@ export const handlerate = async (type,idCollection,dispatch)=>{
                 type: "GET_ALL_COLLECTIONS",
                 payload: response.data.collections,
             });
+            if(setMyCollections){
+                setMyCollections(response.data.collections.filter(c=>c?.user?.id == user?.id))
+            }
         }
     } catch (error) {
         console.log(error);

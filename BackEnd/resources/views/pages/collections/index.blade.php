@@ -31,7 +31,10 @@
                     <td class="px-4 py-2">{{ $collection->title }}</td>
                     <td class="px-4 py-2">{{ $collection->language }}</td>
                     <td class="flex space-x-2 justify-center items-center pt-5">
-                        <a href="http://localhost:3000/admin/collection/details/{{$collection->user->firstName.'-'.$collection->user->lastName}}/{{$collection->slug}}">
+                        <a href="http://localhost:3000/admin/collection/details/{{$collection->user->firstName.'-'.$collection->user->lastName}}/{{$collection->slug}}" class="text-blue-500 hover:text-blue-700"
+                            title="View Collection Details" target="_blank" rel="noopener noreferrer"
+                            class="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
+                        >
                             <i class="fa-regular fa-eye"></i>
                         </a>
                         <form action="{{ route('collections.delete', $collection->id) }}" method="post" class="inline-block" id="deleteForm_{{ $collection->id }}">

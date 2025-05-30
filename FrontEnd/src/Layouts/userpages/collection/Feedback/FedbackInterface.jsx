@@ -6,9 +6,10 @@ import Code from "./Code";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
 import CodeExecution from "../CodeExecution";
-
+import {themes} from '../../../../lib/themes.js';
 // eslint-disable-next-line react/prop-types
 function FeedbackInterface({ language, typeFeedbackChecked, collection }) {
+  const choosedTheme = useSelector((state) => state.themeReducer);
   const [typeFeedback, setTypeFeedback] = useState("");
   const [openAccordion, setOpenAccordion] = useState(null);
   const feedbackReducer = useSelector((state) => state.feedbackReducer);
@@ -59,7 +60,18 @@ function FeedbackInterface({ language, typeFeedbackChecked, collection }) {
               <div key={index} className="my-4">
                 <div
                   onClick={() => toggleAccordion(index)}
-                  className="flex justify-between items-center bg-[#27304257] p-4 rounded-lg text-gray-300 cursor-pointer select-none"
+                  className="flex justify-between items-center  p-4 rounded-lg  cursor-pointer select-none"
+                  style={{
+                    backgroundColor: themes.find(
+                      (theme) => theme.name === choosedTheme
+                    ).colors[1],
+                    color: themes.find(
+                      (theme) => theme.name === choosedTheme
+                    ).textColor,
+                    border: `1px solid ${themes.find(
+                      (theme) => theme.name === choosedTheme
+                    ).borderColor}`,
+                  }}
                 >
                   <div>
                     <div className="flex space-x-2 items-center">
@@ -75,12 +87,12 @@ function FeedbackInterface({ language, typeFeedbackChecked, collection }) {
                             feedback.user.lastName}
                         </span>
                       </div>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs ">
                         Code Feedback #{index + 2}
                       </span>
                     </div>
                     <div className="flex justify-start">
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs ">
                         {new Date(feedback.created_at).toLocaleDateString(
                           "en-US",
                           {
@@ -126,7 +138,18 @@ function FeedbackInterface({ language, typeFeedbackChecked, collection }) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.4 }}
-                className="bg-[#27304257] text-white p-3 rounded-2xl rounded-bl-none my-2 w-full min-w-[80%] self-start shadow-md flex flex-col"
+                className="p-3 rounded-2xl rounded-bl-none my-2 w-full min-w-[80%] self-start shadow-md flex flex-col"
+                style={{
+                  backgroundColor: themes.find(
+                    (theme) => theme.name === choosedTheme
+                  ).colors[1],
+                  color: themes.find(
+                    (theme) => theme.name === choosedTheme
+                  ).textColor,
+                  border: `1px solid ${themes.find(
+                    (theme) => theme.name === choosedTheme
+                  ).borderColor}`,
+                }}
               >
                 <div>
                   <div className="flex flex-col space-y-2">
@@ -140,12 +163,12 @@ function FeedbackInterface({ language, typeFeedbackChecked, collection }) {
                         {feedback.user.firstName + " " + feedback.user.lastName}
                       </span>
                     </div>
-                    <span className="text-gray-300 text-sm">
+                    <span className=" text-sm">
                       {feedback.content}
                     </span>
                   </div>
                   <div className="flex justify-end">
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs ">
                       {new Date(feedback.created_at).toLocaleDateString(
                         "en-US",
                         {
@@ -170,10 +193,10 @@ function FeedbackInterface({ language, typeFeedbackChecked, collection }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex flex-col gap-4 h-full justify-center items-center text-gray-400"
+          className="flex flex-col gap-4 h-full justify-center items-center "
         >
           <MessageCircleOff className="h-20 w-20" />
-          <h2 className="text-2xl font-semibold text-gray-500">
+          <h2 className="text-2xl font-semibold ">
             No Feedback yet
           </h2>
           <p className="text-sm">Be the first to leave a Feedback</p>

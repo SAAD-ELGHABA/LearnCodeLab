@@ -8,7 +8,13 @@ function VerifyAcceessRoutes({ children, role = undefined, path }) {
   const userRole = useSelector((state) =>
     user ? state.userReducer.user.role : null
   );
-  return  user && user.email_verified_at && userRole === role ? children : <Navigate to={path} />;
+  return user &&
+    user.email_verified_at &&
+    (userRole === role || userRole === "formateur" || userRole === "admin") ? (
+    children
+  ) : (
+    <Navigate to={path} />
+  );
 }
 
 export default VerifyAcceessRoutes;

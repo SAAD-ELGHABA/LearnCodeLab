@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\NotificationSent;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthentificationController;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
@@ -10,10 +12,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\SaveController;
+use App\Http\Controllers\UserController;
 use App\Models\Collection;
 use App\Models\GroupStagiaire;
 use App\Models\Group;
@@ -63,12 +68,23 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/rate-collection/{id}', [RateController::class, 'rateCollection'])->name('rate.collection');
     Route::get('/get-mycollections/{userId}', function ($userId) {
         $MyCollections = Collection::where('user_id', $userId)
-            ->with(['user', 'rates'])
+            ->with(['feedback', 'user', 'rates'])
             ->get();
+        $MyCollections->transform(function ($collection) {
+            $collection->upvotes = $collection->rates->where('type', 'up')->count();
+            $collection->downvotes = $collection->rates->where('type', 'down')->count();
+            return $collection;
+        });
         return response()->json([
             'MyCollections' => $MyCollections,
         ]);
     });
+    Route::post('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/notifications', [NotificationsController::class, 'store']);
+    Route::get('/my-notifications', [NotificationsController::class, 'index'])->name('myNotifications');
+    Route::get('/search-global', [GlobalSearchController::class, 'FetchData'])->name('global.search');
+    Route::get('/check-permission-group/{access_key}', [GroupController::class, 'checkPermission']);
+    Route::post('/create-activity', [ActivityController::class,'createActivity'])->name('create.activity');
 });
 
 

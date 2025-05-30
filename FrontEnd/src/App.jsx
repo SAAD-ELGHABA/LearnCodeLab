@@ -9,13 +9,20 @@ import { useDispatch, useSelector } from "react-redux";
 import spinner from "./Assets/spinner.gif";
 import { groupstagiaire } from "./functions/groupstagiaire";
 import { fetchLanguages } from "./functions/getLanguages";
+
+import { io } from "socket.io-client";
+import { getMyNotifications } from "./functions/getMyNotifications";
+const socket = io("http://localhost:3001");
 function App() {
   const token = useSelector((state) => state.userReducer.token);
+  const user = useSelector((state) => state.userReducer.user);
   const dispatch = useDispatch();
   const [process, setProcess] = useState(false);
+
   useEffect(() => {
     const lang = async () => await fetchLanguages(dispatch);
     lang();
+
     if (!token) {
       dispatch(login(null, {}));
       groupstagiaire(dispatch);
@@ -23,7 +30,10 @@ function App() {
       return;
     } else {
       groupstagiaire(dispatch);
+      const notif = async () => await getMyNotifications(dispatch);
+      notif();
     }
+
     try {
       const fetchUserData = async () => {
         axios.defaults.withCredentials = true;
@@ -34,14 +44,12 @@ function App() {
           },
         });
         if (response) {
-          console.log(response.data);
-
           dispatch(login(token, response.data));
         }
       };
       fetchUserData();
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to fetch user");
       dispatch(login(null, {}));
     } finally {
       setTimeout(() => {
@@ -49,6 +57,29 @@ function App() {
       }, 3000);
     }
   }, [token, dispatch]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    socket.emit("register", user.id);
+
+    const handleNotification = (data) => {
+      if (data.user_id === user.id) {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: data,
+        });
+        toast.info(`📬 ${data.title}: ${data.message}`);
+      }
+    };
+
+    socket.on("receive-notification", handleNotification);
+
+    return () => {
+      socket.off("receive-notification", handleNotification);
+    };
+  }, [user]);
+
   return (
     <>
       {process ? (

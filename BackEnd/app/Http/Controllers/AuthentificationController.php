@@ -38,7 +38,7 @@ class AuthentificationController extends Controller
                     'email' => $request->email,
                     'password' => bcrypt($request->password),
                     'groupstagiaire_id' => $request->group,
-                    'image' => $request->image ?? 'staticImages/logo-v-2.png',
+                    'image' => $request->image ?? '127.0.0.1:8000/staticImages/logo-v-2.png',
                 ]);
                 if ($user) {
                     event(new Registered($user));

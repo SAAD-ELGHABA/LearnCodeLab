@@ -21,7 +21,7 @@
                 <button id="closeAddLanguageModal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-200 text-2xl focus:outline-none">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
-                <form action="" class="w-full">
+                <form action="{{route('language.store')}}" class="w-full" method="post">
                     @csrf
                     <div class="mb-5">
                         <label for="name" class="block text-sm font-semibold text-gray-200 my-3">
@@ -75,6 +75,57 @@
                 </button>
                 <div id="lang-{{ $index }}" class="accordion-content max-h-0 overflow-hidden transition-all duration-300 px-4 py-0">
                     <p class="py-2">{{ $language->description ?? 'No description available.' }}</p>
+                    <div class="flex justify-end w-full pb-8">
+                        <button
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg flex items-center transition text-sm mt-2 showEditLanguageModal"
+                            data-id="{{ $language->id }}"
+                            data-name="{{ $language->name }}"
+                            data-description="{{ $language->description }}">
+                            update
+                        </button>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const addBtn = document.querySelector('#addLanguageModal button[type="submit"]');
+                                const nameInput = document.getElementById('name');
+                                const descInput = document.getElementById('description');
+                                const form = document.querySelector('#addLanguageModal form');
+                                const originalAction = form.action;
+                                const originalBtnHtml = addBtn.innerHTML;
+
+                                document.querySelectorAll('.showEditLanguageModal').forEach(function(btn) {
+                                    btn.addEventListener('click', function() {
+                                        // Show modal
+                                        const modal = document.getElementById('addLanguageModal');
+                                        modal.classList.remove('hidden');
+                                        // Fill form with language data
+                                        nameInput.value = this.getAttribute('data-name') || '';
+                                        descInput.value = this.getAttribute('data-description') || '';
+                                        // Change button text to "Update Language"
+                                        addBtn.innerHTML = '<i class="fa-solid fa-pen mr-2"></i>Update Language';
+                                        // Optionally, change form action to update route if needed
+                                        // form.action = '/your-update-route/' + this.getAttribute('data-id');
+                                    });
+                                });
+
+                                // Reset button text and form when modal is closed
+                                document.getElementById('closeAddLanguageModal').addEventListener('click', function() {
+                                    addBtn.innerHTML = originalBtnHtml;
+                                    nameInput.value = '';
+                                    descInput.value = '';
+                                    form.action = originalAction;
+                                });
+                                document.getElementById('addLanguageModal').addEventListener('click', function(e) {
+                                    if (e.target === this) {
+                                        addBtn.innerHTML = originalBtnHtml;
+                                        nameInput.value = '';
+                                        descInput.value = '';
+                                        form.action = originalAction;
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
                 </div>
             </div>
             @endforeach

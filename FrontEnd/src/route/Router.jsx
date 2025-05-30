@@ -26,6 +26,7 @@ import ResendVerification from "../pages/ResendVerification";
 import Add from "../Layouts/userpages/Addcollection/Add";
 import DetailsCollection from "../Layouts/userpages/collection/DetailsCollection";
 import Profile from "../Layouts/userpages/Profile";
+import GroupJoin from "../Layouts/userpages/GroupJoin";
 
 const REGISTER = "/register";
 const LOGIN = "/login";
@@ -145,6 +146,10 @@ const Router = createBrowserRouter([
         path: "profile",
         element: <Profile />,
       },
+      {
+        path: "/group/:title/:access_key",
+        element: <GroupJoin />,
+      },
     ],
   },
   {
@@ -183,11 +188,15 @@ const Router = createBrowserRouter([
         path: "profile",
         element: <Profile />,
       },
+      {
+        path: "/collection/details/:user/:slug",
+        element: <DetailsCollection />,
+      },
     ],
   },
   {
     element: (
-      <VerifyAcceessRoutes role={"admin"}  path={"/"}>
+      <VerifyAcceessRoutes role={"admin"} path={"/"}>
         <AdminGreeting />
       </VerifyAcceessRoutes>
     ),

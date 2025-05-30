@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->string('groupName');            // matches request('group_name')
-            $table->json('selectedGroups')->nullable();      // matches request('groups'), stored as JSON
-            $table->boolean('forAllGroups')->default(false); // matches request('for_all_groups')
+            $table->string('groupName');           
+            $table->json('selectedGroups')->nullable();      
+            $table->boolean('forAllGroups')->default(false); 
             $table->timestamps();
         });
 

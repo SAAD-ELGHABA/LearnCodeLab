@@ -7,56 +7,21 @@ import {
   Folder,
   HelpCircle,
   LogOut,
+  AlignLeft,
+  AlignJustify,
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { toast } from "sonner";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../redux/action.js";
-import { useState } from "react";
-import ConfirmAlert from "../Components/ConfirmAlert.jsx";
 import { themes } from "../lib/themes.js";
 
 // eslint-disable-next-line react/prop-types
-function SideBar({ isOpen, setIsOpen, formateur = false }) {
+function SideBar({ isOpen, setIsOpen, formateur = false, setToggleLogOut }) {
   const choosedTheme = useSelector((state) => state.themeReducer);
   const user = useSelector((state) => state.userReducer.user);
   const location = useLocation();
-  const nav = useNavigate();
-  const token = useSelector((state) => state.userReducer.token);
-  const dispatch = useDispatch();
-
-  const [isLogOut, setIsLogout] = useState(false);
-
-  const handleLogOut = async () => {
-    setIsLogout("loading");
-    try {
-      const response = await axios.post(
-        "/api/logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.status >= 200) {
-        dispatch(logout());
-        setTimeout(() => {
-          setIsLogout(false);
-          nav("/");
-        }, 2000);
-      }
-    } catch (error) {
-      toast.error(error);
-    } finally {
-      setTimeout(() => {
-        setIsLogout(false);
-      }, 2000);
-    }
-  };
+  if (user?.role === "formateur") {
+    formateur = true;
+  }
 
   const links = [
     {
@@ -113,14 +78,14 @@ function SideBar({ isOpen, setIsOpen, formateur = false }) {
               className="cursor-pointer text-xl ml-auto"
               onClick={() => setIsOpen(false)}
             >
-              &times;
+              <AlignLeft />
             </span>
           ) : (
             <span
               className="cursor-pointer text-xl ml-auto"
               onClick={() => setIsOpen(true)}
             >
-              &#9776;
+              <AlignJustify />
             </span>
           )}
         </div>
@@ -161,11 +126,11 @@ function SideBar({ isOpen, setIsOpen, formateur = false }) {
         </ul>
       </div>
 
-      <div className="mb-18">
+      <div className="mb-20">
         <ul>
           <li
             onClick={() => {
-              setIsLogout(true);
+              setToggleLogOut(true);
             }}
             className="space-x-2  py-3 ps-8 cursor-pointer flex items-center"
             style={{
@@ -189,17 +154,6 @@ function SideBar({ isOpen, setIsOpen, formateur = false }) {
           </li>
         </ul>
       </div>
-
-      {isLogOut && (
-        <ConfirmAlert
-          message={"Are You Sure .. you wanna log out !!"}
-          onCancel={() => {
-            setIsLogout(false);
-          }}
-          onConfirm={handleLogOut}
-          isLogout={isLogOut}
-        />
-      )}
     </div>
   );
 }

@@ -67,4 +67,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(GroupStagiaire::class);
     }
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class)->withTimestamps();
+    }
 }

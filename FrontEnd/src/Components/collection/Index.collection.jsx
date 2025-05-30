@@ -12,9 +12,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { handlerate } from "../../functions/handlerate";
 import { themes } from "../../lib/themes.js";
+import { motion, AnimatePresence } from "framer-motion";
 
 // eslint-disable-next-line no-unused-vars
-function zIndex({ collection }) {
+function zIndex({ collection, setMyCollections = null }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isLoading, setIsLoading] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -44,7 +45,13 @@ function zIndex({ collection }) {
     setIsRating({ state: true, type });
     const ratePromise = async () => {
       try {
-        const res = await handlerate(type, collection?.id, dispatch);
+        const res = await handlerate(
+          type,
+          collection?.id,
+          dispatch,
+          setMyCollections,
+          user
+        );
       } catch (error) {
         console.log(error);
       } finally {
@@ -71,6 +78,13 @@ function zIndex({ collection }) {
   );
 
   return (
+              <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mt-2 text-sm text-gray-500"
+          >
+
     <div
       className=" rounded-lg p-6 mb-6 border "
       style={{
@@ -93,15 +107,14 @@ function zIndex({ collection }) {
         </Link>
       </div>
       <p className=" mb-4">
-        The question:
-        <span className="font-medium text-lg ms-2">{collection.question}</span>
+        <span className="font-medium text-lg">{collection.question}</span>
       </p>
 
       <div className="text-sm  mb-4">
         <p>{collection.description}</p>
       </div>
       <div className="flex justify-end mb-4">
-        <p className="text-gray-500 text-sm ">
+        <p className=" text-sm ">
           {new Date(collection?.created_at).toLocaleDateString("en-US", {
             day: "numeric",
             month: "long",
@@ -235,6 +248,7 @@ function zIndex({ collection }) {
         </div>
       </div>
     </div>
+          </motion.div>
   );
 }
 

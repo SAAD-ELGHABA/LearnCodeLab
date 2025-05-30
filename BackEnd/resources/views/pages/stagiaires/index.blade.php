@@ -8,15 +8,15 @@
         <h1 class="text-lg font-bold">The "stagiaires" Info</h1>
     </div>
     <div class="text-sm">
-        <a href="{{route('stagiaires.create')}}" class="bg-[#163050] rounded text-white hover:bg-[#1e2d46] px-3 py-1">
+        <a href="{{route('stagiaires.create')}}" class=" rounded px-3 py-1">
             <i class="fa-plus fa-solid"></i>
             Add New Stagiaire
         </a>
     </div>
 </div>
-<table class="border border-[#163050] text-center w-full">
+<table class="border  text-center w-full">
     <thead>
-        <tr class="border border-[#163050] text-sm">
+        <tr class="border  text-sm">
             <th class="py-3">Image</th>
             <th class="py-3">First Name</th>
             <th class="py-3">Last Name</th>
@@ -37,7 +37,7 @@
         @else
 
         @foreach($stagiaires as $stagiaire)
-        <tr class="border border-[#163050] text-slate-300 text-sm hover:bg-[#163050] py-2">
+        <tr class="border text-sm  py-2">
             <td class="flex justify-center py-2 items-center">
                 @if($stagiaire->image)
                 <!-- <img src="{{ route('get-image', basename($stagiaire->image)) }}" alt="image" class="h-10 rounded-full w-10"> -->

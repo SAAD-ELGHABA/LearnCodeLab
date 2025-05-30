@@ -2,7 +2,7 @@ import { SquareLibrary } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Index from "../Components/collection/Index.collection";
-
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 function MyCollections() {
   const [MyCollections, setMyCollections] = useState([]);
@@ -45,13 +45,19 @@ function MyCollections() {
       ) : MyCollections.length > 0 ? (
         <div className="my-4">
           {MyCollections.map((collection) => (
-            <Index key={collection.id} collection={collection} />
+            <Index
+              key={collection.id}
+              collection={collection}
+              setMyCollections={setMyCollections}
+            />
           ))}
         </div>
       ) : (
         <div className="flex justify-center items-center h-64">
           <span>No collections found.</span>
-          <span>Create One</span>
+          <Link className="underline text-blue-500" to={"/add1"}>
+            Create One
+          </Link>
         </div>
       )}
     </div>

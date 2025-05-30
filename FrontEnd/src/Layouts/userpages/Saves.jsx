@@ -18,9 +18,7 @@ function Saves() {
   const MysavesColections = collectionsReducer.filter((clt) =>
     Mysaves.some((sv) => clt.id === sv.collection_id)
   );
-  const choosedTheme = useSelector(
-    (state) => state.themeReducer
-  );
+  const choosedTheme = useSelector((state) => state.themeReducer);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchSaves = async () => {
@@ -51,7 +49,7 @@ function Saves() {
       <div className="mx-8 my-4">
         <h1 className="text-xl font-semibold flex items-center  space-x-2">
           <span>My Saves ({Mysaves.length}) </span>
-          <BookMarked className="h-7 w-7"/>
+          <BookMarked className="h-7 w-7" />
         </h1>
       </div>
       {MysavesColections.length > 0 ? (
@@ -77,7 +75,7 @@ function Saves() {
                     : save.title}
                 </h3>
 
-                <p className="text-gray-400 text-sm line-clamp-5 h-25">
+                <p className="opacity-75 text-sm line-clamp-5 h-25">
                   {save.description}
                 </p>
               </div>
@@ -127,7 +125,9 @@ function Saves() {
         <div className="text-gray-400 flex flex-col justify-center space-y-2 mx-auto items-center w-100 h-100">
           <BookX className="h-20 w-20 " />
           <p>No saves collection has added to this section </p>
-          <Link to={'/user'} className="hover:text-blue-500 hover:underline">Figure Out</Link>
+          <Link to={"/user"} className="hover:text-blue-500 hover:underline">
+            Figure Out
+          </Link>
         </div>
       )}
     </div>

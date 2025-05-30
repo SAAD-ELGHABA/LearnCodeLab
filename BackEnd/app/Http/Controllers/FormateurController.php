@@ -35,7 +35,7 @@ class FormateurController extends Controller
             if (!$validation) {
                 return redirect()->back()->with('error', 'Please fill all the fields!');
             }
-            $image = $request->file('formateur_image')->store('public/UsersImages');
+            $image = $request->file('formateur_image')->store('UserImages', 'public');
 
             $user = User::create([
                 'firstName' => $request->firstName,
@@ -45,7 +45,7 @@ class FormateurController extends Controller
                 'groupstagiaire_id' => 0,
                 'role' => 'formateur',
                 'email_verified_at' => now(),
-                'image' => "http://127.0.0.1:8000/".$image,
+                'image' => "http://127.0.0.1:8000/storage/".$image,
             ]);
 
             if ($user) {
