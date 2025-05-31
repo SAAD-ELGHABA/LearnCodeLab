@@ -18,7 +18,12 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    // 'driver' => env('SESSION_DRIVER', 'database'),
+    // 'driver' => env('SESSION_DRIVER', 'file'),
+    'driver' => env('SESSION_DRIVER', 'cookie'),
+    'same_site' => 'lax',  // Ensure this is set to 'lax' or 'strict'
+
+    // 'driver' => 'file'
 
     /*
     |--------------------------------------------------------------------------
@@ -127,10 +132,11 @@ return [
     |
     */
 
-    'cookie' => env(
-        'SESSION_COOKIE',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
-    ),
+    // 'cookie' => env(
+    //     'SESSION_COOKIE',
+    //     Str::slug(env('APP_NAME', 'laravel'), '_') . '_session'
+    // ),
+    'cookie' => env('SESSION_COOKIE', 'LearnCodeLab'),
 
     /*
     |--------------------------------------------------------------------------
@@ -157,6 +163,7 @@ return [
     */
 
     'domain' => env('SESSION_DOMAIN'),
+    // 'domain' => "http://localhost:3000",
 
     /*
     |--------------------------------------------------------------------------
@@ -199,7 +206,7 @@ return [
     |
     */
 
-    'same_site' => env('SESSION_SAME_SITE', 'lax'),
+    // 'same_site' => env('SESSION_SAME_SITE', 'lax'),
 
     /*
     |--------------------------------------------------------------------------

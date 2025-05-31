@@ -1,0 +1,46 @@
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 0;
+  }
+  
+  .particle {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    animation: moveParticles linear infinite;
+  }
+  
+  /* Random positioning */
+  .particle:nth-child(odd) {
+    animation-duration: 5s;
+  }
+  .particle:nth-child(even) {
+    animation-duration: 7s;
+  }
+  
+  @keyframes moveParticles {
+    0% {
+      transform: translateY(0) translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) translateX(calc(-50px + 100px * random()));
+      opacity: 0;
+    }
+  }
+  
+  /* Random positions */
+  .particle:nth-child(1) { top: 10%; left: 15%; }
+  .particle:nth-child(2) { top: 20%; left: 30%; }
+  .particle:nth-child(3) { top: 5%; left: 60%; }
+  .particle:nth-child(4) { top: 50%; left: 80%; }
+  .particle:nth-child(5) { top: 70%; left: 40%; }
+  /* Add more for better effect */
+  

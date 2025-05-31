@@ -1,3 +1,39 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;
+@import "tailwindcss";
+/* Your custom styles below */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #1f2937; /* Tailwind gray-800 */
+  border-radius: 1px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #1f2937; /* Tailwind gray-600 */
+}
+
+
+/* Light theme */
+.light-theme {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Dark theme */
+.dark-theme {
+    background-color: #101828;
+    color: #ffffff;
+}
+
+/* You can add this in your main CSS */
+button#theme-toggle {
+    gap: 0.5rem;
+    align-items: center;
+}

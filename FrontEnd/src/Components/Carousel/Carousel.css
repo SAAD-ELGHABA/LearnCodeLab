@@ -1,0 +1,37 @@
+#app { height: 100% }
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+.swiper {
+  width: 80%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 100px;
+  height: 100px;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+}
+
+
+#left{
+  border-right: 1px solid var(--color-blue-400);
+  width: 10%;
+  height: 80px;
+}
+#right{
+  border-left: 1px solid var(--color-blue-400);
+  width: 10%;
+  height: 80px;
+}
