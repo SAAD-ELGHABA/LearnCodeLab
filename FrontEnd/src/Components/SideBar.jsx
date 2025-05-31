@@ -12,11 +12,28 @@ import {
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+<<<<<<< HEAD
 import { themes } from "../lib/themes.js";
 
 // eslint-disable-next-line react/prop-types
 function SideBar({ isOpen, setIsOpen, formateur = false, setToggleLogOut }) {
   const choosedTheme = useSelector((state) => state.themeReducer);
+=======
+import { toast } from "sonner";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../redux/action.js";
+import { useState } from "react";
+import ConfirmAlert from "../Components/ConfirmAlert.jsx";
+import {themes} from '../lib/themes.js'
+
+// eslint-disable-next-line react/prop-types
+function SideBar({ isOpen, setIsOpen ,formateur=false}) {
+    const choosedTheme = useSelector(
+    (state) => state.themeReducer
+  );
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
   const user = useSelector((state) => state.userReducer.user);
   const location = useLocation();
   if (user?.role === "formateur") {
@@ -91,6 +108,7 @@ function SideBar({ isOpen, setIsOpen, formateur = false, setToggleLogOut }) {
         </div>
 
         <ul className="mt-5 text-sm">
+<<<<<<< HEAD
           {links.map(
             (link) =>
               link && (
@@ -123,6 +141,37 @@ function SideBar({ isOpen, setIsOpen, formateur = false, setToggleLogOut }) {
                 </Link>
               )
           )}
+=======
+          {links.map((link) => (
+            link &&
+<Link
+  key={link.to}
+  to={link.to}
+  className="space-x-2 py-3 ps-8 cursor-pointer flex items-center transition-colors duration-200"
+  style={{
+    backgroundColor:
+      link.to === location.pathname
+        ? themes.find((theme) => theme.name === choosedTheme)?.colors[0]
+        : "transparent",
+  }}
+  onMouseEnter={(e) => {
+    if (link.to !== location.pathname) {
+      e.currentTarget.style.backgroundColor =
+        themes.find((theme) => theme.name === choosedTheme)?.colors[0];
+    }
+  }}
+  onMouseLeave={(e) => {
+    if (link.to !== location.pathname) {
+      e.currentTarget.style.backgroundColor = "transparent";
+    }
+  }}
+>
+  {link.icon}
+  {isOpen && <span>{link.label}</span>}
+</Link>
+
+          ))}
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
         </ul>
       </div>
 
@@ -148,6 +197,24 @@ function SideBar({ isOpen, setIsOpen, formateur = false, setToggleLogOut }) {
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = "transparent";
             }}
+<<<<<<< HEAD
+=======
+            className="space-x-2  py-3 ps-8 cursor-pointer flex items-center"
+                style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1] ,color:themes.find((theme) => theme.name === choosedTheme).textColor }}
+                        onMouseEnter={
+                          (e)=>{
+                            e.currentTarget.style.backgroundColor = themes.find((theme) => theme.name === choosedTheme).colors[0]
+                          }
+                          
+                        }
+                        onMouseLeave={
+                          (e)=>{
+                            e.currentTarget.style.backgroundColor = "transparent"
+                          }
+                          
+                        }
+           
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
           >
             <LogOut className="h-4 w-4" />
             {isOpen && <span className="">Logout</span>}

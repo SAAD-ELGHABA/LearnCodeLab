@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Chat_bot from "../Components/Chat_bot";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
+<<<<<<< HEAD
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import { getCollections } from "../functions/getCollections";
@@ -15,11 +16,18 @@ import { themes } from "../lib/themes.js";
 import axios from "axios";
 import { logout } from "../redux/action.js";
 import ConfirmAlert from "../Components/ConfirmAlert.jsx";
+=======
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "sonner";
+import {themes} from '../lib/themes.js'
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
 function StagiaireLayout() {
   const [isOpen, setIsOpen] = useState(true);
   const [ishovering, setIshovering] = useState(false);
   const [ChatToggle, setChatToggle] = useState(false);
   const dispatch = useDispatch();
+<<<<<<< HEAD
   const choosedTheme = useSelector((state) => state.themeReducer);
   const [toggleLogOut, setToggleLogOut] = useState(false);
   const nav = useNavigate();
@@ -27,6 +35,12 @@ function StagiaireLayout() {
   const messagesChatAi = useSelector((state) => state.ChatAiReducer);
   const lastMessage = messagesChatAi[messagesChatAi?.length - 1];
 
+=======
+  const choosedTheme = useSelector(
+    (state) => state.themeReducer
+  );
+    
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
   useEffect(() => {
     const CollectionsPromise = async () => {
       try {
@@ -78,6 +92,7 @@ function StagiaireLayout() {
   };
 
   return (
+<<<<<<< HEAD
     <div
       style={{
         backgroundColor: themes.find((theme) => theme.name === choosedTheme)
@@ -85,6 +100,9 @@ function StagiaireLayout() {
         color: themes.find((theme) => theme.name === choosedTheme).textColor,
       }}
     >
+=======
+    <div style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[0] ,color:themes.find((theme) => theme.name === choosedTheme).textColor }}>
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
       <NavBar />
 
       <div className="flex">
@@ -92,6 +110,7 @@ function StagiaireLayout() {
           initial={{ width: 250 }}
           animate={{ width: isOpen ? 250 : 70 }}
           transition={{ duration: 0.3 }}
+<<<<<<< HEAD
           className="fixed top-18 left-0 h-screen z-40 flex flex-col shadow-lg"
           style={{
             backgroundColor: themes.find((theme) => theme.name === choosedTheme)
@@ -99,6 +118,10 @@ function StagiaireLayout() {
             color: themes.find((theme) => theme.name === choosedTheme)
               .textColor,
           }}
+=======
+          className="sticky top-20 left-0 h-screen  flex flex-col shadow-lg"
+          style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[1],color:themes.find((theme) => theme.name === choosedTheme).textColor }}
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
         >
           <SideBar
             isOpen={isOpen}
@@ -108,12 +131,20 @@ function StagiaireLayout() {
         </motion.aside>
 
         <section
+<<<<<<< HEAD
           className="transition-all duration-300 p-2 m-1 rounded min-h-screen w-full overflow-hidden"
           style={{
             marginLeft: isOpen ? 250 : 70,
             backgroundColor: themes.find((theme) => theme.name === choosedTheme)
               .colors[0],
           }}
+=======
+          className={`p-2 transition-all duration-300 ${
+            isOpen ? "w-5/6" : "w-6/6"
+          }
+           m-1 rounded`}
+           style={{ backgroundColor: themes.find((theme) => theme.name === choosedTheme).colors[0] }}
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
         >
           <Outlet />
         </section>

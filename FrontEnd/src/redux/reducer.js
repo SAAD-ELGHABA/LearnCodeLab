@@ -233,6 +233,7 @@ export const savesReducer = (state=saves,action)=>{
     }
 }
 
+<<<<<<< HEAD
 const resources = []
 export const resourcesReducer = (state=resources,action)=>{
     switch(action.type){
@@ -254,6 +255,9 @@ export const languagesReducer = (state=languages,action)=>{
     }
 }
 const theme = localStorage.getItem('theme') || "Light"
+=======
+const theme = "Light"
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
 export const themeReducer = (state=theme,action)=>{
     switch(action.type){
         case "SET_THEME":
@@ -261,6 +265,7 @@ export const themeReducer = (state=theme,action)=>{
         default:
             return state;
     }
+<<<<<<< HEAD
 }
 
 const notifications = [];
@@ -296,4 +301,6 @@ export const GroupJoiningReducer = (state=GroupJoining,action)=>{
         default:
             return state
     }
+=======
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
 }

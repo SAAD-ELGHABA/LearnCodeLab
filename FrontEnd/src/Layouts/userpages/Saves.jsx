@@ -18,7 +18,13 @@ function Saves() {
   const MysavesColections = collectionsReducer.filter((clt) =>
     Mysaves.some((sv) => clt.id === sv.collection_id)
   );
+<<<<<<< HEAD
   const choosedTheme = useSelector((state) => state.themeReducer);
+=======
+  const choosedTheme = useSelector(
+    (state) => state.themeReducer
+  );
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchSaves = async () => {

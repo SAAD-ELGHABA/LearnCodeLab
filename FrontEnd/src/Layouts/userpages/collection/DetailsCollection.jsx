@@ -7,15 +7,25 @@ import FeedbackType from "./Feedback/FeedbackType";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import spinner from "../../../Assets/spinner.gif";
+<<<<<<< HEAD
 import RateStars from "./Feedback/RateStars";
 import { themes } from "../../../lib/themes.js";
+=======
+import {themes} from '../../../lib/themes.js'
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
 function DetailsCollection() {
   const { slug, user } = useParams();
   const collections = useSelector((state) => state.collectionsReducer);
   const ChoosedCollection = collections.find(
     (collection) => collection.slug === slug
   );
+<<<<<<< HEAD
   const choosedTheme = useSelector((state) => state.themeReducer);
+=======
+  const choosedTheme = useSelector(
+    (state) => state.themeReducer
+  );
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
   const [typeFeedback, setTypeFeedback] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
@@ -69,10 +79,17 @@ function DetailsCollection() {
               <h1 className="text-2xl font-semibold">
                 {ChoosedCollection?.title}
               </h1>
+<<<<<<< HEAD
               <h3 className="text-lg font-medium">
                 {ChoosedCollection.question}
               </h3>
               <p className="text-sm opacity-75">{ChoosedCollection.description}</p>
+=======
+              <h3 className="text-lg font-medium">{ChoosedCollection.question}</h3>
+              <p className="text-sm ">
+                {ChoosedCollection.description}
+              </p>
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
             </div>
             <div className="w-1/3 px-2">
               <div className="flex justify-end">
@@ -101,6 +118,7 @@ function DetailsCollection() {
                   </span>
                 </span>
                 <div className="flex items-center gap-1 text-xs justify-between">
+<<<<<<< HEAD
 
                   <span>
                     Feedback:{" "}
@@ -110,6 +128,10 @@ function DetailsCollection() {
                   </span>
                   <span
                     className="flex font-medium items-center gap-1  px-4 py-2 rounded "
+=======
+                  <span>Feedback: <span className="font-semibold mx-2">{ChoosedCollection.feedback.length}</span></span>
+                  <span className="flex font-medium items-center gap-1  px-4 py-2 rounded "
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
                     style={{
                       backgroundColor: themes.find(
                         (theme) => theme.name === choosedTheme

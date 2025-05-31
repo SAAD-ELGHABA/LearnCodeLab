@@ -11,6 +11,7 @@ export default function Footer() {
         
         {/* Left side */}
         <div className="flex flex-col items-center  lg:items-start ">
+<<<<<<< HEAD
           <Link
           to={"/"}
           className="font-bold text-2xl  text-center  
@@ -18,6 +19,12 @@ export default function Footer() {
         >
           LearnCodeLab
         </Link>
+=======
+          <Link to='/'>
+          <img className="text-2xl font-bold text-white mb-4" src={LCL}/>
+          
+          </Link>
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
           <p className="mb-2 text-sm">+212 6 18 76 91 58</p>
           <p className="mb-2 text-sm">learncodelab@gmail.com</p>
           <div className="flex space-x-4 mt-6">

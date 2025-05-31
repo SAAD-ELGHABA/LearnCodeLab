@@ -120,8 +120,13 @@ export default function HomePage() {
   return (
     <div className="text-white min-h-screen z-50 bg-[#0f172a]">
       {/* HERO */}
+<<<<<<< HEAD
       <div className="flex items-end container mx-auto justify-evenly pt-20 flex-col md:flex-row">
         <header className="w-full md:w-2/5 mb-20 text-center md:text-start mx-auto">
+=======
+      <div className="flex items-end container mx-auto justify-evenly pt-20 flex-col md:flex-row"      >
+        <header className="w-full md:w-2/5 mb-20 text-center md:text-start mx-auto"        >
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
           <h1 className="text-4xl md:text-5xl font-bold text-blue-400 drop-shadow-lg uppercase">
             Your Way to Get <br /> Your Diploma !
           </h1>
@@ -136,18 +141,26 @@ export default function HomePage() {
             <Link
               to="/register"
               className="bg-blue-400 mt-4 md:mt-0 px-6 py-3 text-center border hover:bg-blue-600 rounded-md w-1/2 md:w-1/4 text-sm cursor-pointer mx-auto md:mx-0"
+<<<<<<< HEAD
             >
+=======
+              >
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
               Sign in
             </Link>
           </div>
         </header>
         <div className="flex justify-center mt-10 w-full md:w-1/2">
+<<<<<<< HEAD
           <div className="bg-blue-500 rounded-full absolute top-3 h-[500px] w-[50%] blur-3xl opacity-25"></div>
           <img
             src={peapleCoding}
             alt="People coding"
             className="w-full drop-shadow-xl"
           />
+=======
+          <img src={peapleCoding} alt="People coding" className="w-full drop-shadow-xl" />
+>>>>>>> 27c02272435c323488386150c779909c9f511c29
         </div>
 >>>>>>> Dev
       </div>
