@@ -104,11 +104,12 @@ const Blog = () => {
   const [selectedTech, setSelectedTech] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const technologies = ["All", ...new Set(allArticles.map(a => a.tech))];
+  const technologies = ["All", ...new Set(allArticles.map((a) => a.tech))];
 
-  const filteredArticles = allArticles.filter(article =>
-    (selectedTech === "All" || article.tech === selectedTech) &&
-    article.tech.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredArticles = allArticles.filter(
+    (article) =>
+      (selectedTech === "All" || article.tech === selectedTech) &&
+      article.tech.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const displayedArticles = showAll ? filteredArticles : filteredArticles.slice(0, 3);
@@ -134,7 +135,7 @@ const Blog = () => {
         and tips shared by our community of enthusiasts.
       </motion.p>
 
-      {/* Search bar with X */}
+      {/* Search Bar */}
       <motion.div
         className="w-full md:w-1/3 mb-6 mx-auto relative"
         initial={{ opacity: 0, y: -20 }}
@@ -155,38 +156,39 @@ const Blog = () => {
         {searchTerm && (
           <FiXCircle
             onClick={() => setSearchTerm("")}
-            className="absolute top-3 right-3 text-gray-400 text-lg cursor-pointer "
+            className="absolute top-3 right-3 text-gray-400 text-lg cursor-pointer"
           />
         )}
       </motion.div>
 
-      {/* Article cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 mt-20">
-        {displayedArticles.map((article) => (
-          <motion.div
-            key={article.id}
-            className="bg-white shadow-lg rounded-2xl overflow-hidden hover:scale-105 transition duration-500"
-            whileHover={{ y: -6 }}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: article.id * 0.05 }}
-          >
-            <img src={article.image} alt={article.title} className="w-full h-40 object-cover" />
-            <div className="p-4 space-y-2">
-              <div className="flex items-center justify-between">
-                {article.icon}
-                <span className="text-sm text-gray-500">{article.date}</span>
-              </div>
-              <h2 className="text-lg font-bold text-gray-800">{article.title}</h2>
-              <p className="text-sm text-gray-600">{article.excerpt}</p>
-              <p className="text-xs text-gray-500">✍️ {article.author}</p>
-              <button className="mt-2 px-3 py-1 rounded-lg bg-blue-400 text-white text-sm hover:bg-blue-600 transition cursor-pointer">
-                Read article →
-              </button>
-            </div>
-          </motion.div>
-        ))}
+      {/* Cards */}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 mt-20">
+  {displayedArticles.map((article) => (
+    <motion.div
+      key={article.id}
+      className="bg-white shadow-lg rounded-2xl overflow-hidden hover:scale-105 transition duration-500 w-[400px] mx-auto"
+      whileHover={{ y: -6 }}
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: article.id * 0.05 }}
+    >
+      <img src={article.image} alt={article.title} className="w-full h-40 object-cover" />
+      <div className="p-4 space-y-2">
+        <div className="flex items-center justify-between">
+          {article.icon}
+          <span className="text-sm text-gray-500">{article.date}</span>
+        </div>
+        <h2 className="text-lg font-bold text-gray-800">{article.title}</h2>
+        <p className="text-sm text-gray-600">{article.excerpt}</p>
+        <p className="text-xs text-gray-500">✍️ {article.author}</p>
+        <button className="mt-2 px-3 py-1 rounded-lg bg-blue-400 text-white text-sm hover:bg-blue-600 transition cursor-pointer">
+          Read article →
+        </button>
       </div>
+    </motion.div>
+  ))}
+</div>
+
 
       {filteredArticles.length > 3 && (
         <div className="flex justify-center mt-10">
